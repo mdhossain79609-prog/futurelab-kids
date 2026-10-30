@@ -1,1 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>FutureLab Kids</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    min-height:100vh;
+    background:linear-gradient(#dff6ff,#f5fbff);
+    color:#24324a;
+}
+
+/* Top Bar */
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 18px;
+}
+
+.icon-btn{
+    width:46px;
+    height:46px;
+    border:none;
+    border-radius:50%;
+    background:white;
+    font-size:22px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* Main Home */
+.home{
+    text-align:center;
+    padding:10px 20px 35px;
+}
+
+/* Logo */
+.logo{
+    font-size:82px;
+    margin-top:5px;
+    margin-bottom:4px;
+}
+
+/* App Name */
+.app-name{
+    margin:0;
+    font-size:36px;
+    font-weight:800;
+    color:#2457c5;
+}
+
+.app-name span{
+    color:#ff7a00;
+}
+
+.slogan{
+    margin-top:8px;
+    font-size:17px;
+    font-weight:bold;
+    color:#59677d;
+}
+
+/* Welcome Card */
+.welcome-card{
+    max-width:420px;
+    margin:25px auto 20px;
+    background:white;
+    padding:22px 18px;
+    border-radius:24px;
+    box-shadow:0 7px 20px rgba(0,0,0,0.10);
+}
+
+.welcome-card h2{
+    margin:0 0 8px;
+    color:#6339b6;
+}
+
+.welcome-card p{
+    margin:0;
+    line-height:1.5;
+    color:#58677a;
+}
+
+/* Start Button */
+.start-btn{
+    width:min(90%,380px);
+    border:none;
+    border-radius:18px;
+    padding:17px 20px;
+    margin-top:8px;
+    background:linear-gradient(90deg,#ff8a00,#ffb000);
+    color:white;
+    font-size:20px;
+    font-weight:bold;
+    box-shadow:0 7px 16px rgba(255,138,0,0.30);
+}
+
+/* Small Buttons */
+.bottom-buttons{
+    max-width:390px;
+    margin:22px auto 0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.small-btn{
+    border:none;
+    background:white;
+    border-radius:18px;
+    padding:16px 8px;
+    font-size:15px;
+    font-weight:bold;
+    color:#34445d;
+    box-shadow:0 5px 14px rgba(0,0,0,0.10);
+}
+
+.footer-text{
+    margin-top:30px;
+    font-size:14px;
+    color:#74839a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+    <button class="icon-btn">⚙️</button>
+    <button class="icon-btn">⭐</button>
+</div>
+
+<main class="home">
+
+    <div class="logo">🚀</div>
+
+    <h1 class="app-name">
+        FutureLab <span>Kids</span>
+    </h1>
+
+    <div class="slogan">
+        BUILD • DISCOVER • INVENT
+    </div>
+
+    <div class="welcome-card">
+        <h2>🌟 Your Future Starts Here!</h2>
+        <p>
+            Build amazing things, solve fun challenges,
+            explore technology and discover your future.
+        </p>
+    </div>
+
+    <button class="start-btn">
+        🚀 START ADVENTURE
+    </button>
+
+    <div class="bottom-buttons">
+        <button class="small-btn">
+            🏆 My Progress
+        </button>
+
+        <button class="small-btn">
+            💡 Help Center
+        </button>
+    </div>
+
+    <div class="footer-text">
+        Learn • Build • Test • Create
+    </div>
+
+</main>
+
+</body>
+</html>
