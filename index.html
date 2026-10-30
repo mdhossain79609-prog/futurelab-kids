@@ -749,7 +749,7 @@ button{
 
             <!-- Engineer -->
 
-            <button class="career-card">
+            <button class="career-card" onclick="openBuilderScreen()">
 
                 <span class="career-emoji">👷</span>
 
@@ -894,39 +894,63 @@ button{
 
 <script>
 
-}
-    
 function openLabScreen(){
 
     document.getElementById("homeScreen").style.display = "none";
-
     document.getElementById("labScreen").style.display = "block";
+    document.getElementById("careerScreen").style.display = "none";
+    document.getElementById("builderScreen").style.display = "none";
 
     window.scrollTo(0,0);
 
 }
+
 
 function openHomeScreen(){
 
-    document.getElementById("labScreen").style.display = "none";
-
     document.getElementById("homeScreen").style.display = "block";
+    document.getElementById("labScreen").style.display = "none";
+    document.getElementById("careerScreen").style.display = "none";
+    document.getElementById("builderScreen").style.display = "none";
 
     window.scrollTo(0,0);
 
 }
-    
+
+
 function openCareerScreen(){
 
     document.getElementById("homeScreen").style.display = "none";
-
     document.getElementById("labScreen").style.display = "none";
-
     document.getElementById("careerScreen").style.display = "block";
+    document.getElementById("builderScreen").style.display = "none";
 
     window.scrollTo(0,0);
 
 }
+
+
+function openBuilderScreen(){
+
+    document.getElementById("homeScreen").style.display = "none";
+    document.getElementById("labScreen").style.display = "none";
+    document.getElementById("careerScreen").style.display = "none";
+    document.getElementById("builderScreen").style.display = "block";
+
+    window.scrollTo(0,0);
+
+}
+
+
+/* Phone Back Button */
+
+window.addEventListener("popstate", function(){
+
+    openHomeScreen();
+
+});
+
+</script>
 
 /* Phone Back Button */
 
