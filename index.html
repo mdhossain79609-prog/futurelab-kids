@@ -849,7 +849,7 @@ button{
 
         <!-- Build Your Car -->
 
-        <button class="builder-card">
+        <button class="builder-card" onclick="openCarBuilderScreen()">
 
             <div class="builder-project-icon">
                 🚗
@@ -881,6 +881,53 @@ button{
             onclick="openCareerScreen()">
 
             ← Back to Career World
+
+        </button>
+
+    </div>
+
+</div>
+
+    <!-- =================================
+     CAR BUILDER SCREEN
+================================= -->
+
+<div id="carBuilderScreen" class="screen">
+
+    <div class="builder-header">
+
+        <div class="builder-icon">
+            🚗
+        </div>
+
+        <h1 class="builder-title">
+            Build Your Car
+        </h1>
+
+        <p class="builder-subtitle">
+            Choose parts, build your car and test your creation!
+        </p>
+
+    </div>
+
+    <div class="builder-container">
+
+        <div class="welcome-card">
+
+            <h2>🚗 Your Car Project</h2>
+
+            <p>
+                Soon you will choose wheels, body, engine
+                and other parts to build your own car.
+            </p>
+
+        </div>
+
+        <button
+            class="home-back"
+            onclick="openBuilderScreen()">
+
+            ← Back to Junior Builder
 
         </button>
 
