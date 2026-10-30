@@ -653,6 +653,11 @@ button{
 .chassis-frame::after{
     right:20px;
 } 
+
+    #carChassis{
+    touch-action:pan-y;
+    user-select:none;
+}
     
 </style>
 </head>
@@ -1431,6 +1436,61 @@ function openBuilderScreen(){
     window.scrollTo(0,0);
 
 }
+
+   let chassisAngle = 0;
+
+function rotateCarRight(){
+
+    chassisAngle += 45;
+
+    document.getElementById("carChassis").style.transform =
+        "rotateY(" + chassisAngle + "deg)";
+}
+
+function rotateCarLeft(){
+
+    chassisAngle -= 45;
+
+    document.getElementById("carChassis").style.transform =
+        "rotateY(" + chassisAngle + "deg)";
+} 
+
+    let dragStartX = 0;
+let isRotatingCar = false;
+
+const carChassis = document.getElementById("carChassis");
+
+carChassis.addEventListener("pointerdown", function(event){
+
+    dragStartX = event.clientX;
+    isRotatingCar = true;
+
+    carChassis.setPointerCapture(event.pointerId);
+});
+
+carChassis.addEventListener("pointermove", function(event){
+
+    if(!isRotatingCar) return;
+
+    let moveX = event.clientX - dragStartX;
+
+    chassisAngle += moveX * 0.5;
+
+    carChassis.style.transform =
+        "rotateY(" + chassisAngle + "deg)";
+
+    dragStartX = event.clientX;
+});
+
+carChassis.addEventListener("pointerup", function(){
+
+    isRotatingCar = false;
+});
+
+carChassis.addEventListener("pointercancel", function(){
+
+    isRotatingCar = false;
+});
 
 </script>
 
