@@ -540,6 +540,41 @@ button{
     font-weight:bold;
     box-shadow:0 6px 16px rgba(109,74,203,0.28);
 }
+
+    /* CAR ROTATE AREA */
+
+.car-workshop{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin-top:10px;
+}
+
+.rotate-btn{
+    width:48px;
+    height:48px;
+    border:none;
+    border-radius:50%;
+    background:#6339b6;
+    color:white;
+    font-size:27px;
+    font-weight:bold;
+    box-shadow:0 5px 12px rgba(0,0,0,0.15);
+}
+
+.rotate-btn:active{
+    transform:scale(0.92);
+}
+
+.view-name{
+    text-align:center;
+    margin-top:-5px;
+    margin-bottom:10px;
+    color:#6339b6;
+    font-size:14px;
+    font-weight:bold;
+}
     
 </style>
 </head>
@@ -1032,10 +1067,26 @@ button{
         <div class="preview-title">
             🚗 My Car
         </div>
+<div class="car-workshop">
 
-        <div class="car-display">
-            🚘
-        </div>
+    <button class="rotate-btn" onclick="rotateCarLeft()">
+        ↶
+    </button>
+
+    <div id="carDisplay" class="car-display">
+        🚘
+    </div>
+
+    <button class="rotate-btn" onclick="rotateCarRight()">
+        ↷
+    </button>
+
+</div>
+
+<div class="view-name" id="viewName">
+    Front View
+    
+</div>
 
         <p>
             Build your dream car!
