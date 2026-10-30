@@ -575,6 +575,84 @@ button{
     font-size:14px;
     font-weight:bold;
 }
+
+   /* =========================
+   CAR CHASSIS
+========================= */
+
+.car-display{
+    min-height:180px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px 5px;
+}
+
+.chassis{
+    width:250px;
+    height:90px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    transition:transform 0.4s ease;
+}
+
+.chassis-frame{
+    width:180px;
+    height:58px;
+    border:8px solid #455a64;
+    border-radius:18px;
+    position:relative;
+    background:#cfd8dc;
+    display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+}
+
+.frame-bar{
+    width:8px;
+    height:100%;
+    background:#607d8b;
+}
+
+.chassis-front,
+.chassis-rear{
+    width:35px;
+    height:42px;
+    background:#455a64;
+    border-radius:8px;
+}
+
+.chassis-front{
+    margin-left:-3px;
+}
+
+.chassis-rear{
+    margin-right:-3px;
+}
+
+/* Empty mounting points */
+
+.chassis-frame::before,
+.chassis-frame::after{
+    content:"";
+    position:absolute;
+    bottom:-20px;
+    width:28px;
+    height:28px;
+    border:3px dashed #8b5cf6;
+    border-radius:50%;
+    background:#f5f3ff;
+}
+
+.chassis-frame::before{
+    left:20px;
+}
+
+.chassis-frame::after{
+    right:20px;
+} 
     
 </style>
 </head>
@@ -1073,9 +1151,23 @@ button{
         ↶
     </button>
 
-    <div id="carDisplay" class="car-display">
-        🚘
+   <div id="carDisplay" class="car-display">
+
+    <div class="chassis" id="carChassis">
+
+        <div class="chassis-front"></div>
+
+        <div class="chassis-frame">
+            <span class="frame-bar"></span>
+            <span class="frame-bar"></span>
+            <span class="frame-bar"></span>
+        </div>
+
+        <div class="chassis-rear"></div>
+
     </div>
+
+</div>
 
     <button class="rotate-btn" onclick="rotateCarRight()">
         ↷
