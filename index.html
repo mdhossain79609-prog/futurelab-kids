@@ -7,6 +7,7 @@
 <title>FutureLab Kids</title>
 
 <style>
+
 *{
     box-sizing:border-box;
 }
@@ -19,7 +20,22 @@ body{
     color:#24324a;
 }
 
-/* Top Bar */
+/* =========================
+   COMMON
+========================= */
+
+.screen{
+    min-height:100vh;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
 .top-bar{
     display:flex;
     justify-content:space-between;
@@ -37,13 +53,17 @@ body{
     box-shadow:0 4px 12px rgba(0,0,0,0.12);
 }
 
-/* Main Home */
+/* =========================
+   HOME SCREEN
+========================= */
+
 .home{
     text-align:center;
     padding:10px 20px 35px;
 }
 
 /* Logo */
+
 .logo{
     font-size:82px;
     margin-top:5px;
@@ -51,6 +71,7 @@ body{
 }
 
 /* App Name */
+
 .app-name{
     margin:0;
     font-size:36px;
@@ -70,6 +91,7 @@ body{
 }
 
 /* Welcome Card */
+
 .welcome-card{
     max-width:420px;
     margin:25px auto 20px;
@@ -91,6 +113,7 @@ body{
 }
 
 /* Start Button */
+
 .start-btn{
     width:min(90%,380px);
     border:none;
@@ -105,6 +128,7 @@ body{
 }
 
 /* Small Buttons */
+
 .bottom-buttons{
     max-width:390px;
     margin:22px auto 0;
@@ -129,55 +153,432 @@ body{
     font-size:14px;
     color:#74839a;
 }
+
+
+/* =========================
+   EXPLORE LAB SCREEN
+========================= */
+
+#labScreen{
+    display:none;
+    padding-bottom:30px;
+}
+
+/* Lab Header */
+
+.lab-header{
+    text-align:center;
+    padding:22px 18px 10px;
+}
+
+.lab-icon{
+    font-size:64px;
+    margin-bottom:5px;
+}
+
+.lab-title{
+    margin:0;
+    font-size:30px;
+    font-weight:800;
+    color:#2457c5;
+}
+
+.lab-subtitle{
+    margin:8px 0 0;
+    font-size:15px;
+    color:#637187;
+}
+
+/* Lab Cards */
+
+.lab-container{
+    max-width:440px;
+    margin:20px auto;
+    padding:0 18px;
+}
+
+.lab-card{
+    width:100%;
+    display:flex;
+    align-items:center;
+    text-align:left;
+    border:none;
+    background:white;
+    border-radius:22px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.10);
+    transition:transform 0.15s;
+}
+
+.lab-card:active{
+    transform:scale(0.97);
+}
+
+.lab-card-icon{
+    width:58px;
+    height:58px;
+    border-radius:18px;
+    background:#eef5ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    margin-right:15px;
+}
+
+.lab-card-text{
+    flex:1;
+}
+
+.lab-card-text h3{
+    margin:0;
+    font-size:19px;
+    color:#293f69;
+}
+
+.lab-card-text p{
+    margin:5px 0 0;
+    font-size:13px;
+    color:#77849a;
+    line-height:1.4;
+}
+
+.arrow{
+    font-size:24px;
+    color:#8a63d2;
+}
+
+/* Home Button */
+
+.home-back{
+    display:block;
+    width:min(90%,380px);
+    margin:20px auto 0;
+    padding:16px;
+    border:none;
+    border-radius:18px;
+    background:#6339b6;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    box-shadow:0 6px 15px rgba(99,57,182,0.25);
+}
+
+.lab-footer{
+    text-align:center;
+    margin-top:20px;
+    color:#8491a5;
+    font-size:13px;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="top-bar">
-    <button class="icon-btn">⚙️</button>
-    <button class="icon-btn">⭐</button>
+
+<!-- =================================
+     HOME SCREEN
+================================= -->
+
+<div id="homeScreen" class="screen">
+
+    <div class="top-bar">
+
+        <button class="icon-btn">
+            ⚙️
+        </button>
+
+        <button class="icon-btn">
+            ⭐
+        </button>
+
+    </div>
+
+
+    <main class="home">
+
+        <div class="logo">
+            🚀
+        </div>
+
+        <h1 class="app-name">
+            FutureLab <span>Kids</span>
+        </h1>
+
+        <div class="slogan">
+            BUILD • DISCOVER • INVENT
+        </div>
+
+
+        <div class="welcome-card">
+
+            <h2>
+                🌟 Your Future Starts Here!
+            </h2>
+
+            <p>
+                Build amazing things, solve fun challenges,
+                explore technology and discover your future.
+            </p>
+
+        </div>
+
+
+        <!-- START ADVENTURE -->
+
+        <button
+            class="start-btn"
+            onclick="openLabScreen()">
+
+            🚀 START ADVENTURE
+
+        </button>
+
+
+        <div class="bottom-buttons">
+
+            <button class="small-btn">
+                🏆 My Progress
+            </button>
+
+            <button class="small-btn">
+                💡 Help Center
+            </button>
+
+        </div>
+
+
+        <div class="footer-text">
+            Learn • Build • Test • Create
+        </div>
+
+    </main>
+
 </div>
 
-<main class="home">
 
-    <div class="logo">🚀</div>
 
-    <h1 class="app-name">
-        FutureLab <span>Kids</span>
-    </h1>
+<!-- =================================
+     SECOND SCREEN
+================================= -->
 
-    <div class="slogan">
-        BUILD • DISCOVER • INVENT
-    </div>
+<div id="labScreen" class="screen">
 
-    <div class="welcome-card">
-        <h2>🌟 Your Future Starts Here!</h2>
-        <p>
-            Build amazing things, solve fun challenges,
-            explore technology and discover your future.
+    <div class="lab-header">
+
+        <div class="lab-icon">
+            🔬
+        </div>
+
+        <h1 class="lab-title">
+            Explore Your Lab
+        </h1>
+
+        <p class="lab-subtitle">
+            Choose an adventure and start discovering!
         </p>
+
     </div>
 
-    <button class="start-btn">
-        🚀 START ADVENTURE
-    </button>
 
-    <div class="bottom-buttons">
-        <button class="small-btn">
-            🏆 My Progress
+    <div class="lab-container">
+
+
+        <!-- Challenges -->
+
+        <button class="lab-card">
+
+            <div class="lab-card-icon">
+                🧠
+            </div>
+
+            <div class="lab-card-text">
+
+                <h3>
+                    Challenges
+                </h3>
+
+                <p>
+                    Solve fun problems and test your skills.
+                </p>
+
+            </div>
+
+            <div class="arrow">
+                ›
+            </div>
+
         </button>
 
-        <button class="small-btn">
-            💡 Help Center
+
+        <!-- AI & Robotics -->
+
+        <button class="lab-card">
+
+            <div class="lab-card-icon">
+                🤖
+            </div>
+
+            <div class="lab-card-text">
+
+                <h3>
+                    AI & Robotics
+                </h3>
+
+                <p>
+                    Discover robots, artificial intelligence and machines.
+                </p>
+
+            </div>
+
+            <div class="arrow">
+                ›
+            </div>
+
         </button>
+
+
+        <!-- Space & Science -->
+
+        <button class="lab-card">
+
+            <div class="lab-card-icon">
+                🚀
+            </div>
+
+            <div class="lab-card-text">
+
+                <h3>
+                    Space & Science
+                </h3>
+
+                <p>
+                    Explore planets, stars and amazing science.
+                </p>
+
+            </div>
+
+            <div class="arrow">
+                ›
+            </div>
+
+        </button>
+
+
+        <!-- Technology -->
+
+        <button class="lab-card">
+
+            <div class="lab-card-icon">
+                💻
+            </div>
+
+            <div class="lab-card-text">
+
+                <h3>
+                    Technology
+                </h3>
+
+                <p>
+                    Learn about computers, coding and future technology.
+                </p>
+
+            </div>
+
+            <div class="arrow">
+                ›
+            </div>
+
+        </button>
+
+
+        <!-- Creative Lab -->
+
+        <button class="lab-card">
+
+            <div class="lab-card-icon">
+                🎨
+            </div>
+
+            <div class="lab-card-text">
+
+                <h3>
+                    Creative Lab
+                </h3>
+
+                <p>
+                    Create, design and turn your ideas into something new.
+                </p>
+
+            </div>
+
+            <div class="arrow">
+                ›
+            </div>
+
+        </button>
+
+
+        <!-- Home Button -->
+
+        <button
+            class="home-back"
+            onclick="openHomeScreen()">
+
+            🏠 Back to Home
+
+        </button>
+
+
+        <div class="lab-footer">
+            Learn • Build • Test • Create
+        </div>
+
     </div>
 
-    <div class="footer-text">
-        Learn • Build • Test • Create
-    </div>
+</div>
 
-</main>
+
+
+<!-- =================================
+     JAVASCRIPT
+================================= -->
+
+<script>
+
+function openLabScreen(){
+
+    document.getElementById("homeScreen").style.display = "none";
+
+    document.getElementById("labScreen").style.display = "block";
+
+    window.scrollTo(0,0);
+
+}
+
+
+function openHomeScreen(){
+
+    document.getElementById("labScreen").style.display = "none";
+
+    document.getElementById("homeScreen").style.display = "block";
+
+    window.scrollTo(0,0);
+
+}
+
+
+/* Phone Back Button */
+
+window.addEventListener("popstate", function(){
+
+    openHomeScreen();
+
+});
+
+</script>
 
 </body>
 </html>
