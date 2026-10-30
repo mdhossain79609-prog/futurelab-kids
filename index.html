@@ -1432,46 +1432,6 @@ function openBuilderScreen(){
 
 }
 
-    let carView = 0;
-
-const carViews = [
-    { icon: "🚘", name: "Front View" },
-    { icon: "🚗", name: "Right View" },
-    { icon: "🚙", name: "Back View" },
-    { icon: "🚗", name: "Left View" }
-];
-
-function updateCarView(){
-
-    document.getElementById("carDisplay").innerHTML =
-        carViews[carView].icon;
-
-    document.getElementById("viewName").innerHTML =
-        carViews[carView].name;
-}
-
-function rotateCarRight(){
-
-    carView++;
-
-    if(carView >= carViews.length){
-        carView = 0;
-    }
-
-    updateCarView();
-}
-
-function rotateCarLeft(){
-
-    carView--;
-
-    if(carView < 0){
-        carView = carViews.length - 1;
-    }
-
-    updateCarView();
-}
-
 </script>
 
 </body>
