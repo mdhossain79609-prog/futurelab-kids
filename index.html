@@ -658,6 +658,158 @@ button{
     touch-action:pan-y;
     user-select:none;
 }
+
+    /* =========================
+   UPDATED CHASSIS
+========================= */
+
+#carChassis{
+    width:300px;
+    height:180px;
+    position:relative;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    touch-action:pan-y;
+    user-select:none;
+    transform-style:preserve-3d;
+}
+
+.new-chassis-frame{
+    width:230px;
+    height:125px;
+    position:relative;
+    border:8px solid #455a64;
+    border-radius:24px;
+    background:#cfd8dc;
+    box-shadow:inset 0 0 0 4px #90a4ae;
+}
+
+/* FRONT / REAR */
+
+.chassis-label{
+    position:absolute;
+    font-size:10px;
+    font-weight:bold;
+    color:#6339b6;
+}
+
+.front-label{
+    left:0;
+}
+
+.rear-label{
+    right:0;
+}
+
+/* MOUNTING POINT */
+
+.mount{
+    position:absolute;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border:2px dashed #8b5cf6;
+    background:#f5f3ff;
+    border-radius:12px;
+    color:#6339b6;
+}
+
+.mount span{
+    font-size:22px;
+}
+
+.mount small{
+    font-size:9px;
+    font-weight:bold;
+}
+
+/* STEERING */
+
+.steering-mount{
+    width:62px;
+    height:50px;
+    left:18px;
+    top:35px;
+}
+
+/* ENGINE */
+
+.engine-mount{
+    width:70px;
+    height:65px;
+    right:22px;
+    top:27px;
+}
+
+/* AXLES */
+
+.axle-slot{
+    position:absolute;
+    width:8px;
+    height:145px;
+    top:-18px;
+    background:#607d8b;
+    border-radius:5px;
+}
+
+.axle-slot small{
+    position:absolute;
+    width:55px;
+    left:-24px;
+    top:62px;
+    text-align:center;
+    font-size:8px;
+    color:white;
+    transform:rotate(90deg);
+}
+
+.front-axle{
+    left:35px;
+}
+
+.rear-axle{
+    right:35px;
+}
+
+/* WHEEL MOUNTS */
+
+.wheel-mount{
+    position:absolute;
+    width:30px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:3px dashed #6339b6;
+    border-radius:50%;
+    background:white;
+    color:#6339b6;
+    font-weight:bold;
+    font-size:18px;
+}
+
+.wheel-front-left{
+    left:20px;
+    top:-25px;
+}
+
+.wheel-front-right{
+    left:20px;
+    bottom:-25px;
+}
+
+.wheel-rear-left{
+    right:20px;
+    top:-25px;
+}
+
+.wheel-rear-right{
+    right:20px;
+    bottom:-25px;
+}
     
 </style>
 </head>
@@ -1157,19 +1309,49 @@ button{
     </button>
 
    <div id="carDisplay" class="car-display">
+<div class="chassis" id="carChassis">
 
-    <div class="chassis" id="carChassis">
+    <!-- FRONT -->
+    <div class="chassis-label front-label">
+        FRONT
+    </div>
 
-        <div class="chassis-front"></div>
+    <!-- MAIN FRAME -->
+    <div class="new-chassis-frame">
 
-        <div class="chassis-frame">
-            <span class="frame-bar"></span>
-            <span class="frame-bar"></span>
-            <span class="frame-bar"></span>
+        <!-- Steering Mount -->
+        <div class="mount steering-mount">
+            <span>🔘</span>
+            <small>Steering</small>
         </div>
 
-        <div class="chassis-rear"></div>
+        <!-- Engine Mount -->
+        <div class="mount engine-mount">
+            <span>⚙️</span>
+            <small>Engine</small>
+        </div>
 
+        <!-- Front Axle -->
+        <div class="axle-slot front-axle">
+            <small>Front Axle</small>
+        </div>
+
+        <!-- Rear Axle -->
+        <div class="axle-slot rear-axle">
+            <small>Rear Axle</small>
+        </div>
+
+        <!-- Wheel Mounts -->
+        <div class="wheel-mount wheel-front-left">+</div>
+        <div class="wheel-mount wheel-front-right">+</div>
+        <div class="wheel-mount wheel-rear-left">+</div>
+        <div class="wheel-mount wheel-rear-right">+</div>
+
+    </div>
+
+    <!-- REAR -->
+    <div class="chassis-label rear-label">
+        REAR
     </div>
 
 </div>
