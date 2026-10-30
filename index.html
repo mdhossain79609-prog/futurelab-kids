@@ -430,6 +430,116 @@ button{
     line-height:1.4;
     color:#77849a;
 }
+
+    /* =========================
+   CAR BUILDER DESIGN
+========================= */
+
+.car-preview{
+    width:calc(100% - 30px);
+    max-width:440px;
+    margin:5px auto 22px;
+    padding:18px;
+    text-align:center;
+    background:linear-gradient(180deg,#d9f3ff,#eef8ff);
+    border-radius:25px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.10);
+}
+
+.preview-title{
+    font-size:20px;
+    font-weight:bold;
+    color:#2457c5;
+}
+
+.car-display{
+    font-size:110px;
+    padding:18px 0 8px;
+}
+
+.car-preview p{
+    margin:5px 0;
+    color:#637187;
+    font-size:14px;
+}
+
+
+/* PARTS */
+
+.car-parts-container{
+    width:100%;
+    max-width:440px;
+    margin:auto;
+    padding:0 15px 35px;
+}
+
+.parts-section{
+    background:white;
+    border-radius:22px;
+    padding:16px;
+    margin-bottom:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.09);
+}
+
+.parts-section h2{
+    margin:0;
+    color:#2457c5;
+    font-size:20px;
+}
+
+.parts-section p{
+    margin:5px 0 14px;
+    color:#77849a;
+    font-size:13px;
+}
+
+
+/* PART CARDS */
+
+.parts-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.part-card{
+    min-height:95px;
+    border:2px solid #dbe7f5;
+    border-radius:17px;
+    background:#f8fbff;
+    font-size:34px;
+    padding:10px 4px;
+    transition:0.15s;
+}
+
+.part-card span{
+    display:block;
+    margin-top:7px;
+    font-size:12px;
+    font-weight:bold;
+    color:#34445d;
+}
+
+.part-card:active{
+    transform:scale(0.95);
+    border-color:#6339b6;
+}
+
+
+/* TEST DRIVE */
+
+.test-drive-btn{
+    width:100%;
+    border:none;
+    border-radius:18px;
+    padding:17px;
+    margin:5px 0 10px;
+    background:linear-gradient(90deg,#6d4acb,#8b5cf6);
+    color:white;
+    font-size:19px;
+    font-weight:bold;
+    box-shadow:0 6px 16px rgba(109,74,203,0.28);
+}
     
 </style>
 </head>
@@ -898,11 +1008,11 @@ button{
 
 <div id="carBuilderScreen" class="screen">
 
+    <!-- Header -->
+
     <div class="builder-header">
 
-        <div class="builder-icon">
-            🚗
-        </div>
+        <div class="builder-icon">🚗</div>
 
         <h1 class="builder-title">
             Build Your Car
@@ -914,18 +1024,189 @@ button{
 
     </div>
 
-    <div class="builder-container">
 
-        <div class="welcome-card">
+    <!-- CAR PREVIEW -->
 
-            <h2>🚗 Your Car Project</h2>
+    <div class="car-preview">
 
-            <p>
-                Soon you will choose wheels, body, engine
-                and other parts to build your own car.
-            </p>
+        <div class="preview-title">
+            🚗 My Car
+        </div>
+
+        <div class="car-display">
+            🚘
+        </div>
+
+        <p>
+            Build your dream car!
+        </p>
+
+    </div>
+
+
+    <!-- PARTS AREA -->
+
+    <div class="car-parts-container">
+
+
+        <!-- BODY -->
+
+        <div class="parts-section">
+
+            <h2>🚗 Body</h2>
+
+            <p>Choose your car body.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
+                    🚗
+                    <span>Sport</span>
+                </button>
+
+                <button class="part-card">
+                    🚙
+                    <span>SUV</span>
+                </button>
+
+                <button class="part-card">
+                    🛻
+                    <span>Pickup</span>
+                </button>
+
+            </div>
 
         </div>
+
+
+        <!-- WHEELS -->
+
+        <div class="parts-section">
+
+            <h2>🛞 Wheels</h2>
+
+            <p>Choose your wheels.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
+                    🛞
+                    <span>Standard</span>
+                </button>
+
+                <button class="part-card">
+                    🛞
+                    <span>Sport</span>
+                </button>
+
+                <button class="part-card">
+                    🛞
+                    <span>Off-Road</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ENGINE -->
+
+        <div class="parts-section">
+
+            <h2>⚙️ Engine</h2>
+
+            <p>Choose your engine.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
+                    ⚙️
+                    <span>Standard</span>
+                </button>
+
+                <button class="part-card">
+                    ⚡
+                    <span>Electric</span>
+                </button>
+
+                <button class="part-card">
+                    🔥
+                    <span>Turbo</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAINT -->
+
+        <div class="parts-section">
+
+            <h2>🎨 Paint</h2>
+
+            <p>Choose your favorite color.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
+                    🔴
+                    <span>Red</span>
+                </button>
+
+                <button class="part-card">
+                    🔵
+                    <span>Blue</span>
+                </button>
+
+                <button class="part-card">
+                    🟢
+                    <span>Green</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- EXTRAS -->
+
+        <div class="parts-section">
+
+            <h2>✨ Extras</h2>
+
+            <p>Add something special.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
+                    🏁
+                    <span>Spoiler</span>
+                </button>
+
+                <button class="part-card">
+                    💡
+                    <span>Lights</span>
+                </button>
+
+                <button class="part-card">
+                    ⭐
+                    <span>Style</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TEST DRIVE -->
+
+        <button class="test-drive-btn">
+            🏎️ Test Drive
+        </button>
+
+
+        <!-- BACK -->
 
         <button
             class="home-back"
