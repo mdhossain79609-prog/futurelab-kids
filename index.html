@@ -1549,20 +1549,23 @@ button{
 
             <div class="parts-row">
 
-                <button class="part-card">
-                    🛞
-                    <span>Standard</span>
-                </button>
+                <button class="part-card"
+        onclick="selectWheels('standard', this)">
+    🛞
+    <span>Standard</span>
+</button>
 
-                <button class="part-card">
-                    🛞
-                    <span>Sport</span>
-                </button>
+<button class="part-card"
+        onclick="selectWheels('sport', this)">
+    🛞
+    <span>Sport</span>
+</button>
 
-                <button class="part-card">
-                    🛞
-                    <span>Off-Road</span>
-                </button>
+<button class="part-card"
+        onclick="selectWheels('offroad', this)">
+    🛞
+    <span>Off-Road</span>
+</button>
 
             </div>
 
@@ -1798,7 +1801,54 @@ carChassis.addEventListener("pointercancel", function(){
 
     isRotatingCar = false;
 });
+    
+function selectWheels(type, button){
 
+    const wheels = document.querySelectorAll(".wheel-mount");
+
+    wheels.forEach(function(wheel){
+
+        wheel.innerHTML = "●";
+
+        if(type === "standard"){
+            wheel.style.background = "#263238";
+            wheel.style.border = "4px solid #455a64";
+            wheel.style.color = "#90a4ae";
+        }
+
+        if(type === "sport"){
+            wheel.style.background = "#111827";
+            wheel.style.border = "5px solid #374151";
+            wheel.style.color = "#cbd5e1";
+        }
+
+        if(type === "offroad"){
+            wheel.style.background = "#1f2937";
+            wheel.style.border = "6px dashed #111827";
+            wheel.style.color = "#9ca3af";
+        }
+
+    });
+
+
+    /* Remove old selection */
+
+    const wheelButtons =
+        button.parentElement.querySelectorAll(".part-card");
+
+    wheelButtons.forEach(function(btn){
+        btn.style.borderColor = "#dbe7f5";
+        btn.style.background = "#f8fbff";
+    });
+
+
+    /* Show selected wheel */
+
+    button.style.borderColor = "#6339b6";
+    button.style.background = "#f3efff";
+
+}
+    
 </script>
 
 </body>
