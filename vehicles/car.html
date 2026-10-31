@@ -128,6 +128,62 @@ body{
     font-weight:bold;
     color:white;
 }
+
+    /* AXLE PARTS */
+
+.car-axle{
+    position:absolute;
+    width:12px;
+    height:110px;
+    background:#455a64;
+    border-radius:8px;
+    z-index:3;
+}
+
+.front-axle{
+    left:55px;
+    top:45px;
+}
+
+.rear-axle{
+    right:55px;
+    top:45px;
+}
+
+.car-axle span{
+    display:none;
+}
+
+/* WHEEL PARTS */
+
+.car-wheel-part{
+    position:absolute;
+    width:42px;
+    height:42px;
+    background:#263238;
+    border:5px solid #607d8b;
+    border-radius:50%;
+    z-index:7;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.wheel-front{
+    left:40px;
+    bottom:12px;
+}
+
+.wheel-rear{
+    right:40px;
+    bottom:12px;
+}
+
+.car-wheel-part span{
+    color:#cfd8dc;
+    font-size:20px;
+}
+    
 </style>
 </head>
 
@@ -162,6 +218,22 @@ body{
         <div class="car-engine-part" id="carEngine">
     <div class="engine-icon">⚙️</div>
     <small>ENGINE</small>
+</div>
+
+        <div class="car-axle front-axle" id="frontAxle">
+    <span>FRONT AXLE</span>
+</div>
+
+<div class="car-axle rear-axle" id="rearAxle">
+    <span>REAR AXLE</span>
+</div>
+
+        <div class="car-wheel-part wheel-front" id="frontWheel">
+    <span>◉</span>
+</div>
+
+<div class="car-wheel-part wheel-rear" id="rearWheel">
+    <span>◉</span>
 </div>
 
         <div class="car-body">
