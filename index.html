@@ -842,15 +842,44 @@ button{
 .installed-body{
     display:none;
     position:absolute;
+
     left:50%;
     top:50%;
-    width:180px;
+
+    width:175px;
     height:100px;
+
     transform:translate(-50%,-50%);
-    z-index:2;
+
+    z-index:6;
     pointer-events:none;
 }
 
+/* Body chassis-এর উপরে থাকবে */
+
+.installed-body .body-shell{
+    position:absolute;
+    z-index:6;
+}
+
+/* Engine ও Steering body-এর নিচে থাকবে */
+
+.engine-mount,
+.steering-mount{
+    z-index:4;
+}
+
+/* Axle body-এর নিচে থাকবে */
+
+.axle-slot{
+    z-index:2;
+}
+
+/* Wheels body-এর বাইরে দেখা যাবে */
+
+.wheel-mount{
+    z-index:8;
+}
 /* BODY BASE */
 
 .body-shell{
