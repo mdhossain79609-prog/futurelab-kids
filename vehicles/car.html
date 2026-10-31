@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FutureLab Kids - Car Builder</title>
+<title>FutureLab Kids - Build Your Car</title>
 
 <style>
 
@@ -20,389 +20,568 @@ body{
     color:#263238;
 }
 
+/* =========================
+   HEADER
+========================= */
+
 .car-header{
     text-align:center;
-    padding:25px 15px 18px;
+    padding:18px 12px 10px;
 }
 
 .car-logo{
-    font-size:58px;
+    font-size:48px;
 }
 
 .car-title{
-    margin:5px 0;
-    font-size:30px;
+    margin:4px 0;
+    font-size:28px;
     color:#6339b6;
 }
 
 .car-subtitle{
-    margin:8px 0 0;
+    margin:5px 0 0;
     color:#607d8b;
-    font-size:15px;
+    font-size:13px;
 }
 
-.builder-card{
-    width:92%;
-    max-width:600px;
-    margin:10px auto 30px;
+/* =========================
+   TEST AREA
+========================= */
+
+.test-area{
+    width:94%;
+    max-width:700px;
+    margin:10px auto 18px;
     background:white;
     border-radius:24px;
-    padding:20px;
+    padding:12px;
     box-shadow:0 8px 25px rgba(0,0,0,0.12);
-    text-align:center;
 }
 
-.builder-card h2{
-    margin:5px 0 10px;
-    color:#6339b6;
+.test-layout{
+    display:grid;
+    grid-template-columns:1fr 155px;
+    gap:10px;
+    align-items:stretch;
 }
 
-.builder-card p{
-    color:#607d8b;
-    line-height:1.5;
+/* =========================
+   VERTICAL ROAD
+========================= */
+
+.road{
+    position:relative;
+    height:440px;
+    overflow:hidden;
+    border-radius:20px;
+    background:
+        linear-gradient(
+            90deg,
+            #666,
+            #777 10%,
+            #555 50%,
+            #777 90%,
+            #666
+        );
+    border:4px solid #455a64;
 }
 
-.start-building{
-    border:0;
-    border-radius:16px;
-    padding:15px 28px;
-    background:#22c55e;
-    color:white;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-    /* CAR CHASSIS */
-
-.car-chassis{
+.road::before,
+.road::after{
+    content:"";
     position:absolute;
-    width:230px;
-    height:85px;
-    left:25px;
-    top:58px;
-    background:#b0bec5;
-    border:6px solid #455a64;
-    border-radius:18px;
-    z-index:1;
-    box-shadow:inset 0 0 0 4px #78909c;
+    top:0;
+    width:8px;
+    height:100%;
+    background:#facc15;
 }
 
-.car-chassis span{
+.road::before{
+    left:13px;
+}
+
+.road::after{
+    right:13px;
+}
+
+.road-lines{
     position:absolute;
+    left:50%;
+    top:0;
+    width:7px;
+    height:100%;
+    transform:translateX(-50%);
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            white 0 38px,
+            transparent 38px 75px
+        );
+    opacity:.85;
+}
+
+/* =========================
+   CAR
+========================= */
+
+.car{
+    position:absolute;
+    width:120px;
+    height:205px;
     left:50%;
     top:50%;
     transform:translate(-50%,-50%);
-    font-size:11px;
-    font-weight:bold;
-    color:#6339b6;
+    transition:transform .18s ease,left .18s ease;
+    z-index:5;
 }
 
-    
-/* ENGINE PART */
-
-.car-engine-part{
+.car-shadow{
     position:absolute;
-    width:65px;
-    height:55px;
-    left:175px;
-    top:73px;
-    background:#78909c;
-    border:4px solid #37474f;
-    border-radius:12px;
-    z-index:4;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 4px 8px rgba(0,0,0,0.2);
-}
-
-.engine-icon{
-    font-size:24px;
-    line-height:22px;
-}
-
-.car-engine-part small{
-    font-size:7px;
-    font-weight:bold;
-    color:white;
-}
-
-    /* AXLE PARTS */
-
-.car-axle{
-    position:absolute;
-    width:12px;
-    height:110px;
-    background:#455a64;
-    border-radius:8px;
-    z-index:3;
-}
-
-.front-axle{
-    left:55px;
-    top:45px;
-}
-
-.rear-axle{
-    right:55px;
-    top:45px;
-}
-
-.car-axle span{
-    display:none;
-}
-
-/* WHEEL PARTS */
-
-.car-wheel-part{
-    position:absolute;
-    width:42px;
-    height:42px;
-    background:#263238;
-    border:5px solid #607d8b;
-    border-radius:50%;
-    z-index:7;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.wheel-front{
-    left:40px;
-    bottom:12px;
-}
-
-.wheel-rear{
-    right:40px;
-    bottom:12px;
-}
-
-.car-wheel-part span{
-    color:#cfd8dc;
-    font-size:20px;
-}
-
-    /* STEERING PART */
-
-.car-steering-part{
-    position:absolute;
-    width:58px;
-    height:58px;
-    left:35px;
-    top:60px;
-    background:#f5f3ff;
-    border:4px solid #6339b6;
-    border-radius:50%;
-    z-index:8;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 4px 8px rgba(0,0,0,0.15);
-}
-
-.steering-wheel{
-    font-size:30px;
-    line-height:28px;
-    color:#6339b6;
-}
-
-.car-steering-part small{
-    font-size:7px;
-    font-weight:bold;
-    color:#6339b6;
-}
-
-    /* ===== COMPLETE CAR AREA ===== */
-
-.car-workshop{
-    width:92%;
-    max-width:600px;
-    margin:15px auto;
-    padding:20px;
-    background:white;
-    border-radius:24px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.12);
-    text-align:center;
-}
-
-.car-workshop h2{
-    margin:0 0 20px;
-    color:#6339b6;
-}
-
-.complete-car{
-    position:relative;
-    width:280px;
+    width:108px;
     height:190px;
-    margin:0 auto;
-    perspective:700px;
+    left:6px;
+    top:8px;
+    border-radius:45px;
+    background:rgba(0,0,0,.22);
+    filter:blur(5px);
+    transform:translate(5px,7px);
 }
 
-
-/* ===== 3D CAR BODY ===== */
+/* Main body */
 
 .car-body{
     position:absolute;
-    width:215px;
-    height:92px;
-
-    left:32px;
-    top:42px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #93c5fd 0%,
-            #3b82f6 42%,
-            #2563eb 70%,
-            #1e40af 100%
-        );
-
-    border:4px solid #1e3a8a;
-
-    border-radius:
-        48px 62px 20px 18px;
-
-    z-index:6;
-
-    transform:
-        perspective(600px)
-        rotateX(-5deg)
-        rotateY(-7deg);
-
-    transform-style:preserve-3d;
-
+    width:112px;
+    height:190px;
+    left:4px;
+    top:5px;
+    border-radius:42px 42px 25px 25px;
+    background:linear-gradient(
+        90deg,
+        #991b1b,
+        #ef4444 35%,
+        #dc2626 65%,
+        #7f1d1d
+    );
+    border:4px solid #7f1d1d;
     box-shadow:
-        0 10px 0 #1e40af,
-        0 15px 18px rgba(0,0,0,0.25),
-        inset 0 5px 7px rgba(255,255,255,0.55),
-        inset 0 -8px 10px rgba(0,0,0,0.18);
+        inset 7px 0 8px rgba(255,255,255,.22),
+        inset -7px 0 8px rgba(0,0,0,.22),
+        0 6px 10px rgba(0,0,0,.25);
+    transition:.25s;
 }
 
+/* Roof */
 
-/* 3D ROOF */
-
-.car-body::before{
-    content:"";
+.car-roof{
     position:absolute;
+    width:76px;
+    height:75px;
+    left:18px;
+    top:48px;
+    border-radius:28px 28px 12px 12px;
+    background:linear-gradient(
+        90deg,
+        #334155,
+        #bae6fd 35%,
+        #e0f7ff 55%,
+        #334155
+    );
+    border:4px solid #7f1d1d;
+    box-shadow:inset 0 3px 5px rgba(255,255,255,.5);
+}
 
-    width:125px;
+/* Front glass */
+
+.front-glass{
+    position:absolute;
+    width:60px;
+    height:30px;
+    left:8px;
+    top:6px;
+    border-radius:18px 18px 5px 5px;
+    background:#dff6ff;
+    border:2px solid #334155;
+}
+
+/* Rear glass */
+
+.rear-glass{
+    position:absolute;
+    width:60px;
+    height:25px;
+    left:8px;
+    bottom:6px;
+    border-radius:5px 5px 15px 15px;
+    background:#bdeeff;
+    border:2px solid #334155;
+}
+
+/* Wheels */
+
+.wheel{
+    position:absolute;
+    width:27px;
     height:48px;
-
-    left:38px;
-    top:-34px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #60a5fa,
-            #2563eb
-        );
-
-    border:4px solid #1e3a8a;
-    border-bottom:0;
-
-    border-radius:45px 55px 5px 5px;
-
-    transform:
-        perspective(300px)
-        rotateX(-8deg);
-
-    box-shadow:
-        inset 0 5px 6px rgba(255,255,255,0.4);
-
-    z-index:-1;
+    border-radius:12px;
+    background:#111827;
+    border:4px solid #374151;
+    z-index:8;
+    box-shadow:inset 2px 0 3px rgba(255,255,255,.15);
 }
 
+.wheel-left-front{
+    left:-13px;
+    top:38px;
+}
 
-/* WINDOWS */
+.wheel-right-front{
+    right:-13px;
+    top:38px;
+}
 
-.car-window{
+.wheel-left-rear{
+    left:-13px;
+    bottom:38px;
+}
+
+.wheel-right-rear{
+    right:-13px;
+    bottom:38px;
+}
+
+/* Lights */
+
+.light{
     position:absolute;
-    top:-24px;
+    width:22px;
+    height:10px;
+    border-radius:8px;
+    z-index:9;
+}
 
+.front-light-left{
+    left:14px;
+    top:5px;
+    background:#fff7a8;
+}
+
+.front-light-right{
+    right:14px;
+    top:5px;
+    background:#fff7a8;
+}
+
+.rear-light-left{
+    left:15px;
+    bottom:5px;
+    background:#991b1b;
+}
+
+.rear-light-right{
+    right:15px;
+    bottom:5px;
+    background:#991b1b;
+}
+
+/* Engine visual */
+
+.engine{
+    position:absolute;
     width:48px;
     height:34px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #e0f7ff,
-            #7dd3fc 65%,
-            #38bdf8
-        );
-
-    border:3px solid #1e3a8a;
-
-    box-shadow:
-        inset 3px 3px 4px rgba(255,255,255,0.7);
-}
-
-.front-window{
-    left:102px;
-    border-radius:5px 25px 5px 5px;
-    transform:skewX(12deg);
-}
-
-.rear-window{
-    left:48px;
-    border-radius:25px 5px 5px 5px;
-    transform:skewX(-12deg);
-}
-
-
-/* LIGHTS */
-
-.car-light{
-    position:absolute;
-    font-size:17px;
+    left:32px;
+    top:12px;
+    border-radius:9px;
+    background:#374151;
+    border:3px solid #111827;
     z-index:10;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    opacity:1;
 }
 
-.front-light{
-    right:-9px;
-    top:42px;
+/* =========================
+   CONTROL PANEL
+========================= */
+
+.controls{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    padding:8px 4px;
+    background:#f5f3ff;
+    border-radius:20px;
+    border:2px solid #ddd6fe;
 }
 
-.rear-light{
-    left:-10px;
-    top:43px;
+/* Steering */
+
+.steering-wheel-control{
+    width:110px;
+    height:110px;
+    margin:3px auto 8px;
+    border-radius:50%;
+    border:12px solid #374151;
+    background:#111827;
+    position:relative;
+    box-shadow:
+        0 6px 12px rgba(0,0,0,.2),
+        inset 0 0 0 5px #64748b;
+    transition:transform .15s ease;
 }
 
-
-/* CAR SHADOW */
-
-.complete-car::after{
+.steering-wheel-control::before,
+.steering-wheel-control::after{
     content:"";
     position:absolute;
+    background:#64748b;
+    border-radius:5px;
+}
 
-    width:210px;
-    height:25px;
+.steering-wheel-control::before{
+    width:9px;
+    height:72px;
+    left:38px;
+    top:7px;
+}
 
-    left:35px;
-    bottom:24px;
+.steering-wheel-control::after{
+    width:72px;
+    height:9px;
+    left:7px;
+    top:39px;
+}
 
-    background:rgba(0,0,0,0.16);
-
+.steering-center{
+    position:absolute;
+    width:28px;
+    height:28px;
+    left:29px;
+    top:29px;
     border-radius:50%;
-
-    filter:blur(5px);
-
-    z-index:0;
+    background:#94a3b8;
+    border:4px solid #1f2937;
+    z-index:2;
 }
 
+.control-label{
+    font-size:12px;
+    font-weight:bold;
+    color:#6339b6;
+    margin-bottom:8px;
+}
 
-/* NOTE */
+/* Start */
 
-.workshop-note{
-    margin:15px 0 0;
-    color:#607d8b;
+.start-test{
+    width:135px;
+    border:none;
+    border-radius:14px;
+    padding:11px 5px;
+    background:#22c55e;
+    color:white;
     font-size:14px;
+    font-weight:bold;
+    box-shadow:0 5px 12px rgba(34,197,94,.28);
+    margin-bottom:10px;
 }
-    
+
+.start-test.active{
+    background:#ef4444;
+}
+
+/* Pedals */
+
+.pedals{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:4px;
+}
+
+.pedal{
+    border:none;
+    border-radius:10px;
+    min-height:55px;
+    color:white;
+    font-size:10px;
+    font-weight:bold;
+    box-shadow:0 4px 8px rgba(0,0,0,.16);
+}
+
+.clutch{
+    background:#6366f1;
+}
+
+.brake{
+    background:#ef4444;
+}
+
+.accelerator{
+    background:#f59e0b;
+}
+
+.pedal:active{
+    transform:scale(.94);
+}
+
+/* =========================
+   PARTS
+========================= */
+
+.parts-container{
+    width:94%;
+    max-width:700px;
+    margin:0 auto 30px;
+}
+
+.parts-section{
+    background:white;
+    border-radius:20px;
+    padding:15px;
+    margin-bottom:14px;
+    box-shadow:0 5px 16px rgba(0,0,0,.08);
+}
+
+.parts-section h2{
+    margin:0 0 5px;
+    color:#6339b6;
+    font-size:19px;
+}
+
+.parts-section p{
+    margin:0 0 12px;
+    color:#78909c;
+    font-size:12px;
+}
+
+.parts-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:7px;
+}
+
+.part{
+    border:2px solid #dbe7f5;
+    background:#f8fbff;
+    border-radius:14px;
+    min-height:76px;
+    padding:7px 3px;
+    font-size:25px;
+    transition:.15s;
+}
+
+.part span{
+    display:block;
+    margin-top:5px;
+    font-size:9px;
+    font-weight:bold;
+    color:#34445d;
+}
+
+.part.selected{
+    border-color:#6339b6;
+    background:#f3efff;
+    transform:translateY(-2px);
+}
+
+/* Paint buttons */
+
+.paint-red{background:#fee2e2;}
+.paint-blue{background:#dbeafe;}
+.paint-green{background:#dcfce7;}
+.paint-yellow{background:#fef9c3;}
+.paint-black{background:#e5e7eb;}
+
+/* Back */
+
+.back-btn{
+    width:100%;
+    border:none;
+    border-radius:16px;
+    padding:15px;
+    background:#6339b6;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+}
+
+/* Status */
+
+.status{
+    text-align:center;
+    padding:8px;
+    color:#6339b6;
+    font-size:13px;
+    font-weight:bold;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:520px){
+
+    .test-layout{
+        grid-template-columns:1fr 145px;
+    }
+
+    .road{
+        height:420px;
+    }
+
+    .car{
+        transform:translate(-50%,-50%) scale(.92);
+    }
+
+    .parts-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+@media(max-width:390px){
+
+    .test-layout{
+        grid-template-columns:1fr 128px;
+    }
+
+    .steering-wheel-control{
+        width:92px;
+        height:92px;
+        border-width:10px;
+    }
+
+    .steering-wheel-control::before{
+        height:60px;
+        left:31px;
+    }
+
+    .steering-wheel-control::after{
+        width:60px;
+        left:6px;
+        top:31px;
+    }
+
+    .steering-center{
+        width:24px;
+        height:24px;
+        left:24px;
+        top:24px;
+    }
+
+    .start-test{
+        width:118px;
+        font-size:12px;
+    }
+
+}
+
 </style>
 </head>
 
@@ -417,102 +596,902 @@ body{
     </h1>
 
     <p class="car-subtitle">
-        Build • Learn • Test • Drive
+        Build • Test • Drive
     </p>
 
 </header>
 
-    <!-- COMPLETE CAR WORKSHOP -->
 
-<section class="car-workshop">
+<!-- =========================
+     TEST DRIVE AREA
+========================= -->
 
-    <h2>🚗 My Car</h2>
+<section class="test-area">
 
-    <div class="complete-car">
+    <div class="test-layout">
 
-        <div class="car-chassis" id="carChassis">
-    <span>CHASSIS</span>
-</div>
+        <!-- VERTICAL ROAD -->
 
-        <div class="car-engine-part" id="carEngine">
-    <div class="engine-icon">⚙️</div>
-    <small>ENGINE</small>
-</div>
+        <div class="road" id="road">
 
-        <div class="car-axle front-axle" id="frontAxle">
-    <span>FRONT AXLE</span>
-</div>
+            <div class="road-lines" id="roadLines"></div>
 
-<div class="car-axle rear-axle" id="rearAxle">
-    <span>REAR AXLE</span>
-</div>
+            <div class="car" id="car">
 
-        <div class="car-wheel-part wheel-front" id="frontWheel">
-    <span>◉</span>
-</div>
+                <div class="car-shadow"></div>
 
-<div class="car-wheel-part wheel-rear" id="rearWheel">
-    <span>◉</span>
-</div>
-        <div class="car-steering-part" id="carSteering">
-    <div class="steering-wheel">◎</div>
-    <small>STEERING</small>
-</div>
+                <div class="car-body" id="carBody">
 
-        <div class="car-body" id="carBody">
-            <div class="car-window front-window"></div>
-            <div class="car-window rear-window"></div>
-            <div class="car-light front-light">💡</div>
-            <div class="car-light rear-light">🔴</div>
+                    <div class="car-roof">
+
+                        <div class="front-glass"></div>
+                        <div class="rear-glass"></div>
+
+                    </div>
+
+                    <div class="engine" id="engine">
+                        ⚙️
+                    </div>
+
+                    <div class="light front-light-left"></div>
+                    <div class="light front-light-right"></div>
+
+                    <div class="light rear-light-left"></div>
+                    <div class="light rear-light-right"></div>
+
+                </div>
+
+                <div class="wheel wheel-left-front"></div>
+                <div class="wheel wheel-right-front"></div>
+                <div class="wheel wheel-left-rear"></div>
+                <div class="wheel wheel-right-rear"></div>
+
+            </div>
+
         </div>
 
-        <div class="car-engine-part" id="carEngine">
+
+        <!-- CONTROLS -->
+
+        <div class="controls">
+
+            <div class="control-label">
+                STEERING
+            </div>
+
+            <div
+                class="steering-wheel-control"
+                id="steeringWheel">
+
+                <div class="steering-center"></div>
+
+            </div>
+
+            <button
+                class="start-test"
+                id="startTest"
+                onclick="toggleTest()">
+
+                ▶ START TEST
+
+            </button>
+
+            <div class="pedals">
+
+                <button
+                    class="pedal clutch"
+                    onclick="useClutch()">
+
+                    CLUTCH
+
+                </button>
+
+                <button
+                    class="pedal brake"
+                    onclick="useBrake()">
+
+                    BRAKE
+
+                </button>
+
+                <button
+                    class="pedal accelerator"
+                    onpointerdown="startAccelerator()"
+                    onpointerup="stopAccelerator()"
+                    onpointerleave="stopAccelerator()">
+
+                    GAS
+
+                </button>
+
+            </div>
+
+        </div>
 
     </div>
 
-    <p class="workshop-note">
-        This is your complete car model.
-    </p>
+    <div class="status" id="status">
+        Ready to build
+    </div>
 
-        <div class="parts-tray">
-    <h3>🧰 Parts Tray</h3>
+</section>
 
-    <button class="part-btn" onclick="toggleEngine()">
-        ⚙️ Remove / Install Engine
+
+<!-- =========================
+     PARTS
+========================= -->
+
+<div class="parts-container">
+
+
+    <!-- CHASSIS -->
+
+    <section class="parts-section">
+
+        <h2>Chassis</h2>
+        <p>Choose a chassis design.</p>
+
+        <div class="parts-grid">
+
+            <button class="part selected" onclick="selectChassis(this,1)">▱<span>Sport</span></button>
+            <button class="part" onclick="selectChassis(this,2)">▰<span>Classic</span></button>
+            <button class="part" onclick="selectChassis(this,3)">▭<span>Rally</span></button>
+            <button class="part" onclick="selectChassis(this,4)">⬢<span>Off-Road</span></button>
+            <button class="part" onclick="selectChassis(this,5)">◈<span>Race</span></button>
+
+        </div>
+
+    </section>
+
+
+    <!-- WHEELS -->
+
+    <section class="parts-section">
+
+        <h2>Wheels</h2>
+        <p>Choose your wheel design.</p>
+
+        <div class="parts-grid">
+
+            <button class="part selected" onclick="selectWheel(this,1)">◉<span>Street</span></button>
+            <button class="part" onclick="selectWheel(this,2)">◎<span>Sport</span></button>
+            <button class="part" onclick="selectWheel(this,3)">◍<span>Rally</span></button>
+            <button class="part" onclick="selectWheel(this,4)">●<span>Off-Road</span></button>
+            <button class="part" onclick="selectWheel(this,5)">✦<span>Race</span></button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ENGINE -->
+
+    <section class="parts-section">
+
+        <h2>Engine</h2>
+        <p>Choose an engine.</p>
+
+        <div class="parts-grid">
+
+            <button class="part selected" onclick="selectEngine(this,1)">⚙️<span>Standard</span></button>
+            <button class="part" onclick="selectEngine(this,2)">⚡<span>Electric</span></button>
+            <button class="part" onclick="selectEngine(this,3)">🔥<span>Turbo</span></button>
+            <button class="part" onclick="selectEngine(this,4)">🔋<span>Hybrid</span></button>
+            <button class="part" onclick="selectEngine(this,5)">🚀<span>Race</span></button>
+
+        </div>
+
+    </section>
+
+
+    <!-- STEERING -->
+
+    <section class="parts-section">
+
+        <h2>Steering</h2>
+        <p>Choose a steering design.</p>
+
+        <div class="parts-grid">
+
+            <button class="part selected" onclick="selectSteering(this,1)">◉<span>Classic</span></button>
+            <button class="part" onclick="selectSteering(this,2)">◎<span>Sport</span></button>
+            <button class="part" onclick="selectSteering(this,3)">⭕<span>Rally</span></button>
+            <button class="part" onclick="selectSteering(this,4)">🎮<span>Smart</span></button>
+            <button class="part" onclick="selectSteering(this,5)">✦<span>Race</span></button>
+
+        </div>
+
+    </section>
+
+
+    <!-- BODY -->
+
+    <section class="parts-section">
+
+        <h2>Body</h2>
+        <p>Choose your vehicle body.</p>
+
+        <div class="parts-grid">
+
+            <button class="part selected" onclick="selectBody(this,'sport')">🚗<span>Sport</span></button>
+            <button class="part" onclick="selectBody(this,'jeep')">🚙<span>Jeep</span></button>
+            <button class="part" onclick="selectBody(this,'pickup')">🛻<span>Pickup</span></button>
+            <button class="part" onclick="selectBody(this,'truck')">🚚<span>Truck</span></button>
+            <button class="part" onclick="selectBody(this,'race')">🏎️<span>Race</span></button>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAINT -->
+
+    <section class="parts-section">
+
+        <h2>Paint</h2>
+        <p>Choose a color.</p>
+
+        <div class="parts-grid">
+
+            <button class="part paint-red selected" onclick="selectPaint(this,'red')">🔴<span>Red</span></button>
+            <button class="part paint-blue" onclick="selectPaint(this,'blue')">🔵<span>Blue</span></button>
+            <button class="part paint-green" onclick="selectPaint(this,'green')">🟢<span>Green</span></button>
+            <button class="part paint-yellow" onclick="selectPaint(this,'yellow')">🟡<span>Yellow</span></button>
+            <button class="part paint-black" onclick="selectPaint(this,'black')">⚫<span>Black</span></button>
+
+        </div>
+
+    </section>
+
+
+    <!-- EXTRAS -->
+
+    <section class="parts-section">
+
+        <h2>Extras</h2>
+        <p>Add extra equipment.</p>
+
+        <div class="parts-grid">
+
+            <button class="part" onclick="toggleExtra(this,'spoiler')">🏁<span>Spoiler</span></button>
+            <button class="part" onclick="toggleExtra(this,'lights')">💡<span>Lights</span></button>
+            <button class="part" onclick="toggleExtra(this,'roof')">📦<span>Roof</span></button>
+            <button class="part" onclick="toggleExtra(this,'sport')">⭐<span>Sport Kit</span></button>
+            <button class="part" onclick="toggleExtra(this,'offroad')">🛡️<span>Off-Road</span></button>
+
+        </div>
+
+    </section>
+
+
+    <button
+        class="back-btn"
+        onclick="goBack()">
+
+        ← Back to Junior Builder
+
     </button>
+
 </div>
 
-</section>
 
-<section class="builder-card">
+<script>
 
-    <h2>🔧 Junior Car Workshop</h2>
+/* =========================
+   CAR STATE
+========================= */
 
-    <p>
-        Assemble your car part by part and learn how each part works.
-    </p>
-
-    <button class="start-building">
-        🚗 Start Building
-    </button>
-
-</section>
-
-    <script>
-
+let testRunning = false;
 let engineInstalled = true;
+let steeringInstalled = true;
+let brakeWorking = true;
+let clutchWorking = true;
+let acceleratorWorking = true;
 
-function toggleEngine(){
+let carX = 50;
+let carY = 50;
+let speed = 0;
+let angle = 0;
 
-    const engine = document.getElementById("carEngine");
+let acceleratorTimer = null;
 
-    if(engineInstalled){
-        engine.style.display = "none";
-        engineInstalled = false;
+
+/* =========================
+   TEST START / STOP
+========================= */
+
+function toggleTest(){
+
+    const button = document.getElementById("startTest");
+    const status = document.getElementById("status");
+
+    if(!testRunning){
+
+        if(!engineInstalled){
+
+            status.textContent = "Install an engine first";
+            return;
+
+        }
+
+        if(!steeringInstalled){
+
+            status.textContent = "Install steering first";
+            return;
+
+        }
+
+        testRunning = true;
+
+        button.textContent = "■ STOP TEST";
+        button.classList.add("active");
+
+        status.textContent = "Test drive ready";
+
     }else{
-        engine.style.display = "flex";
-        engineInstalled = true;
+
+        testRunning = false;
+
+        button.textContent = "▶ START TEST";
+        button.classList.remove("active");
+
+        speed = 0;
+
+        status.textContent = "Test stopped";
+
     }
+
+}
+
+
+/* =========================
+   STEERING
+========================= */
+
+function turnSteering(direction){
+
+    if(!testRunning) return;
+
+    if(!steeringInstalled){
+
+        document.getElementById("status").textContent =
+            "Install steering first";
+
+        return;
+
+    }
+
+    angle += direction * 12;
+
+    document.getElementById("steeringWheel").style.transform =
+        "rotate(" + angle + "deg)";
+
+    document.getElementById("car").style.transform =
+        "translate(-50%,-50%) rotate(" + (direction * 8) + "deg)";
+
+}
+
+
+/* Touch steering */
+
+let steeringStartX = null;
+
+const steeringWheel =
+    document.getElementById("steeringWheel");
+
+steeringWheel.addEventListener(
+    "pointerdown",
+    function(e){
+
+        steeringStartX = e.clientX;
+
+        steeringWheel.setPointerCapture(
+            e.pointerId
+        );
+
+    }
+);
+
+steeringWheel.addEventListener(
+    "pointermove",
+    function(e){
+
+        if(steeringStartX === null) return;
+
+        const diff =
+            e.clientX - steeringStartX;
+
+        if(Math.abs(diff) > 5){
+
+            turnSteering(
+                diff > 0 ? 1 : -1
+            );
+
+            steeringStartX = e.clientX;
+
+        }
+
+    }
+);
+
+steeringWheel.addEventListener(
+    "pointerup",
+    function(){
+
+        steeringStartX = null;
+
+    }
+);
+
+steeringWheel.addEventListener(
+    "pointercancel",
+    function(){
+
+        steeringStartX = null;
+
+    }
+);
+
+
+/* =========================
+   PEDALS
+========================= */
+
+function useClutch(){
+
+    if(!testRunning) return;
+
+    if(!clutchWorking){
+
+        document.getElementById("status").textContent =
+            "Install clutch first";
+
+        return;
+
+    }
+
+    speed = 0;
+
+    document.getElementById("status").textContent =
+        "Clutch engaged";
+
+}
+
+
+function useBrake(){
+
+    if(!testRunning) return;
+
+    if(!brakeWorking){
+
+        document.getElementById("status").textContent =
+            "Brakes are not installed";
+
+        return;
+
+    }
+
+    speed = 0;
+
+    document.getElementById("status").textContent =
+        "Brake applied";
+
+}
+
+
+function startAccelerator(){
+
+    if(!testRunning) return;
+
+    if(!acceleratorWorking){
+
+        document.getElementById("status").textContent =
+            "Accelerator not available";
+
+        return;
+
+    }
+
+    speed = 1;
+
+    document.getElementById("status").textContent =
+        "Accelerating...";
+
+    acceleratorTimer =
+        setInterval(function(){
+
+            moveCar();
+
+        },60);
+
+}
+
+
+function stopAccelerator(){
+
+    clearInterval(acceleratorTimer);
+
+    acceleratorTimer = null;
+
+    speed = 0;
+
+}
+
+
+/* =========================
+   MOVE CAR
+========================= */
+
+function moveCar(){
+
+    if(!testRunning || speed <= 0) return;
+
+    carY -= speed;
+
+    if(carY < 15){
+        carY = 85;
+    }
+
+    const car =
+        document.getElementById("car");
+
+    car.style.top =
+        carY + "%";
+
+}
+
+
+/* =========================
+   PART SELECTION
+========================= */
+
+function clearSelection(button){
+
+    const buttons =
+        button.parentElement.querySelectorAll(".part");
+
+    buttons.forEach(function(b){
+
+        b.classList.remove("selected");
+
+    });
+
+    button.classList.add("selected");
+
+}
+
+
+function selectChassis(button,type){
+
+    clearSelection(button);
+
+    document.getElementById("status").textContent =
+        "Chassis selected";
+
+}
+
+
+function selectWheel(button,type){
+
+    clearSelection(button);
+
+    const wheels =
+        document.querySelectorAll(".wheel");
+
+    wheels.forEach(function(wheel){
+
+        if(type === 1){
+
+            wheel.style.background = "#111827";
+            wheel.style.borderColor = "#374151";
+
+        }
+
+        if(type === 2){
+
+            wheel.style.background = "#020617";
+            wheel.style.borderColor = "#ef4444";
+
+        }
+
+        if(type === 3){
+
+            wheel.style.background = "#1f2937";
+            wheel.style.borderColor = "#f59e0b";
+
+        }
+
+        if(type === 4){
+
+            wheel.style.background = "#111827";
+            wheel.style.borderColor = "#84cc16";
+
+        }
+
+        if(type === 5){
+
+            wheel.style.background = "#0f172a";
+            wheel.style.borderColor = "#38bdf8";
+
+        }
+
+    });
+
+}
+
+
+function selectEngine(button,type){
+
+    clearSelection(button);
+
+    const engine =
+        document.getElementById("engine");
+
+    engineInstalled = true;
+
+    engine.style.display = "flex";
+
+    if(type === 1){
+
+        engine.textContent = "⚙️";
+
+    }
+
+    if(type === 2){
+
+        engine.textContent = "⚡";
+
+    }
+
+    if(type === 3){
+
+        engine.textContent = "🔥";
+
+    }
+
+    if(type === 4){
+
+        engine.textContent = "🔋";
+
+    }
+
+    if(type === 5){
+
+        engine.textContent = "🚀";
+
+    }
+
+}
+
+
+function selectSteering(button,type){
+
+    clearSelection(button);
+
+    steeringInstalled = true;
+
+    const wheel =
+        document.getElementById("steeringWheel");
+
+    if(type === 1){
+        wheel.style.borderColor = "#374151";
+    }
+
+    if(type === 2){
+        wheel.style.borderColor = "#ef4444";
+    }
+
+    if(type === 3){
+        wheel.style.borderColor = "#f59e0b";
+    }
+
+    if(type === 4){
+        wheel.style.borderColor = "#6366f1";
+    }
+
+    if(type === 5){
+        wheel.style.borderColor = "#38bdf8";
+    }
+
+}
+
+
+function selectBody(button,type){
+
+    clearSelection(button);
+
+    const body =
+        document.getElementById("carBody");
+
+    if(type === "sport"){
+        body.style.borderRadius =
+            "42px 42px 25px 25px";
+    }
+
+    if(type === "jeep"){
+        body.style.borderRadius =
+            "20px";
+    }
+
+    if(type === "pickup"){
+        body.style.borderRadius =
+            "20px 10px 10px 20px";
+    }
+
+    if(type === "truck"){
+        body.style.borderRadius =
+            "15px";
+    }
+
+    if(type === "race"){
+        body.style.borderRadius =
+            "50px";
+    }
+
+}
+
+
+function selectPaint(button,color){
+
+    clearSelection(button);
+
+    const body =
+        document.getElementById("carBody");
+
+    const colors = {
+
+        red:[
+            "#991b1b",
+            "#ef4444",
+            "#dc2626",
+            "#7f1d1d"
+        ],
+
+        blue:[
+            "#1d4ed8",
+            "#60a5fa",
+            "#2563eb",
+            "#1e3a8a"
+        ],
+
+        green:[
+            "#166534",
+            "#4ade80",
+            "#16a34a",
+            "#14532d"
+        ],
+
+        yellow:[
+            "#a16207",
+            "#facc15",
+            "#eab308",
+            "#713f12"
+        ],
+
+        black:[
+            "#111827",
+            "#475569",
+            "#1f2937",
+            "#020617"
+        ]
+
+    };
+
+    const c = colors[color];
+
+    body.style.background =
+        "linear-gradient(90deg," +
+        c[0] + "," +
+        c[1] + " 35%," +
+        c[2] + " 65%," +
+        c[3] +
+        ")";
+
+}
+
+
+function toggleExtra(button,type){
+
+    button.classList.toggle("selected");
+
+    const body =
+        document.getElementById("carBody");
+
+    if(type === "lights"){
+
+        const lights =
+            document.querySelectorAll(".light");
+
+        lights.forEach(function(light){
+
+            if(button.classList.contains("selected")){
+
+                light.style.boxShadow =
+                    "0 0 10px #fff";
+
+            }else{
+
+                light.style.boxShadow =
+                    "none";
+
+            }
+
+        });
+
+    }
+
+    if(type === "spoiler"){
+
+        let spoiler =
+            document.getElementById("spoiler");
+
+        if(button.classList.contains("selected")){
+
+            if(!spoiler){
+
+                spoiler =
+                    document.createElement("div");
+
+                spoiler.id = "spoiler";
+
+                spoiler.style.position =
+                    "absolute";
+
+                spoiler.style.width =
+                    "65px";
+
+                spoiler.style.height =
+                    "8px";
+
+                spoiler.style.left =
+                    "24px";
+
+                spoiler.style.bottom =
+                    "6px";
+
+                spoiler.style.background =
+                    "#111827";
+
+                spoiler.style.borderRadius =
+                    "8px";
+
+                spoiler.style.zIndex =
+                    "12";
+
+                document.getElementById("car")
+                    .appendChild(spoiler);
+
+            }
+
+        }else{
+
+            if(spoiler){
+                spoiler.remove();
+            }
+
+        }
+
+    }
+
+    if(type === "roof"){
+
+        const roof =
+            document.querySelector(".car-roof");
+
+        roof.style.boxShadow =
+            button.classList.contains("selected")
+            ? "0 0 12px rgba(255,255,255,.8)"
+            : "none";
+
+    }
+
+}
+
+
+function goBack(){
+
+    window.location.href =
+        "../index.html";
 
 }
 
