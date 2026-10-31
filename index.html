@@ -1365,11 +1365,290 @@ button{
      JUNIOR BUILDER SCREEN
 ================================= -->
 
+<div id="builderScreen" class="screen">
 
-="class="part-card">
+    <div class="builder-header">
+
+        <div class="builder-icon">👷</div>
+
+        <h1 class="builder-title">
+            Junior Builder
+        </h1>
+
+        <p class="builder-subtitle">
+            Build amazing machines, test your creations
+            and become a young engineer!
+        </p>
+
+    </div>
+
+    <div class="builder-container">
+
+        <button class="builder-card" onclick="openCarBuilderScreen()">
+
+            <div class="builder-project-icon">
+                🚗
+            </div>
+
+            <div class="builder-project-text">
+                <h3>Build Your Car</h3>
+                <p>
+                    Choose parts, build your car and test how it works.
+                </p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+        <button
+            class="home-back"
+            onclick="openCareerScreen()">
+            ← Back to Career World
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =================================
+     CAR BUILDER SCREEN
+================================= -->
+
+<div id="carBuilderScreen" class="screen">
+
+    <div class="builder-header">
+
+        <div class="builder-icon">🚗</div>
+
+        <h1 class="builder-title">
+            Build Your Car
+        </h1>
+
+        <p class="builder-subtitle">
+            Choose parts, build your car and test your creation!
+        </p>
+
+    </div>
+
+
+    <!-- CAR PREVIEW -->
+
+    <div class="car-preview">
+
+        <div class="preview-title">
+            🚗 My Car
+        </div>
+
+        <div class="car-workshop">
+
+            <div id="carDisplay" class="car-display">
+
+                <div class="chassis" id="carChassis">
+
+                    <div class="chassis-label front-label">
+                        FRONT
+                    </div>
+
+                    <div class="new-chassis-frame">
+
+                        <div class="mount steering-mount">
+                            <span>🔘</span>
+                            <small>Steering</small>
+                        </div>
+
+                        <div class="mount engine-mount">
+                            <span>⚙️</span>
+                            <small>Engine</small>
+                        </div>
+
+                        <div class="axle-slot front-axle">
+                            <small>Front Axle</small>
+                        </div>
+
+                        <div class="axle-slot rear-axle">
+                            <small>Rear Axle</small>
+                        </div>
+
+                        <div class="wheel-mount wheel-front-left">+</div>
+                        <div class="wheel-mount wheel-front-right">+</div>
+                        <div class="wheel-mount wheel-rear-left">+</div>
+                        <div class="wheel-mount wheel-rear-right">+</div>
+
+                    </div>
+
+                    <div class="chassis-label rear-label">
+                        REAR
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="rotate-btn"
+                    onclick="rotateCarRight()">
+                    ↻
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="view-name" id="viewName">
+            Front View
+        </div>
+
+        <p>
+            Build your dream car!
+        </p>
+
+    </div>
+
+
+    <!-- PARTS AREA -->
+
+    <div class="car-parts-container">
+
+
+        <!-- BODY -->
+
+        <div class="parts-section">
+
+            <h2>🚗 Body</h2>
+            <p>Choose your car body.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
+                    🚗
+                    <span>Sport</span>
+                </button>
+
+                <button class="part-card">
+                    🚙
+                    <span>SUV</span>
+                </button>
+
+                <button class="part-card">
+                    🛻
+                    <span>Pickup</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- WHEELS -->
+
+        <div class="parts-section">
+
+            <h2>🛞 Wheels</h2>
+            <p>Choose your wheels.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
                     🛞
-                    
-            Style</span>
+                    <span>Standard</span>
+                </button>
+
+                <button class="part-card">
+                    🛞
+                    <span>Sport</span>
+                </button>
+
+                <button class="part-card">
+                    🛞
+                    <span>Off-Road</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ENGINE -->
+
+        <div class="parts-section">
+
+            <h2>⚙️ Engine</h2>
+            <p>Choose your engine.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
+                    ⚙️
+                    <span>Standard</span>
+                </button>
+
+                <button class="part-card">
+                    ⚡
+                    <span>Electric</span>
+                </button>
+
+                <button class="part-card">
+                    🔥
+                    <span>Turbo</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAINT -->
+
+        <div class="parts-section">
+
+            <h2>🎨 Paint</h2>
+            <p>Choose your favorite color.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
+                    🔴
+                    <span>Red</span>
+                </button>
+
+                <button class="part-card">
+                    🔵
+                    <span>Blue</span>
+                </button>
+
+                <button class="part-card">
+                    🟢
+                    <span>Green</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- EXTRAS -->
+
+        <div class="parts-section">
+
+            <h2>✨ Extras</h2>
+            <p>Add something special.</p>
+
+            <div class="parts-row">
+
+                <button class="part-card">
+                    🏁
+                    <span>Spoiler</span>
+                </button>
+
+                <button class="part-card">
+                    💡
+                    <span>Lights</span>
+                </button>
+
+                <button class="part-card">
+                    ⭐
+                    <span>Style</span>
                 </button>
 
             </div>
@@ -1389,9 +1668,7 @@ button{
         <button
             class="home-back"
             onclick="openBuilderScreen()">
-
             ← Back to Junior Builder
-
         </button>
 
     </div>
