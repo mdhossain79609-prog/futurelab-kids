@@ -588,111 +588,53 @@ button{
     padding:20px 5px;
 }
 
-.chassis{
-    width:250px;
-    height:90px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    transition:transform 0.4s ease;
-}
-
-.chassis-frame{
-    width:180px;
-    height:58px;
-    border:8px solid #455a64;
-    border-radius:18px;
-    position:relative;
-    background:#cfd8dc;
-    display:flex;
-    justify-content:space-evenly;
-    align-items:center;
-}
-
-.frame-bar{
-    width:8px;
-    height:100%;
-    background:#607d8b;
-}
-
-.chassis-front,
-.chassis-rear{
-    width:35px;
-    height:42px;
-    background:#455a64;
-    border-radius:8px;
-}
-
-.chassis-front{
-    margin-left:-3px;
-}
-
-.chassis-rear{
-    margin-right:-3px;
-}
-
-/* Empty mounting points */
-
-.chassis-frame::before,
-.chassis-frame::after{
-    content:"";
-    position:absolute;
-    bottom:-20px;
-    width:28px;
-    height:28px;
-    border:3px dashed #8b5cf6;
-    border-radius:50%;
-    background:#f5f3ff;
-}
-
-.chassis-frame::before{
-    left:20px;
-}
-
-.chassis-frame::after{
-    right:20px;
-} 
-
     #carChassis{
     touch-action:pan-y;
     user-select:none;
 }
 
-    /* =========================
+/* =========================
    UPDATED CHASSIS
 ========================= */
 
 #carChassis{
-    width:260px;
-    height:150px;
+    width:220px;
+    height:145px;
     position:relative;
-    margin:auto;
+    margin:0 auto;
     display:flex;
     align-items:center;
     justify-content:center;
     touch-action:pan-y;
     user-select:none;
     transform-style:preserve-3d;
+    transition:transform 0.25s ease;
 }
+
+/* MAIN CHASSIS FRAME */
 
 .new-chassis-frame{
-    width:200px;
-    height:105px;
+    width:175px;
+    height:100px;
     position:relative;
-    border:8px solid #455a64;
-    border-radius:24px;
-    background:#cfd8dc;
-    box-shadow:inset 0 0 0 4px #90a4ae;
+    border:7px solid #455a64;
+    border-radius:18px;
+    background:#b0bec5;
+    box-shadow:
+        inset 0 0 0 4px #78909c,
+        0 4px 8px rgba(0,0,0,0.18);
 }
 
-/* FRONT / REAR */
+/* FRONT / REAR LABEL */
 
 .chassis-label{
     position:absolute;
-    font-size:10px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:8px;
     font-weight:bold;
     color:#6339b6;
+    z-index:20;
 }
 
 .front-label{
@@ -703,7 +645,7 @@ button{
     right:0;
 }
 
-/* MOUNTING POINT */
+/* ENGINE / STEERING MOUNT */
 
 .mount{
     position:absolute;
@@ -713,73 +655,68 @@ button{
     justify-content:center;
     border:2px dashed #8b5cf6;
     background:#f5f3ff;
-    border-radius:12px;
+    border-radius:10px;
     color:#6339b6;
+    z-index:4;
 }
 
 .mount span{
-    font-size:22px;
+    font-size:18px;
 }
 
 .mount small{
-    font-size:9px;
+    font-size:8px;
     font-weight:bold;
 }
 
-/* STEERING */
+/* STEERING POSITION */
 
 .steering-mount{
-    width:62px;
-    height:50px;
-    left:18px;
-    top:25px;
+    width:48px;
+    height:42px;
+    left:14px;
+    top:27px;
 }
 
-/* ENGINE */
+/* ENGINE POSITION */
 
 .engine-mount{
-    width:70px;
-    height:65px;
-    right:22px;
-    top:17px;
+    width:58px;
+    height:52px;
+    right:14px;
+    top:22px;
 }
 
 /* AXLES */
+
 .axle-slot{
     position:absolute;
-    width:8px;
-    height:79px;
-    top:0;
-    background:#607d8b;
-    border-radius:5px;
-    z-index:1;
-}
-
-.axle-slot small{
-    position:absolute;
-    width:55px;
-    left:-24px;
-    top:62px;
-    text-align:center;
-    font-size:8px;
-    color:white;
-    transform:rotate(90deg);
+    width:6px;
+    height:112px;
+    top:-13px;
+    background:#546e7a;
+    border-radius:4px;
+    z-index:2;
 }
 
 .front-axle{
-    left:35px;
+    left:27px;
 }
 
 .rear-axle{
-    right:35px;
+    right:27px;
 }
 
-/* WHEEL MOUNTS */
+.axle-slot small{
+    display:none;
+}
+
+/* WHEEL MOUNTING POINTS */
 
 .wheel-mount{
     position:absolute;
-    width:30px;
-    height:30px;
+    width:28px;
+    height:28px;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -787,28 +724,29 @@ button{
     border-radius:50%;
     background:white;
     color:#6339b6;
+    font-size:16px;
     font-weight:bold;
-    font-size:18px;
+    z-index:5;
 }
 
 .wheel-front-left{
-    left:20px;
-    top:-25px;
+    left:13px;
+    top:-22px;
 }
 
 .wheel-front-right{
-    left:20px;
-    bottom:-25px;
+    left:13px;
+    bottom:-22px;
 }
 
 .wheel-rear-left{
-    right:20px;
-    top:-25px;
+    right:13px;
+    top:-22px;
 }
 
 .wheel-rear-right{
-    right:20px;
-    bottom:-25px;
+    right:13px;
+    bottom:-22px;
 }
 
     /* =========================
