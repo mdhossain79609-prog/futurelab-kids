@@ -1031,64 +1031,95 @@ button{
 .installed-body.suv .body-cargo{
     display:none;
 }
-/* PICKUP */
-.installed-body.pickup .body-shell{
-    width:180px;
+/* =========================
+   PICKUP CAR BODY
+========================= */
+
+.installed-body.pickup{
+    width:175px;
     height:100px;
-    border-radius:20px 12px 10px 10px;
-    background:#60a5fa;
 }
 
-/* Pickup cabin */
+/* Main pickup body */
+
+.installed-body.pickup .body-shell{
+    width:175px;
+    height:88px;
+
+    left:0;
+    top:8px;
+
+    background:#60a5fa;
+    border:4px solid #2457c5;
+
+    border-radius:22px 12px 12px 12px;
+}
+
+/* Front cabin window */
 
 .installed-body.pickup .window-front{
-    left:18px;
-    width:58px;
-    height:30px;
+    left:22px;
+    top:11px;
+
+    width:45px;
+    height:29px;
+
+    transform:skewX(-8deg);
 }
 
-/* Pickup rear window becomes cabin window */
+/* Small rear cabin window */
 
 .installed-body.pickup .window-rear{
+    left:72px;
     right:auto;
-    left:82px;
-    width:42px;
-    height:30px;
+    top:11px;
+
+    width:31px;
+    height:29px;
 }
 
-/* Pickup cargo bed */
-
-.installed-body.pickup .body-cargo{
-    right:8px;
-    bottom:8px;
-    width:55px;
-    height:38px;
-    background:#3b82f6;
-    border:4px solid #2457c5;
-    border-radius:4px 4px 8px 8px;
-}
-
-/* Pickup cabin door line */
+/* Cabin door */
 
 .installed-body.pickup .door-front{
-    left:67px;
-    bottom:12px;
+    left:69px;
+    bottom:9px;
     height:38px;
 }
 
-/* Hide second door line on pickup */
+/* Pickup only needs one door line */
 
 .installed-body.pickup .door-rear{
     display:none;
 }
 
-/* Pickup hood */
+/* Front hood */
 
 .installed-body.pickup .body-hood{
-    left:8px;
-    bottom:10px;
-    width:34px;
-    height:22px;
+    left:7px;
+    bottom:9px;
+
+    width:28px;
+    height:18px;
+}
+
+/* Cargo bed */
+
+.installed-body.pickup .body-cargo{
+    display:block;
+
+    position:absolute;
+
+    right:5px;
+    bottom:7px;
+
+    width:61px;
+    height:39px;
+
+    background:#3b82f6;
+    border:4px solid #2457c5;
+    border-top:6px solid #dff6ff;
+
+    border-radius:3px 3px 8px 8px;
 }
 
 /* WINDOWS */
