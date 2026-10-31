@@ -474,6 +474,14 @@ body{
         This is your complete car model.
     </p>
 
+        <div class="parts-tray">
+    <h3>🧰 Parts Tray</h3>
+
+    <button class="part-btn" onclick="toggleEngine()">
+        ⚙️ Remove / Install Engine
+    </button>
+</div>
+
 </section>
 
 <section class="builder-card">
@@ -489,6 +497,26 @@ body{
     </button>
 
 </section>
+
+    <script>
+
+let engineInstalled = true;
+
+function toggleEngine(){
+
+    const engine = document.getElementById("carEngine");
+
+    if(engineInstalled){
+        engine.style.display = "none";
+        engineInstalled = false;
+    }else{
+        engine.style.display = "flex";
+        engineInstalled = true;
+    }
+
+}
+
+</script>
 
 </body>
 </html>
