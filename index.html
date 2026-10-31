@@ -1539,53 +1539,85 @@ button{
         <div class="mount engine-mount">
             <span>⚙️</span>
             <small>Engine</small>
-        </div>
 
-        <!-- Front Axle -->
-        <div class="axle-slot front-axle">
-            <small>Front Axle</small>
-        </div>
+<div class="car-preview">
 
-        <!-- Rear Axle -->
-        <div class="axle-slot rear-axle">
-            <small>Rear Axle</small>
-        </div>
+    <div class="preview-title">
+        🚗 My Car
+    </div>
 
-        <!-- Wheel Mounts -->
-        <div class="wheel-mount wheel-front-left">+</div>
-        <div class="wheel-mount wheel-front-right">+</div>
-        <div class="wheel-mount wheel-rear-left">+</div>
-        <div class="wheel-mount wheel-rear-right">+</div>
+    <div class="car-workshop">
+
+        <div id="carDisplay" class="car-display">
+
+            <div class="chassis" id="carChassis">
+
+                <!-- FRONT -->
+                <div class="chassis-label front-label">
+                    FRONT
+                </div>
+
+                <!-- MAIN FRAME -->
+                <div class="new-chassis-frame">
+
+                    <!-- Steering -->
+                    <div class="mount steering-mount">
+                        <span>🔘</span>
+                        <small>Steering</small>
+                    </div>
+
+                    <!-- Engine -->
+                    <div class="mount engine-mount">
+                        <span>⚙️</span>
+                        <small>Engine</small>
+                    </div>
+
+                    <!-- Front Axle -->
+                    <div class="axle-slot front-axle">
+                        <small>Front Axle</small>
+                    </div>
+
+                    <!-- Rear Axle -->
+                    <div class="axle-slot rear-axle">
+                        <small>Rear Axle</small>
+                    </div>
+
+                    <!-- Wheels -->
+                    <div class="wheel-mount wheel-front-left">+</div>
+                    <div class="wheel-mount wheel-front-right">+</div>
+                    <div class="wheel-mount wheel-rear-left">+</div>
+                    <div class="wheel-mount wheel-rear-right">+</div>
+
+                </div>
+
+                <!-- REAR -->
+                <div class="chassis-label rear-label">
+                    REAR
+                </div>
+
+            </div>
+
+            <!-- ONE ROTATE BUTTON -->
+            <button class="rotate-btn" onclick="rotateCarRight()">
+                ↻
+            </button>
+
+        </div>
 
     </div>
 
-    <!-- REAR -->
-    <div class="chassis-label rear-label">
-        REAR
+    <div class="view-name" id="viewName">
+        Front View
     </div>
 
-</div>
-
-    <button class="rotate-btn" onclick="rotateCarRight()">
-        ↷
-    </button>
+    <p>
+        Build your dream car!
+    </p>
 
 </div>
 
-<div class="view-name" id="viewName">
-    Front View
-    
-</div>
 
-        <p>
-            Build your dream car!
-        </p>
-
-    </div>
-
-
-    <!-- PARTS AREA -->
-
+<!-- PARTS AREA -->
     <div class="car-parts-container">
 
 
