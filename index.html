@@ -1021,9 +1021,63 @@ button{
 }
 
 /* PICKUP */
-
 .installed-body.pickup .body-shell{
-    border-radius:24px 12px 10px 10px;
+    width:180px;
+    height:100px;
+    border-radius:20px 12px 10px 10px;
+    background:#60a5fa;
+}
+
+/* Pickup cabin */
+
+.installed-body.pickup .window-front{
+    left:18px;
+    width:58px;
+    height:30px;
+}
+
+/* Pickup rear window becomes cabin window */
+
+.installed-body.pickup .window-rear{
+    right:auto;
+    left:82px;
+    width:42px;
+    height:30px;
+}
+
+/* Pickup cargo bed */
+
+.installed-body.pickup .body-cargo{
+    right:8px;
+    bottom:8px;
+    width:55px;
+    height:38px;
+    background:#3b82f6;
+    border:4px solid #2457c5;
+    border-radius:4px 4px 8px 8px;
+}
+
+/* Pickup cabin door line */
+
+.installed-body.pickup .door-front{
+    left:67px;
+    bottom:12px;
+    height:38px;
+}
+
+/* Hide second door line on pickup */
+
+.installed-body.pickup .door-rear{
+    display:none;
+}
+
+/* Pickup hood */
+
+.installed-body.pickup .body-hood{
+    left:8px;
+    bottom:10px;
+    width:34px;
+    height:22px;
 }
 
 /* WINDOWS */
@@ -1101,9 +1155,19 @@ button{
 
 /* KEEP ENGINE & STEERING ABOVE BODY */
 
+/* BODY LAYER ORDER */
+
+.installed-body{
+    z-index:2;
+}
+
+.installed-body .body-shell{
+    z-index:2;
+}
+
 .steering-mount,
 .engine-mount{
-    z-index:4 !important;
+    z-index:10 !important;
 }
 
 .axle-slot{
@@ -1111,8 +1175,9 @@ button{
 }
 
 .wheel-mount{
-    z-index:5;
+    z-index:12;
 }
+
 </style>
 </head>
 
