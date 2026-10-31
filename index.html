@@ -1612,7 +1612,37 @@ button{
             </div>
 
         </div>
+        
+<!-- STEERING -->
 
+<div class="parts-section">
+
+    <h2>🔘 Steering</h2>
+    <p>Choose your steering wheel.</p>
+
+    <div class="parts-row">
+
+        <button class="part-card"
+                onclick="selectSteering('standard', this)">
+            🔘
+            <span>Standard</span>
+        </button>
+
+        <button class="part-card"
+                onclick="selectSteering('sport', this)">
+            🏎️
+            <span>Sport</span>
+        </button>
+
+        <button class="part-card"
+                onclick="selectSteering('smart', this)">
+            🎮
+            <span>Smart</span>
+        </button>
+
+    </div>
+
+</div>
 
         <!-- PAINT -->
 
@@ -1900,6 +1930,53 @@ function selectWheels(type, button){
 
 
     /* Highlight selected engine */
+
+    button.style.borderColor = "#6339b6";
+    button.style.background = "#f3efff";
+
+}
+
+    function selectSteering(type, button){
+
+    const steeringMount =
+        document.querySelector(".steering-mount");
+
+    if(type === "standard"){
+        steeringMount.innerHTML =
+            "<span>◉</span><small>Standard</small>";
+    }
+
+    if(type === "sport"){
+        steeringMount.innerHTML =
+            "<span>⭕</span><small>Sport</small>";
+    }
+
+    if(type === "smart"){
+        steeringMount.innerHTML =
+            "<span>🎮</span><small>Smart</small>";
+    }
+
+    steeringMount.style.border =
+        "3px solid #6339b6";
+
+    steeringMount.style.background =
+        "#ede9fe";
+
+    steeringMount.style.zIndex = "4";
+
+
+    /* Remove previous selection */
+
+    const steeringButtons =
+        button.parentElement.querySelectorAll(".part-card");
+
+    steeringButtons.forEach(function(btn){
+        btn.style.borderColor = "#dbe7f5";
+        btn.style.background = "#f8fbff";
+    });
+
+
+    /* Highlight selected steering */
 
     button.style.borderColor = "#6339b6";
     button.style.background = "#f3efff";
