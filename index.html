@@ -1581,21 +1581,23 @@ button{
 
             <div class="parts-row">
 
-                <button class="part-card">
-                    ⚙️
-                    <span>Standard</span>
-                </button>
+                <button class="part-card"
+        onclick="selectEngine('standard', this)">
+    ⚙️
+    <span>Standard</span>
+</button>
 
-                <button class="part-card">
-                    ⚡
-                    <span>Electric</span>
-                </button>
+<button class="part-card"
+        onclick="selectEngine('electric', this)">
+    ⚡
+    <span>Electric</span>
+</button>
 
-                <button class="part-card">
-                    🔥
-                    <span>Turbo</span>
-                </button>
-
+<button class="part-card"
+        onclick="selectEngine('turbo', this)">
+    🔥
+    <span>Turbo</span>
+</button>
             </div>
 
         </div>
@@ -1849,6 +1851,49 @@ function selectWheels(type, button){
 
 }
     
+    function selectEngine(type, button){
+
+    const engineMount = document.querySelector(".engine-mount");
+
+    if(type === "standard"){
+        engineMount.innerHTML =
+            "<span>⚙️</span><small>Standard</small>";
+    }
+
+    if(type === "electric"){
+        engineMount.innerHTML =
+            "<span>⚡</span><small>Electric</small>";
+    }
+
+    if(type === "turbo"){
+        engineMount.innerHTML =
+            "<span>🔥</span><small>Turbo</small>";
+    }
+
+
+    /* Engine is now installed */
+
+    engineMount.style.border = "3px solid #6339b6";
+    engineMount.style.background = "#ede9fe";
+
+
+    /* Remove previous engine selection */
+
+    const engineButtons =
+        button.parentElement.querySelectorAll(".part-card");
+
+    engineButtons.forEach(function(btn){
+        btn.style.borderColor = "#dbe7f5";
+        btn.style.background = "#f8fbff";
+    });
+
+
+    /* Highlight selected engine */
+
+    button.style.borderColor = "#6339b6";
+    button.style.background = "#f3efff";
+
+}
 </script>
 
 </body>
