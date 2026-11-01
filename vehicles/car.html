@@ -453,44 +453,87 @@ function removePart(p){
  updateTestButton();
 }
 
-/* Drag parts with finger or mouse */
-document.querySelectorAll(".part").forEach(card=>{
- card.addEventListener("pointerdown",e=>{
-  if(card.classList.contains("used"))return;
+/* DRAG AND DROP PARTS */
+
+let activePointer = null;
+
+document.querySelectorAll(".part").forEach(card => {
+
+ card.addEventListener("pointerdown", function(e){
+
+  if(card.classList.contains("used")) return;
+
   e.preventDefault();
-  dragPart=card.dataset.part;
-  ghost=document.createElement("div");
-  ghost.className="drag-ghost";
-  ghost.innerHTML="<b>"+icons[dragPart]+"</b><small>"+names[dragPart]+"</small>";
+
+  dragPart = card.dataset.part;
+  activePointer = e.pointerId;
+
+  ghost = document.createElement("div");
+  ghost.className = "drag-ghost";
+
+  ghost.innerHTML =
+   "<b>" + icons[dragPart] + "</b>" +
+   "<small>" + names[dragPart] + "</small>";
+
   document.body.appendChild(ghost);
+
   moveGhost(e.clientX,e.clientY);
-  card.setPointerCapture(e.pointerId);
+
  });
- card.addEventListener("pointermove",e=>{
-  if(!ghost)return;
-  moveGhost(e.clientX,e.clientY);
- });
- card.addEventListener("pointerup",e=>{
-  if(!ghost)return;
-  ghost.remove();ghost=null;
-  const target=document.elementFromPoint(e.clientX,e.clientY);
-  const slot=target&&target.closest(".slot");
-  if(slot){
-   if(slot.dataset.slot===dragPart)putPart(dragPart);
-   else say("❌ Wrong place! Try another spot.");
-  }else{
-   say("Drop the part on its matching place on the car.");
-  }
-  dragPart=null;
- });
- card.addEventListener("pointercancel",()=>{
-  if(ghost)ghost.remove();
-  ghost=null;dragPart=null;
- });
+
 });
-function moveGhost(x,y){
- if(ghost){ghost.style.left=x+"px";ghost.style.top=y+"px"}
-}
+
+document.addEventListener("pointermove",function(e){
+
+ if(!ghost || e.pointerId !== activePointer) return;
+
+ e.preventDefault();
+
+ moveGhost(e.clientX,e.clientY);
+
+},{passive:false});
+
+
+document.addEventListener("pointerup",function(e){
+
+ if(!ghost || e.pointerId !== activePointer) return;
+
+ const x = e.clientX;
+ const y = e.clientY;
+
+ ghost.remove();
+ ghost = null;
+
+ activePointer = null;
+
+ const target = document.elementFromPoint(x,y);
+
+ const slot = target ? target.closest(".slot") : null;
+
+ if(slot && slot.dataset.slot === dragPart){
+
+  putPart(dragPart);
+
+ }else{
+
+  say("❌ Wrong place! Part returned to workshop.");
+
+ }
+
+ dragPart = null;
+
+});
+
+
+document.addEventListener("pointercancel",function(){
+
+ if(ghost) ghost.remove();
+
+ ghost = null;
+ dragPart = null;
+ activePointer = null;
+
+});
 
 /* Tap installed parts on car to remove */
 document.querySelectorAll(".slot").forEach(slot=>{
