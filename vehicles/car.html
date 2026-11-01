@@ -596,7 +596,7 @@ const driveCar=document.getElementById("driveCar");
 function updateDriveMotion(){
  if(running && gas && gearNo!==0){
   road.classList.add("moving");
-  road.classList.toggle("reverse",gearNo===4);
+  road.classList.toggle("reverse",gearNo!==4);
  }else{
   road.classList.remove("moving","reverse");
  }
