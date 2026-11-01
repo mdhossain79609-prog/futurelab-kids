@@ -726,11 +726,25 @@ let zoomLevel = 1;
 const buildArea = document.getElementById("buildArea");
 const car = document.getElementById("car");
 
+let panX = 0;
+let panY = 0;
+
 function updateZoom(){
  car.style.transform =
-  "translate(-50%,-50%) scale(" + zoomLevel + ")";
+  "translate(calc(-50% + "+panX+"px), calc(-50% + "+panY+"px)) scale("+zoomLevel+")";
+}
+ function updateZoom(){
+ car.style.transform =
+  "translate(calc(-50% + "+panX+"px), calc(-50% + "+panY+"px)) scale("+zoomLevel+")";
 }
 
+/* MOVE ZOOMED CAR */
+
+let panStartX = 0;
+let panStartY = 0;
+let isPanning = false;
+
+// বাকি MOVE ZOOMED CAR কোড এখানে...
 document.getElementById("zoomIn").addEventListener("click",()=>{
  zoomLevel = Math.min(zoomLevel + 0.2, 2);
  updateZoom();
