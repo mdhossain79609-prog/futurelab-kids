@@ -64,6 +64,26 @@ button{font-family:inherit;cursor:pointer}
  text-align:center;color:white;font-size:12px;
  font-weight:bold;text-shadow:0 2px 3px #0008;
 }
+ .zoom-controls{
+ position:absolute;
+ top:32px;
+ right:8px;
+ z-index:100;
+ display:flex;
+ gap:5px;
+}
+
+.zoom-controls button{
+ width:35px;
+ height:35px;
+ border:2px solid white;
+ border-radius:10px;
+ background:#6339b6;
+ color:white;
+ font-size:23px;
+ font-weight:bold;
+ box-shadow:0 3px 6px #0005;
+}
 .car{
  position:absolute;width:min(88%,370px);
  height:145px;left:50%;top:52%;
@@ -293,10 +313,6 @@ button{font-family:inherit;cursor:pointer}
  .steer-wheel:after{width:47px;top:20px}
  .steer-hub{left:15px;top:15px}
 }
- #buildArea{
-    touch-action: none;
-    transform-origin: center center;
-}
 </style>
  
 </head>
@@ -315,6 +331,11 @@ button{font-family:inherit;cursor:pointer}
 
   <section class="build-area" id="buildArea">
    <div class="build-label">DRAG PARTS TO THE CAR</div>
+   <div class="zoom-controls">
+ <button id="zoomIn">＋</button>
+ <button id="zoomOut">－</button>
+ <button id="zoomReset">↺</button>
+</div>
    <div class="car" id="car">
     <div class="car-shadow"></div>
     <div class="car-frame"></div>
