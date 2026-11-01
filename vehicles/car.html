@@ -567,60 +567,116 @@ document.getElementById("backButton").addEventListener("click",()=>{
  document.getElementById("buildScreen").classList.add("active");
 });
 
+
 let running=false,gas=false,gearNo=0,angle=0,carAngle=0;
+let lane=0;
+
 const gears=["N","1","2","3","R"];
 const gearButton=document.getElementById("gear");
+const road=document.getElementById("road");
+const driveButton=document.getElementById("driveButton");
+const driveCar=document.getElementById("driveCar");
+
+function updateDriveMotion(){
+ if(running && gas && gearNo!==0){
+  road.classList.add("moving");
+  road.classList.toggle("reverse",gearNo===4);
+ }else{
+  road.classList.remove("moving","reverse");
+ }
+}
+
 gearButton.addEventListener("click",()=>{
  gearNo=(gearNo+1)%gears.length;
  gearButton.textContent=gears[gearNo];
+ gas=false;
+ updateDriveMotion();
 });
-const road=document.getElementById("road");
-const driveButton=document.getElementById("driveButton");
+
 driveButton.addEventListener("click",()=>{
  if(!running){
-  if(gearNo===0){say("Choose a gear first!");return}
-  if(!installed.engine||!installed.wheels||!installed.brakes){
-   say("Some important parts are missing!");return;
+  if(!installed.engine || !installed.wheels || !installed.brakes){
+   say("Some important parts are missing!");
+   return;
   }
-  running=true;road.classList.add("moving");
+  running=true;
   driveButton.textContent="■ STOP";
   driveButton.style.background="#dc2626";
- }else stopDriving();
+  say("Engine started! Choose a gear.");
+ }else{
+  stopDriving();
+ }
 });
+
 function stopDriving(){
- running=false;gas=false;road.classList.remove("moving");
- driveButton.textContent="▶ START";driveButton.style.background="#16a34a";
+ running=false;
+ gas=false;
+ updateDriveMotion();
+ driveButton.textContent="▶ START";
+ driveButton.style.background="#16a34a";
 }
+
 const accelerator=document.getElementById("accelerator");
+
 accelerator.addEventListener("pointerdown",e=>{
- e.preventDefault();if(running&&gearNo!==0)gas=true;
+ e.preventDefault();
+ if(running && gearNo!==0 && installed.engine){
+  gas=true;
+  updateDriveMotion();
+ }
 });
+
 ["pointerup","pointercancel","pointerleave"].forEach(ev=>{
- accelerator.addEventListener(ev,()=>gas=false);
+ accelerator.addEventListener(ev,()=>{
+  gas=false;
+  updateDriveMotion();
+ });
 });
-document.getElementById("clutch").addEventListener("pointerdown",()=>gas=false);
+
+document.getElementById("clutch").addEventListener("pointerdown",()=>{
+ gas=false;
+ updateDriveMotion();
+});
+
 document.getElementById("brake").addEventListener("pointerdown",()=>{
- gas=false;road.classList.remove("moving");
+ gas=false;
+ updateDriveMotion();
+ say("Brake applied!");
 });
-/* Steering changes the car's heading, not its lane position */
+
+/* STEERING AND LANE MOVEMENT */
+
 const steer=document.getElementById("steerWheel");
 let lastX=null;
+
 steer.addEventListener("pointerdown",e=>{
- e.preventDefault();lastX=e.clientX;steer.setPointerCapture(e.pointerId);
+ e.preventDefault();
+ lastX=e.clientX;
+ steer.setPointerCapture(e.pointerId);
 });
+
 steer.addEventListener("pointermove",e=>{
  if(lastX===null)return;
- let diff=e.clientX-lastX;lastX=e.clientX;
- if(!running||!installed.steering)return;
+
+ let diff=e.clientX-lastX;
+ lastX=e.clientX;
+
+ if(!running || !installed.steering)return;
+
  angle=Math.max(-65,Math.min(65,angle+diff*1.3));
  steer.style.transform="rotate("+angle+"deg)";
+
  carAngle=angle*.22;
- document.getElementById("driveCar").style.transform=
- "translateX(-50%) rotate("+carAngle+"deg)";
+ lane=Math.max(-65,Math.min(65,lane+diff*.7));
+
+ driveCar.style.transform=
+ "translateX(calc(-50% + "+lane+"px)) rotate("+carAngle+"deg)";
 });
+
 ["pointerup","pointercancel"].forEach(ev=>{
  steer.addEventListener(ev,()=>lastX=null);
 });
+
 </script>
 </body>
 </html>
