@@ -314,6 +314,41 @@ touch-action:none;
  .steer-wheel:after{width:47px;top:20px}
  .steer-hub{left:15px;top:15px}
 }
+/* CUSTOMIZATION STUDIOS */
+
+.custom-studios{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:6px;
+ padding:5px 2px;
+}
+
+.custom-studios button{
+ min-width:0;
+ min-height:48px;
+ border:3px solid white;
+ border-radius:12px;
+ color:white;
+ font-size:clamp(9px,2.5vw,12px);
+ font-weight:900;
+ box-shadow:0 4px 0 #0003;
+}
+
+#colorStudio{
+ background:linear-gradient(145deg,#f97316,#db2777);
+}
+
+#lightStudio{
+ background:linear-gradient(145deg,#0ea5e9,#6339b6);
+}
+
+#musicStudio{
+ background:linear-gradient(145deg,#16a34a,#0f766e);
+}
+
+.custom-studios button:active{
+ transform:scale(.96);
+}
 </style>
  
 </head>
