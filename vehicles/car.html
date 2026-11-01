@@ -718,7 +718,33 @@ steer.addEventListener("pointermove",e=>{
 ["pointerup","pointercancel"].forEach(ev=>{
  steer.addEventListener(ev,()=>lastX=null);
 });
+ 
+/* BUILD AREA ZOOM */
 
+let zoomLevel = 1;
+
+const buildArea = document.getElementById("buildArea");
+const car = document.getElementById("car");
+
+function updateZoom(){
+ car.style.transform =
+  "translate(-50%,-50%) scale(" + zoomLevel + ")";
+}
+
+document.getElementById("zoomIn").addEventListener("click",()=>{
+ zoomLevel = Math.min(zoomLevel + 0.2, 2);
+ updateZoom();
+});
+
+document.getElementById("zoomOut").addEventListener("click",()=>{
+ zoomLevel = Math.max(zoomLevel - 0.2, 1);
+ updateZoom();
+});
+
+document.getElementById("zoomReset").addEventListener("click",()=>{
+ zoomLevel = 1;
+ updateZoom();
+});
 </script>
 </body>
 </html>
