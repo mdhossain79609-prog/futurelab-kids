@@ -647,6 +647,11 @@ function removePart(p){
   say("Remove the body first!");return;
  }
  delete installed[p];
+ if(p==="cover"){
+ document.querySelectorAll(".slot").forEach(slot=>{
+  slot.style.visibility="visible";
+ });
+}
  document.querySelectorAll('[data-slot="'+p+'"]').forEach(slot=>{
   slot.classList.remove("filled");
   slot.textContent=p.toUpperCase();
