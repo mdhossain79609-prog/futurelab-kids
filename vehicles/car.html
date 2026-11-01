@@ -1,966 +1,107 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>FutureLab Kids - 3D Car Workshop</title>
-
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>FutureLab Kids - Car Workshop</title>
 <style>
-*{
- box-sizing:border-box;
- user-select:none;
- -webkit-user-select:none;
- -webkit-touch-callout:none;
- -webkit-tap-highlight-color:transparent;
-}
-html,body{
- margin:0;width:100%;height:100%;
- overflow:hidden;
- font-family:Arial,sans-serif;
- background:#dff4ff;color:#263238;
- touch-action:pan-x pan-y;
-}
-button{font-family:inherit;cursor:pointer}
-.screen{display:none;width:100%;height:100dvh;overflow:hidden}
-.screen.active{display:flex;flex-direction:column}
-
-/* HEADER */
-.header{
- flex:0 0 65px;
- display:flex;align-items:center;justify-content:center;
- flex-direction:column;
- background:linear-gradient(120deg,#6339b6,#9b5de5);
- color:white;box-shadow:0 4px 10px #0003;
-}
-.header h1{font-size:23px;margin:0;font-weight:900}
-.header p{font-size:11px;margin:3px 0}
-
-/* WORKSHOP */
-.workshop{
- flex:1;min-height:0;
- padding:7px;
- display:flex;flex-direction:column;gap:7px;
- background:linear-gradient(145deg,#f9d99c,#d99b55);
-}
-.workshop-label{
- flex:0 0 27px;text-align:center;
- font-weight:bold;color:#713b13;font-size:15px;
-}
-
-/* BUILD AREA */
-.build-area{
- flex:0 0 37%;
- min-height:180px;position:relative;
- border:5px solid #8b5528;border-radius:19px;
- background:
- radial-gradient(ellipse at 50% 90%,#ffffff55,transparent 65%),
- linear-gradient(145deg,#718ca9,#405c7d);
- box-shadow:inset 0 5px 12px #0004,0 5px 10px #0002;
- overflow:hidden;
-touch-action:none;
-}
-.build-label{
- position:absolute;top:6px;left:0;right:0;
- text-align:center;color:white;font-size:12px;
- font-weight:bold;text-shadow:0 2px 3px #0008;
-}
-.zoom-controls{
- position:absolute;
- top:8px;
- right:8px;
- z-index:100;
- display:flex;
- gap:5px;
-}
-
-.zoom-controls button{
- width:35px;
- height:35px;
- border:2px solid white;
- border-radius:10px;
- background:#6339b6;
- color:white;
- font-size:23px;
- font-weight:bold;
- box-shadow:0 3px 6px #0005;
-}
-.car{
- position:absolute;width:min(88%,370px);
- height:145px;left:50%;top:52%;
- transform:translate(-50%,-50%);
-}
-.car-shadow{
- position:absolute;left:8%;right:8%;bottom:4px;
- height:18px;border-radius:50%;background:#0006;
- filter:blur(6px);
-}
-.car-frame{
- position:absolute;left:8%;right:8%;bottom:34px;
- height:35px;border-radius:10px;
- background:linear-gradient(#b8c7d8,#46576b 55%,#26384e);
- border:3px solid #25364a;
- box-shadow:0 6px 0 #182638,inset 0 4px 5px #fff8;
-}
-.slot{
- position:absolute;display:flex;align-items:center;
- justify-content:center;text-align:center;
- border:2px dashed #ffffffcc;border-radius:9px;
- background:#ffffff25;color:white;
- font-size:9px;font-weight:bold;
- text-shadow:0 1px 3px #000;
-}
-.slot .installed-icon{font-size:25px;filter:drop-shadow(0 3px 2px #0005)}
-.slot.filled{
- border:2px solid #a7f3d0;
- background:#16a34a55;
- box-shadow:0 0 10px #86efac;
-}
- /* PART DROP AREA LAYERS */
-.slot-body{z-index:1}
-.slot-base{z-index:2}
-.slot-axle{z-index:3}
-.slot-wheel1,.slot-wheel2{z-index:5}
-.slot-engine{z-index:6}
-.slot-steering{z-index:7}
-.slot-brake{z-index:8}
-.slot-battery,.slot-seat,.slot-lights,
-.slot-mirror,.slot-spoiler{z-index:9}
-.slot-base{left:8%;right:8%;bottom:28px;height:48px}
-.slot-engine{left:35%;bottom:67px;width:25%;height:38px}
-.slot-axle{left:13%;right:13%;bottom:25px;height:13px}
-.slot-wheel1{left:13%;bottom:3px;width:35px;height:35px;border-radius:50%}
-.slot-wheel2{right:13%;bottom:3px;width:35px;height:35px;border-radius:50%}
-.slot-steering{left:18%;top:30px;width:42px;height:42px;border-radius:50%}
-.slot-brake{left:61%;bottom:62px;width:35px;height:25px}
-.slot-body{left:9%;right:9%;top:27px;height:80px;border-radius:35px 45px 12px 12px}
-.slot-battery{right:17%;bottom:67px;width:30px;height:27px}
-.slot-seat{left:48%;top:40px;width:30px;height:32px}
-.slot-lights{left:5%;top:65px;width:20px;height:17px}
-.slot-mirror{right:10%;top:28px;width:22px;height:20px}
-.slot-spoiler{right:5%;top:40px;width:30px;height:15px}
-
-/* PARTS */
-.parts-panel{
- flex:1;min-height:0;
- border:4px solid #a66a31;border-radius:18px;
- background:linear-gradient(145deg,#fff0d4,#f6d7a8);
- padding:7px;
- display:flex;flex-direction:column;
-}
-.parts-heading{
- flex:0 0 28px;text-align:center;
- font-size:16px;font-weight:bold;color:#6339b6;
-}
-.parts-grid{
- flex:1;min-height:0;
- display:grid;grid-template-columns:repeat(4,1fr);
- grid-template-rows:repeat(3,minmax(0,1fr));
- gap:6px;
-}
-.part{
- min-width:0;min-height:0;
- border:2px solid #d5e3f1;border-radius:13px;
- background:linear-gradient(145deg,#fff,#dcecff);
- box-shadow:0 4px 0 #9fb4cb,0 5px 8px #0002;
- display:flex;flex-direction:column;
- justify-content:center;align-items:center;
- gap:2px;padding:3px;
- touch-action:none;
- user-select:none;
-}
-.part-icon{
- font-size:clamp(21px,5vw,32px);
- filter:drop-shadow(0 3px 2px #0003);
-}
-.part-name{font-size:clamp(9px,2.5vw,12px);font-weight:bold;color:#334155}
-.part.used{opacity:.25;filter:grayscale(1);pointer-events:none}
-
-/* BUTTONS */
-.status{
- flex:0 0 22px;text-align:center;
- font-size:12px;font-weight:bold;color:#6339b6;
- overflow:hidden;
-}
-.main-button{
- flex:0 0 48px;width:75%;align-self:center;
- border:0;border-radius:15px;
- background:linear-gradient(#4ade80,#16a34a);
- color:white;font-size:19px;font-weight:bold;
- box-shadow:0 5px 0 #15803d,0 7px 10px #0002;
-}
-.main-button:disabled{background:#94a3b8;box-shadow:0 5px 0 #64748b}
-
-/* DRAG GHOST */
-.drag-ghost{
- position:fixed;z-index:9999;pointer-events:none;
- width:75px;height:70px;border-radius:15px;
- background:#fff;border:3px solid #8b5cf6;
- box-shadow:0 8px 20px #0005;
- display:flex;align-items:center;justify-content:center;
- flex-direction:column;
- transform:none;
-}
-.drag-ghost b{font-size:30px}
-.drag-ghost small{font-size:10px;font-weight:bold}
-
-/* TEST DRIVE */
-.drive-area{
- flex:1;min-height:0;display:grid;
- grid-template-columns:minmax(0,1fr) 142px;
- gap:7px;padding:7px;
- background:linear-gradient(#b8e5ff,#e5f7ff);
-}
-.road{
- position:relative;overflow:hidden;
- border:5px solid #334155;border-radius:17px;
- background:#4b5563;
-}
-.road:before,.road:after{
- content:"";position:absolute;top:0;bottom:0;width:7px;
- background:#facc15;
-}
-.road:before{left:9px}.road:after{right:9px}
-.road-lines{
- position:absolute;left:50%;top:0;bottom:0;width:7px;
- transform:translateX(-50%);
- background:repeating-linear-gradient(to bottom,white 0 35px,transparent 35px 70px);
-}
-.road.moving .road-lines{animation:roadMove .35s linear infinite}
-.road.reverse .road-lines{
- animation-direction:reverse;
-}
-@keyframes roadMove{to{background-position:0 70px}}
-.drive-car{
- position:absolute;width:105px;height:155px;
- left:50%;bottom:13%;
- transform:translateX(-50%);
- transition:transform .15s;
-}
-.drive-body{
- position:absolute;inset:0 8px 0;
- border-radius:35px 35px 17px 17px;
- background:linear-gradient(90deg,#1d4ed8,#60a5fa,#1e40af);
- border:4px solid #1e3a8a;
- box-shadow:inset 5px 0 7px #fff8,0 6px 8px #0005;
-}
-.drive-window{
- position:absolute;left:22px;top:35px;
- width:53px;height:50px;border-radius:18px 18px 7px 7px;
- background:linear-gradient(135deg,#e0f7ff,#38bdf8);
- border:3px solid #1e3a8a;
-}
-.drive-wheel{
- position:absolute;width:22px;height:38px;
- background:#172033;border:4px solid #94a3b8;
- border-radius:8px;z-index:3;
-}
-.dwl{left:0;top:35px}.dwr{right:0;top:35px}
-.dwl2{left:0;bottom:25px}.dwr2{right:0;bottom:25px}
-
-/* CONTROLS */
-.controls{
- border:3px solid #a78bfa;border-radius:16px;
- background:linear-gradient(#f5f3ff,#ddd6fe);
- padding:6px;text-align:center;
- display:flex;flex-direction:column;gap:6px;
-}
-.control-title{font-size:12px;font-weight:bold;color:#6339b6}
-.steer-wheel{
- width:92px;height:92px;flex-shrink:0;
- align-self:center;border-radius:50%;
- border:12px solid #1f2937;background:#64748b;
- position:relative;touch-action:none;
- box-shadow:inset 0 0 0 3px #cbd5e1,0 4px 5px #0004;
-}
-.steer-wheel:before{
- content:"";position:absolute;left:27px;top:4px;
- width:10px;height:58px;background:#cbd5e1;border-radius:5px;
-}
-.steer-wheel:after{
- content:"";position:absolute;left:4px;top:27px;
- width:58px;height:10px;background:#cbd5e1;border-radius:5px;
-}
-.steer-hub{
- position:absolute;left:21px;top:21px;width:22px;height:22px;
- border-radius:50%;background:#ef4444;border:3px solid #7f1d1d;z-index:2;
-}
-.drive-start,.back{
- border:0;border-radius:10px;padding:9px 3px;
- color:white;font-weight:bold;font-size:12px;
- background:#16a34a;
-}
-.pedals{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
-.pedal{
- border:0;border-radius:8px;padding:8px 1px;
- color:white;font-size:8px;font-weight:bold;min-height:44px;
-}
-.clutch{background:#6366f1}
-.brake{background:#dc2626}
-.accel{background:#f59e0b}
-.gear-label{font-size:11px;font-weight:bold;color:#6339b6}
-.gear{
- border:0;border-radius:50%;width:53px;height:53px;
- align-self:center;background:linear-gradient(145deg,#475569,#111827);
- color:white;font-weight:bold;border:4px solid #94a3b8;
-}
-.back{background:#6339b6;margin-top:auto}
-@media(max-height:680px){
- .header{flex-basis:52px}
- .build-area{flex-basis:34%;min-height:150px}
- .main-button{flex-basis:40px}
- .steer-wheel{width:75px;height:75px}
- .steer-wheel:before{height:47px;left:20px}
- .steer-wheel:after{width:47px;top:20px}
- .steer-hub{left:15px;top:15px}
-}
-/* CUSTOMIZATION STUDIOS */
-
-.custom-studios{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:6px;
- padding:5px 2px;
-}
-
-.custom-studios button{
- min-width:0;
- min-height:48px;
- border:3px solid white;
- border-radius:12px;
- color:white;
- font-size:clamp(9px,2.5vw,12px);
- font-weight:900;
- box-shadow:0 4px 0 #0003;
-}
-
-#colorStudio{
- background:linear-gradient(145deg,#f97316,#db2777);
-}
-
-#lightStudio{
- background:linear-gradient(145deg,#0ea5e9,#6339b6);
-}
-
-#musicStudio{
- background:linear-gradient(145deg,#16a34a,#0f766e);
-}
-
-.custom-studios button:active{
- transform:scale(.96);
-}
- /* COLOR STUDIO PANEL */
-
-.studio-panel{
- display:none;
- background:linear-gradient(145deg,#ffffff,#e0e7ff);
- border:3px solid #8b5cf6;
- border-radius:14px;
- padding:10px;
- margin:5px 2px;
-}
-
-.studio-panel h3{
- margin:2px 0 10px;
- text-align:center;
- color:#6339b6;
- font-size:15px;
-}
-
-.color-options{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:8px;
-}
-
-.color-options button{
- min-height:38px;
- border:2px solid white;
- border-radius:9px;
- color:white;
- font-weight:bold;
- font-size:11px;
- box-shadow:0 3px 5px #0003;
- text-shadow:0 1px 2px #0008;
-}
-
-.color-options button:active{
- transform:scale(.94);
-}
- /* COMPLETE CAR COVER */
-
-.slot-cover{
- position:absolute;
- z-index:20;
- left:7%;
- right:7%;
- top:20px;
- height:105px;
- border:3px solid #1e3a8a;
- border-radius:48px 55px 18px 18px;
- background:linear-gradient(
-  145deg,
-  #60a5fa,
-  #2563eb 55%,
-  #1e40af
- );
- box-shadow:
-  inset 0 5px 8px #ffffff99,
-  0 5px 8px #0005;
- overflow:hidden;
-}
-
-.cover-window{
- position:absolute;
- left:24%;
- right:24%;
- top:12px;
- height:42px;
- border:4px solid #1e3a8a;
- border-radius:35px 35px 7px 7px;
- background:linear-gradient(135deg,#e0f7ff,#38bdf8);
- box-shadow:inset 0 3px 5px #ffffff99;
-}
-</style>
- 
-</head>
-
-<body>
-
-<!-- WORKSHOP SCREEN -->
-<div id="buildScreen" class="screen active">
- <header class="header">
-  <h1>🚀 FutureLab Kids</h1>
-  <p>JUNIOR 3D CAR WORKSHOP</p>
- </header>
-
- <main class="workshop">
-  <div class="workshop-label">🔧 BUILD YOUR DREAM CAR</div>
-
-  <section class="build-area" id="buildArea">
-   <div class="build-label">DRAG PARTS TO THE CAR</div>
-   <div class="zoom-controls">
- <button id="zoomIn">＋</button>
- <button id="zoomOut">－</button>
- <button id="zoomReset">↺</button>
-</div>
-   <div class="car" id="car">
-    <div class="car-shadow"></div>
-    <div class="car-frame"></div>
-    <div class="slot slot-base" data-slot="chassis">CHASSIS</div>
-    <div class="slot slot-axle" data-slot="axle">AXLE</div>
-    <div class="slot slot-wheel1" data-slot="wheels">W</div>
-    <div class="slot slot-wheel2" data-slot="wheels">W</div>
-    <div class="slot slot-engine" data-slot="engine">ENGINE</div>
-    <div class="slot slot-steering" data-slot="steering">S</div>
-    <div class="slot slot-brake" data-slot="brakes">B</div>
-    <div class="slot slot-body" data-slot="body">BODY</div>
-    <div class="slot slot-battery" data-slot="battery">+</div>
-    <div class="slot slot-seat" data-slot="seat">SEAT</div>
-    <div class="slot slot-lights" data-slot="lights">L</div>
-    <div class="slot slot-mirror" data-slot="mirror">M</div>
-    <div class="slot slot-cover" data-slot="cover">
- <div class="cover-window"></div>
-</div>
-   </div>
-  </section>
-
-  <div class="status" id="status">Drag the parts and build your car!</div>
-
-  <section class="parts-panel">
-   <div class="parts-heading">🧰 WORKSHOP PARTS</div>
-   <div class="parts-grid" id="partsGrid">
-    <button class="part" data-part="chassis"><span class="part-icon">🛠️</span><span class="part-name">Chassis</span></button>
-    <button class="part" data-part="engine"><span class="part-icon">⚙️</span><span class="part-name">Engine</span></button>
-    <button class="part" data-part="axle"><span class="part-icon">🔩</span><span class="part-name">Axle</span></button>
-    <button class="part" data-part="wheels"><span class="part-icon">🛞</span><span class="part-name">Wheels</span></button>
-    <button class="part" data-part="steering"><span class="part-icon">🕹️</span><span class="part-name">Steering</span></button>
-    <button class="part" data-part="brakes"><span class="part-icon">🛑</span><span class="part-name">Brakes</span></button>
-    <button class="part" data-part="body"><span class="part-icon">🚘</span><span class="part-name">Body</span></button>
-    <button class="part" data-part="battery"><span class="part-icon">🔋</span><span class="part-name">Battery</span></button>
-    <button class="part" data-part="seat"><span class="part-icon">💺</span><span class="part-name">Seat</span></button>
-    <button class="part" data-part="lights"><span class="part-icon">💡</span><span class="part-name">Lights</span></button>
-    <button class="part" data-part="mirror"><span class="part-icon">🪞</span><span class="part-name">Mirror</span></button>
-    <button class="part" data-part="cover"><span class="part-icon">🚘</span><span class="part-name">Cover</span></button>
-   </div>
-  </section>
-  <div class="custom-studios" id="customStudios">
-   <div id="colorPanel" class="studio-panel">
- <h3>🎨 Choose Your Car Color</h3>
- <div class="color-options">
-  <button data-color="#2563eb" style="background:#2563eb">Blue</button>
-  <button data-color="#ef4444" style="background:#ef4444">Red</button>
-  <button data-color="#16a34a" style="background:#16a34a">Green</button>
-  <button data-color="#facc15" style="background:#facc15">Yellow</button>
-  <button data-color="#9333ea" style="background:#9333ea">Purple</button>
-  <button data-color="#111827" style="background:#111827">Black</button>
-  <button data-color="#f8fafc" style="background:#f8fafc;color:#111">White</button>
-  <button data-color="#f97316" style="background:#f97316">Orange</button>
- </div>
-</div>
- <button id="colorStudio">🎨 COLOR STUDIO</button>
- <button id="lightStudio">💡 LIGHTING STUDIO</button>
- <button id="musicStudio">🎵 MUSIC STUDIO</button>
-</div>
-
-  <button class="main-button" id="testButton" disabled>🏁 START TEST</button>
- </main>
-</div>
-
-<!-- TEST DRIVE SCREEN -->
-<div id="testScreen" class="screen">
- <header class="header">
-  <h1>🏁 TEST DRIVE</h1>
-  <p>DRIVE YOUR NEW CAR</p>
- </header>
- <main class="drive-area">
-  <section class="road" id="road">
-   <div class="road-lines"></div>
-   <div class="drive-car" id="driveCar">
-    <div class="drive-body"></div>
-    <div class="drive-window"></div>
-    <div class="drive-wheel dwl"></div>
-    <div class="drive-wheel dwr"></div>
-    <div class="drive-wheel dwl2"></div>
-    <div class="drive-wheel dwr2"></div>
-   </div>
-  </section>
-
-  <section class="controls">
-   <div class="control-title">STEERING</div>
-   <div class="steer-wheel" id="steerWheel"><div class="steer-hub"></div></div>
-   <button class="drive-start" id="driveButton">▶ START</button>
-   <div class="pedals">
-    <button class="pedal clutch" id="clutch">CLUTCH</button>
-    <button class="pedal brake" id="brake">BRAKE</button>
-    <button class="pedal accel" id="accelerator">ACCELERATOR</button>
-   </div>
-   <div class="gear-label">GEAR</div>
-   <button class="gear" id="gear">N</button>
-   <button class="back" id="backButton">← WORKSHOP</button>
-  </section>
- </main>
-</div>
-
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:linear-gradient(145deg,#dff4ff,#f3f0ff);color:#183b62}.app{max-width:900px;margin:auto;padding:9px}.top{display:flex;justify-content:space-between;align-items:center;font-size:20px;font-weight:900}.coins{background:linear-gradient(135deg,#ffe7a3,#ffbd36);border:3px solid white;border-radius:14px;padding:11px 18px;font-size:20px;font-weight:900}h1{text-align:center;margin:8px 0 2px;font-size:25px}.sub{text-align:center;font-size:12px;color:#55718e;margin:0 0 9px}.work{background:#fff;border:3px solid #bfdcf5;border-radius:18px;padding:8px;box-shadow:0 6px 18px #315b871c}.scene{position:relative;background:radial-gradient(#fff,#dceeff);border:2px solid #c6def5;border-radius:14px;overflow:hidden}#view{width:100%;height:270px;display:block;touch-action:none}.tag{position:absolute;top:7px;left:8px;background:#ffffffdf;padding:6px 9px;border-radius:8px;font-size:11px;font-weight:bold}.hint{position:absolute;bottom:5px;text-align:center;width:100%;font-size:10px;color:#55718e;pointer-events:none}#status{text-align:center;min-height:20px;margin:8px 0;font-weight:bold;font-size:13px}.ptitle{font-weight:900;margin:7px 0}.parts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.part{border:2px solid #d5e6f8;border-radius:11px;background:#fff;min-height:61px;padding:5px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}.part.used{opacity:.45;background:#eaffef;border-color:#16a34a}.ico{font-size:21px}.part small{font-size:10px;font-weight:bold}.actions{display:grid;grid-template-columns:1fr 1.5fr 1fr;gap:7px;margin-top:9px}.action{border:3px solid white;border-radius:13px;min-height:60px;padding:8px 3px;color:white;font-weight:900;box-shadow:0 4px 0 #0002}.cover{background:linear-gradient(135deg,#7c3aed,#4f46e5);font-size:20px}.test{background:linear-gradient(135deg,#16a34a,#0d9488)}.reset{background:linear-gradient(135deg,#64748b,#475569)}.studios{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}.studios button{min-height:43px;border:2px solid white;border-radius:11px;color:white;font-size:11px;font-weight:900}.colorBtn{background:linear-gradient(135deg,#f97316,#db2777)}.musicBtn{background:linear-gradient(135deg,#0ea5e9,#6339b6)}.viewBtn{background:linear-gradient(135deg,#16a34a,#0f766e)}.panel{display:none;margin-top:9px;padding:10px;background:#fff;border:2px solid #c9ddf4;border-radius:13px}.panel h3{text-align:center;margin:0 0 8px}.colors{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.swatch{height:37px;border:3px solid white;border-radius:9px;box-shadow:0 0 0 1px #9bb5d0}.gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.model{border:2px solid #d4e3f4;border-radius:12px;padding:6px;text-align:center;background:#f7fbff}.model.lock{opacity:.55;filter:grayscale(.7)}.preview{width:100%;height:90px;background:#e5f3ff;border-radius:8px}.model b{display:block;font-size:13px;margin:4px}.model small{display:block;font-size:10px;min-height:24px}.model button,.panel button{border:0;border-radius:9px;padding:8px 12px;background:#2563eb;color:white;font-weight:bold}.model button{width:100%;margin-top:4px}.overlay{display:none;position:fixed;inset:0;background:#10243dcc;z-index:5;align-items:center;justify-content:center;padding:14px}.dialog{width:min(430px,100%);background:white;border-radius:17px;padding:15px;text-align:center}.dialog h2{margin:0 0 8px}#driveCanvas{width:100%;height:180px;background:#eaf6ff;border-radius:10px}.footer{text-align:center;font-size:10px;color:#789;margin:10px}
+@media(max-width:370px){.app{padding:5px}.part{min-height:56px}.part small{font-size:9px}}
+</style></head><body><div class="app">
+<div class="top"><span>🌍 FutureLab Kids</span><button class="coins" id="coins">🪙 <span id="coinCount">0</span></button></div>
+<h1>🚗 Car Workshop</h1><p class="sub">Build the inside, choose your dream car and test drive!</p>
+<main class="work">
+<div class="scene"><div class="tag" id="tag">BUILDING AREA</div><canvas id="view"></canvas><div class="hint">Drag to rotate • Pinch to zoom</div></div>
+<div id="status">Step 1: Install the chassis first.</div>
+<div class="ptitle">🧰 Small Parts — tap to install</div>
+<div class="parts" id="parts">
+<button class="part" data-p="chassis"><span class="ico">🛠️</span><small>Chassis</small></button>
+<button class="part" data-p="engine"><span class="ico">⚙️</span><small>Engine</small></button>
+<button class="part" data-p="axle"><span class="ico">🔩</span><small>Axle</small></button>
+<button class="part" data-p="wheels"><span class="ico">🛞</span><small>Wheels</small></button>
+<button class="part" data-p="steering"><span class="ico">🕹️</span><small>Steering</small></button>
+<button class="part" data-p="brakes"><span class="ico">🛑</span><small>Brakes</small></button>
+<button class="part" data-p="battery"><span class="ico">🔋</span><small>Battery</small></button>
+<button class="part" data-p="seat"><span class="ico">💺</span><small>Seat</small></button></div>
+<div class="actions"><button class="action reset" id="reset">↩ RESET</button><button class="action cover" id="cover">🚘 COVER</button><button class="action test" id="test">▶ TEST DRIVE</button></div>
+<div class="studios"><button class="colorBtn" id="colorBtn">🎨 COLOR STUDIO</button><button class="musicBtn" id="musicBtn">🎵 MUSIC STUDIO</button><button class="viewBtn" id="viewBtn">🛞 DRIVE VIEW</button></div>
+<section class="panel" id="colorPanel"><h3>🎨 Choose car color</h3><div class="colors">
+<button class="swatch" data-c="#1976d2" style="background:#1976d2"></button><button class="swatch" data-c="#e53935" style="background:#e53935"></button><button class="swatch" data-c="#16a34a" style="background:#16a34a"></button><button class="swatch" data-c="#facc15" style="background:#facc15"></button><button class="swatch" data-c="#9333ea" style="background:#9333ea"></button><button class="swatch" data-c="#111827" style="background:#111827"></button><button class="swatch" data-c="#f8fafc" style="background:#f8fafc"></button><button class="swatch" data-c="#f97316" style="background:#f97316"></button></div></section>
+<section class="panel" id="musicPanel"><h3>🎵 Music Studio</h3><button id="play">▶ Play music</button> <button id="stop">■ Stop</button><p style="font-size:11px">Original electronic melody</p><label>Volume</label><input id="volume" type="range" min="0" max="100" value="35" style="width:100%"></section>
+<section class="panel" id="galleryPanel"><h3>🚘 Choose your 3D car</h3><div class="gallery" id="gallery"></div></section>
+</main><div class="footer">FutureLab Kids • Learn by building and exploring</div></div>
+<div class="overlay" id="driveOverlay"><div class="dialog"><h2>🏁 Test Drive</h2><p id="driveMsg">Start your test drive to unlock the next car.</p><canvas id="driveCanvas" width="600" height="250"></canvas><p><button id="startDrive">Start Drive</button> <button id="closeDrive">Close</button></p></div></div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script>
-const names={
- chassis:"Chassis",engine:"Engine",axle:"Axle",wheels:"Wheels",
- steering:"Steering",brakes:"Brakes",body:"Body",battery:"Battery",
- seat:"Seat",lights:"Lights",mirror:"Mirror",cover:"Cover"
-};
-const icons={
- chassis:"🛠️",engine:"⚙️",axle:"🔩",wheels:"🛞",
- steering:"🕹️",brakes:"🛑",body:"🚘",battery:"🔋",
- seat:"💺",lights:"💡",mirror:"🪞"cover:"🚘"
-};
-const installed={};
-const status=document.getElementById("status");
- /* CUSTOMIZATION STUDIO BUTTONS */
-
-/* COLOR STUDIO */
-
-const colorPanel=document.getElementById("colorPanel");
-
-document.getElementById("colorStudio").addEventListener("click",()=>{
- colorPanel.style.display=
- colorPanel.style.display==="block"?"none":"block";
-});
-
-document.querySelectorAll(".color-options button").forEach(button=>{
- button.addEventListener("click",()=>{
-  const color=button.dataset.color;
-
-  document.querySelectorAll(".slot-body").forEach(slot=>{
-   slot.style.background=color;
-   slot.style.boxShadow="0 0 15px "+color;
-  });
-
-  say("🎨 Car body color changed!");
- });
-});
-document.getElementById("lightStudio").addEventListener("click",()=>{
- say("💡 Lighting Studio is coming!");
-});
-
-document.getElementById("musicStudio").addEventListener("click",()=>{
- say("🎵 Music Studio is coming!");
-});
-let ghost=null,dragPart=null;
-
-function say(t){status.textContent=t}
-
-function ready(){
- return ["chassis","engine","axle","wheels","steering","brakes","body"]
- .every(p=>installed[p]);
+"use strict";
+const $=id=>document.getElementById(id),status=$("status");
+const PARTS=["chassis","engine","axle","wheels","steering","brakes","battery","seat"];
+const NAMES=["Sports Car","Military Jeep","High SUV","Electric Sports Car"];
+const TYPES=["sport","jeep","suv","electric"],BASE=["#1976d2","#657b35","#b32635","#10a6a6"];
+let installed={},level=Math.max(0,Math.min(3,Number(localStorage.getItem("flk_car_level")||0))),model=0,paint=BASE[0],mode="build";
+let scene,camera,renderer,build,cover,drag=false,lx=0,ly=0,pointers=new Map(),pinch=0;
+function say(s){status.textContent=s}
+function material(c,rough=.5,metal=0){return new THREE.MeshStandardMaterial({color:c,roughness:rough,metalness:metal})}
+function cube(g,x,y,z,w,h,d,m){let o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.castShadow=true;g.add(o);return o}
+function wheel(g,x,z){let t=new THREE.Mesh(new THREE.CylinderGeometry(.4,.4,.24,24),material(0x17212d,.8));t.rotation.z=Math.PI/2;t.position.set(x,.45,z);g.add(t);let r=new THREE.Mesh(new THREE.CylinderGeometry(.21,.21,.26,24),material(0xb8c6d4,.25,.8));r.rotation.z=Math.PI/2;r.position.copy(t.position);g.add(r)}
+function clear(g){while(g.children.length){let o=g.children.pop();o.traverse?.(v=>v.geometry?.dispose())}}
+function makeBuild(){
+ clear(build);let steel=material(0x667d92,.4,.6),dark=material(0x263746),eng=material(0x9ba9b6,.3,.7);
+ if(installed.chassis){cube(build,0,.65,0,3.7,.18,1.45,steel);cube(build,0,.76,-.55,2.8,.1,.12,dark);cube(build,0,.76,.55,2.8,.1,.12,dark)}
+ if(installed.axle){[-1.25,1.25].forEach(x=>{let a=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,1.8,16),steel);a.rotation.x=Math.PI/2;a.position.set(x,.47,0);build.add(a)})}
+ if(installed.wheels)[-1.25,1.25].forEach(x=>[-.83,.83].forEach(z=>wheel(build,x,z)));
+ if(installed.engine){cube(build,-.55,.98,0,.95,.48,.85,eng);for(let i=0;i<3;i++)cube(build,-.82+i*.27,1.25,0,.09,.12,.58,dark)}
+ if(installed.battery){cube(build,.85,.95,.28,.55,.38,.48,material(0x253b50));cube(build,.85,1.17,.28,.15,.07,.12,material(0xfacc15))}
+ if(installed.seat){[-.28,.28].forEach(z=>{cube(build,.25,1.03,z,.48,.15,.42,material(0x8b5cf6));cube(build,.48,1.34,z,.15,.55,.42,material(0x6941c6))})}
+ if(installed.steering){let t=new THREE.Mesh(new THREE.TorusGeometry(.23,.045,10,24),dark);t.position.set(.75,1.5,-.34);build.add(t)}
+ if(installed.brakes)[-1.25,1.25].forEach(x=>[-.84,.84].forEach(z=>{let d=new THREE.Mesh(new THREE.CylinderGeometry(.2,.2,.04,20),material(0xe24c4b,.3,.6));d.rotation.z=Math.PI/2;d.position.set(x,.47,z);build.add(d)}))
 }
-function updateTestButton(){
- document.getElementById("testButton").disabled=!ready();
- if(ready())say("🎉 Great job! Your car is ready!");
+function makeCover(){
+ clear(cover);let paintMat=material(paint,.25,.25),glass=new THREE.MeshPhysicalMaterial({color:0x8bd8f5,roughness:.12,transparent:true,opacity:.68}),black=material(0x17212d,.7),chrome=material(0xd5e1eb,.2,.8);
+ let type=TYPES[model],tall=type==="suv"||type==="jeep";
+ cube(cover,0,.83,0,type==="sport"||type==="electric"?3.8:3.4,.55,1.62,paintMat).userData.paint=true;
+ if(!tall){cube(cover,-.25,1.28,0,1.75,.55,1.32,paintMat).userData.paint=true;cube(cover,-.25,1.4,0,1.48,.35,1.23,glass)}
+ else{cube(cover,-.15,1.48,0,1.9,1,1.45,paintMat).userData.paint=true;cube(cover,-.15,1.52,0,1.7,.72,1.34,glass)}
+ cube(cover,2,.72,0,.18,.22,1.65,chrome);cube(cover,-2,.72,0,.18,.22,1.65,chrome);
+ [-.56,.56].forEach(z=>{cube(cover,2.1,1,z,.04,.16,.27,material(0xfff1c2));cube(cover,-2.1,.98,z,.04,.14,.25,material(0xef4444))});
+ [-1.2,1.2].forEach(x=>[-.87,.87].forEach(z=>wheel(cover,x,z)));
+ [-.82,.82].forEach(z=>cube(cover,.45,1.48,z,.28,.1,.16,black));
+ if(type==="jeep"){cube(cover,-.15,1.18,0,.75,.35,1.45,material(0x4d6330));cube(cover,-.15,1.98,0,1.95,.09,1.35,material(0x354329))}
+ if(type==="sport"||type==="electric"){cube(cover,-1.55,1.48,0,.12,.08,1.45,black);if(type==="electric")cube(cover,-.2,1.68,0,1,.06,1,black)}
 }
-function canInstall(p){
- if(p==="chassis")return true;
- if(!installed.chassis)return false;
- if(p==="cover"){
- return installed.body &&
- !installed.cover;
+function init(){
+ if(!window.THREE){say("3D viewer did not load. Check your internet and reload.");return}
+ scene=new THREE.Scene();scene.background=new THREE.Color(0xe7f4ff);
+ camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(5.8,4.3,7.8);
+ renderer=new THREE.WebGLRenderer({canvas:$("view"),antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;
+ scene.add(new THREE.HemisphereLight(0xffffff,0x7892ad,2));let l=new THREE.DirectionalLight(0xffffff,2.3);l.position.set(4,8,6);l.castShadow=true;scene.add(l);
+ let floor=new THREE.Mesh(new THREE.CircleGeometry(5.8,48),material(0xd8eafb));floor.rotation.x=-Math.PI/2;floor.position.y=-.06;scene.add(floor);
+ build=new THREE.Group();cover=new THREE.Group();scene.add(build,cover);makeBuild();makeCover();cover.visible=false;resize();window.addEventListener("resize",resize);animate()
 }
- if(p==="body"){
-  return ["engine","axle","wheels","steering","brakes"].every(x=>installed[x]);
- }
- if(["engine","axle","steering","brakes"].includes(p))return true;
- if(p==="wheels")return installed.axle;
- return true;
+function resize(){if(!renderer)return;let w=$("view").clientWidth,h=$("view").clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+function animate(){requestAnimationFrame(animate);if(renderer)renderer.render(scene,camera)}
+$("view").addEventListener("pointerdown",e=>{drag=true;lx=e.clientX;ly=e.clientY;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});$("view").setPointerCapture(e.pointerId)});
+$("view").addEventListener("pointermove",e=>{if(pointers.has(e.pointerId)){pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2){let a=[...pointers.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);if(pinch){camera.position.multiplyScalar(pinch/d);camera.position.clampLength(4,13)}pinch=d;drag=false;return}}
+ if(drag&&pointers.size===1){let dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;let g=mode==="cover"?cover:build;g.rotation.y+=dx*.012;g.rotation.x=Math.max(-.25,Math.min(.3,g.rotation.x+dy*.004))}});
+["pointerup","pointercancel"].forEach(ev=>$("view").addEventListener(ev,e=>{pointers.delete(e.pointerId);if(pointers.size<2)pinch=0;if(!pointers.size)drag=false}));
+$("view").addEventListener("wheel",e=>{e.preventDefault();camera.position.multiplyScalar(e.deltaY>0?1.08:.92);camera.position.clampLength(4,13)},{passive:false});
+function can(p){if(p==="chassis")return true;if(!installed.chassis)return false;if(p==="wheels")return !!installed.axle;return true}
+document.querySelectorAll(".part").forEach(b=>b.onclick=()=>{let p=b.dataset.p;if(installed[p]){if(p==="chassis"&&Object.keys(installed).length>1){say("Remove other parts before the chassis.");return}if(p==="axle"&&installed.wheels){say("Remove wheels before the axle.");return}delete installed[p];b.classList.remove("used");say(p+" removed")}else{if(!can(p)){say(p==="wheels"?"Install the axle first.":"Install the chassis first.");return}installed[p]=true;b.classList.add("used");say(p+" installed!")}makeBuild()});
+$("reset").onclick=()=>{installed={};document.querySelectorAll(".part").forEach(b=>b.classList.remove("used"));makeBuild();build.visible=true;cover.visible=false;mode="build";$("tag").textContent="BUILDING AREA";say("Workshop reset. Start with the chassis.")};
+function gallery(){
+ $("gallery").innerHTML="";
+ NAMES.forEach((n,i)=>{let card=document.createElement("div");card.className="model"+(i>level?" lock":"");let cv=document.createElement("canvas");cv.className="preview";card.append(cv);preview(cv,BASE[i],i);let b=document.createElement("b");b.textContent=n;card.append(b);let s=document.createElement("small");s.textContent=i<=level?(i===0?"Available now":"Unlocked"):"🔒 Complete previous car's test drive";card.append(s);let btn=document.createElement("button");btn.textContent=i<=level?"SELECT CAR":"🔒 LOCKED";btn.disabled=i>level;btn.onclick=()=>choose(i);card.append(btn);$("gallery").append(card)})
 }
-function putPart(p){
- if(installed[p])return;
- if(!canInstall(p)){
-  say(p==="body"?"Install the main parts before the body!":
-      p==="wheels"?"Install the axle first!":"Install the chassis first!");
-  return;
- }
- installed[p]=true;
- if(p==="cover"){
- document.querySelectorAll(".slot").forEach(slot=>{
-  if(slot.dataset.slot!=="cover"){
-   slot.style.visibility="hidden";
-  }
- });
-}
- document.querySelectorAll('[data-slot="'+p+'"]').forEach(slot=>{
-  slot.classList.add("filled");
-  slot.innerHTML='<span class="installed-icon">'+icons[p]+'</span>';
- });
- const card=document.querySelector('[data-part="'+p+'"]');
- if(card)card.classList.add("used");
- say(names[p]+" installed!");
- updateTestButton();
-}
-function removePart(p){
- if(!installed[p])return;
- if(p==="chassis" && Object.keys(installed).length>1){
-  say("Remove the other parts first!");return;
- }
- if(p==="axle" && installed.wheels){
-  say("Remove the wheels first!");return;
- }
- if(["engine","axle","wheels","steering","brakes"].includes(p)&&installed.body){
-  say("Remove the body first!");return;
- }
- delete installed[p];
- if(p==="cover"){
- document.querySelectorAll(".slot").forEach(slot=>{
-  slot.style.visibility="visible";
- });
-}
- document.querySelectorAll('[data-slot="'+p+'"]').forEach(slot=>{
-  slot.classList.remove("filled");
-  slot.textContent=p.toUpperCase();
- });
- const card=document.querySelector('[data-part="'+p+'"]');
- if(card)card.classList.remove("used");
- say(names[p]+" returned to the workshop!");
- updateTestButton();
-}
-
-/* DRAG AND DROP PARTS */
-
-let activePointer = null;
-
- let dragOffsetX = 0;
-let dragOffsetY = 0;
-
-document.querySelectorAll(".part").forEach(card => {
-
- card.addEventListener("pointerdown", function(e){
-
-  if(card.classList.contains("used")) return;
-
-  e.preventDefault();
-
-  dragPart = card.dataset.part;
-  const rect = card.getBoundingClientRect();
-
-dragOffsetX = e.clientX - rect.left;
-dragOffsetY = e.clientY - rect.top;
-  activePointer = e.pointerId;
-
-  ghost = document.createElement("div");
-  ghost.className = "drag-ghost";
-
-  ghost.innerHTML =
-   "<b>" + icons[dragPart] + "</b>" +
-   "<small>" + names[dragPart] + "</small>";
-
-  document.body.appendChild(ghost);
-
-  moveGhost(e.clientX,e.clientY);
-
- });
-
-});
-
-document.addEventListener("pointermove",function(e){
-
- if(!ghost || e.pointerId !== activePointer) return;
-
- e.preventDefault();
-
- moveGhost(e.clientX,e.clientY);
-
-},{passive:false});
-
-
-document.addEventListener("pointerup",function(e){
-
- if(!ghost || e.pointerId !== activePointer) return;
-
- const x = e.clientX;
- const y = e.clientY;
-
- ghost.remove();
- ghost = null;
-
- activePointer = null;
-
- const target = document.elementFromPoint(x,y);
-
- const slot = target ? target.closest(".slot") : null;
-
- if(slot && slot.dataset.slot === dragPart){
-
-  putPart(dragPart);
-
- }else{
-
-  say("❌ Wrong place! Part returned to workshop.");
-
- }
-
- dragPart = null;
-
-});
-
-
-document.addEventListener("pointercancel",function(){
-
- if(ghost) ghost.remove();
-
- ghost = null;
- dragPart = null;
- activePointer = null;
-
-});
- /* MOVE DRAG PART WITH FINGER */
-
-function moveGhost(x,y){
-
- if(ghost){
-
-  ghost.style.left = (x - dragOffsetX) + "px";
-  ghost.style.top = (y - dragOffsetY) + "px";
-
- }
-
-}
-
-/* Tap installed parts on car to remove */
-document.querySelectorAll(".slot").forEach(slot=>{
- slot.addEventListener("click",()=>{
-  const p=slot.dataset.slot;
-  if(installed[p])removePart(p);
- });
-});
-
-/* Test drive */
-document.getElementById("testButton").addEventListener("click",()=>{
- if(!ready())return;
- document.getElementById("buildScreen").classList.remove("active");
- document.getElementById("testScreen").classList.add("active");
-});
-document.getElementById("backButton").addEventListener("click",()=>{
- stopDriving();
- document.getElementById("testScreen").classList.remove("active");
- document.getElementById("buildScreen").classList.add("active");
-});
-
-
-let running=false,gas=false,gearNo=0,angle=0,carAngle=0;
-let lane=0;
-
-const gears=["N","1","2","3","R"];
-const gearButton=document.getElementById("gear");
-const road=document.getElementById("road");
-const driveButton=document.getElementById("driveButton");
-const driveCar=document.getElementById("driveCar");
-
-function updateDriveMotion(){
- if(running && gas && gearNo!==0){
-  road.classList.add("moving");
-  road.classList.toggle("reverse",gearNo!==4);
- }else{
-  road.classList.remove("moving","reverse");
- }
-}
-
-gearButton.addEventListener("click",()=>{
- gearNo=(gearNo+1)%gears.length;
- gearButton.textContent=gears[gearNo];
- gas=false;
- updateDriveMotion();
-});
-
-driveButton.addEventListener("click",()=>{
- if(!running){
-  if(!installed.engine || !installed.wheels || !installed.brakes){
-   say("Some important parts are missing!");
-   return;
-  }
-  running=true;
-  driveButton.textContent="■ STOP";
-  driveButton.style.background="#dc2626";
-  say("Engine started! Choose a gear.");
- }else{
-  stopDriving();
- }
-});
-
-function stopDriving(){
- running=false;
- gas=false;
- updateDriveMotion();
- driveButton.textContent="▶ START";
- driveButton.style.background="#16a34a";
-}
-
-const accelerator=document.getElementById("accelerator");
-
-accelerator.addEventListener("pointerdown",e=>{
- e.preventDefault();
- if(running && gearNo!==0 && installed.engine){
-  gas=true;
-  updateDriveMotion();
- }
-});
-
-["pointerup","pointercancel","pointerleave"].forEach(ev=>{
- accelerator.addEventListener(ev,()=>{
-  gas=false;
-  updateDriveMotion();
- });
-});
-
-document.getElementById("clutch").addEventListener("pointerdown",()=>{
- gas=false;
- updateDriveMotion();
-});
-
-document.getElementById("brake").addEventListener("pointerdown",()=>{
- gas=false;
- updateDriveMotion();
- say("Brake applied!");
-});
-
-/* STEERING AND LANE MOVEMENT */
-
-const steer=document.getElementById("steerWheel");
-let lastX=null;
-
-steer.addEventListener("pointerdown",e=>{
- e.preventDefault();
- lastX=e.clientX;
- steer.setPointerCapture(e.pointerId);
-});
-
-steer.addEventListener("pointermove",e=>{
- if(lastX===null)return;
-
- let diff=e.clientX-lastX;
- lastX=e.clientX;
-
- if(!running || !installed.steering)return;
-
- angle=Math.max(-65,Math.min(65,angle+diff*1.3));
- steer.style.transform="rotate("+angle+"deg)";
-
- carAngle=angle*.22;
- lane=Math.max(-65,Math.min(65,lane+diff*.7));
-
- driveCar.style.transform=
- "translateX(calc(-50% + "+lane+"px)) rotate("+carAngle+"deg)";
-});
-
-["pointerup","pointercancel"].forEach(ev=>{
- steer.addEventListener(ev,()=>lastX=null);
-});
- 
-/* BUILD AREA ZOOM */
-
-let zoomLevel = 1;
-let panX = 0;
-let panY = 0;
-
-const buildArea = document.getElementById("buildArea");
-const car = document.getElementById("car");
-
-let isPanning = false;
-let startX = 0;
-let startY = 0;
-
-function updateZoom(){
- car.style.transform =
- "translate(calc(-50% + "+panX+"px), calc(-50% + "+panY+"px)) scale("+zoomLevel+")";
-}
-
-document.getElementById("zoomIn").addEventListener("click",()=>{
- zoomLevel = Math.min(zoomLevel + 0.2, 2);
- updateZoom();
-});
-
-document.getElementById("zoomOut").addEventListener("click",()=>{
- zoomLevel = Math.max(zoomLevel - 0.2, 1);
-
- if(zoomLevel === 1){
-  panX = 0;
-  panY = 0;
- }
-
- updateZoom();
-});
-
-document.getElementById("zoomReset").addEventListener("click",()=>{
- zoomLevel = 1;
- panX = 0;
- panY = 0;
- updateZoom();
-});
-
-/* MOVE CAR */
-
-buildArea.addEventListener("pointerdown",e=>{
- if(zoomLevel <= 1) return;
- if(e.target.closest(".zoom-controls")) return;
-
- isPanning = true;
- startX = e.clientX - panX;
- startY = e.clientY - panY;
-
- buildArea.setPointerCapture(e.pointerId);
-});
-
-buildArea.addEventListener("pointermove",e=>{
- if(!isPanning) return;
-
- panX = e.clientX - startX;
- panY = e.clientY - startY;
-
- updateZoom();
-});
-
-["pointerup","pointercancel"].forEach(ev=>{
- buildArea.addEventListener(ev,()=>{
-  isPanning = false;
- });
-});
-</script>
-</body>
-</html>
+function preview(c,color,i){let x=c.getContext("2d");c.width=300;c.height=140;x.fillStyle="#e5f3ff";x.fillRect(0,0,300,140);x.fillStyle="#c3dced";x.beginPath();x.ellipse(150,115,110,12,0,0,7);x.fill();x.fillStyle=color;x.beginPath();let tall=i===1||i===2;x.moveTo(40,100);x.lineTo(60,72);x.lineTo(112,65);x.lineTo(135,tall?32:52);x.lineTo(205,tall?32:52);x.lineTo(242,76);x.lineTo(270,86);x.lineTo(275,103);x.closePath();x.fill();x.fillStyle="#9be0f5";x.fillRect(137,tall?42:60,65,22);[100,230].forEach(a=>{x.fillStyle="#17212d";x.beginPath();x.arc(a,105,18,0,7);x.fill();x.fillStyle="#d5e1eb";x.beginPath();x.arc(a,105,8,0,7);x.fill()})}
+function choose(i){if(i>level)return;model=i;paint=BASE[i];makeCover();cover.visible=true;build.visible=false;mode="cover";$("tag").textContent=NAMES[i].toUpperCase()+" • 3D";$("galleryPanel").style.display="none";$("colorPanel").style.display="block";say(NAMES[i]+" selected! Rotate and zoom your 3D car.");}
+$("cover").onclick=()=>{if(!PARTS.every(p=>installed[p])){say("Install all 8 inside parts before choosing a cover.");return}gallery();$("galleryPanel").style.display=$("galleryPanel").style.display==="block"?"none":"block"};
+$("colorBtn").onclick=()=>toggle("colorPanel");$("musicBtn").onclick=()=>toggle("musicPanel");
+function toggle(id){$(id).style.display=$(id).style.display==="block"?"none":"block"}
+document.querySelectorAll(".swatch").forEach(b=>b.onclick=()=>{paint=b.dataset.c;cover.traverse(o=>{if(o.userData.paint)o.material.color.set(paint)});say("Car color changed!")});
+let ac,gain,timer=0,ni=0,notes=[523,659,784,659,587,698,880,698,523,587,659,784];
+async function play(){let AC=window.AudioContext||window.webkitAudioContext;if(!AC){say("Audio not supported.");return}if(!ac){ac=new AC();gain=ac.createGain();gain.connect(ac.destination)}await ac.resume();if(timer)clearInterval(timer);let volume=+$("volume").value/100;gain.gain.value=volume;function note(){let o=ac.createOscillator(),g=ac.createGain();o.type="sine";o.frequency.value=notes[ni++%notes.length];g.gain.setValueAtTime(.0001,ac.currentTime);g.gain.exponentialRampToValueAtTime(.12,ac.currentTime+.04);g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+.4);o.connect(g);g.connect(gain);o.start();o.stop(ac.currentTime+.42)}note();timer=setInterval(note,480);say("Music is playing")}
+$("play").onclick=play;$("stop").onclick=()=>{clearInterval(timer);timer=0;if(ac)ac.suspend();say("Music stopped")};$("volume").oninput=e=>{if(gain)gain.gain.value=+e.target.value/100};
+$("test").onclick=()=>{if(!PARTS.every(p=>installed[p])){say("Install all 8 parts before Test Drive.");return}$("driveOverlay").style.display="flex";$("driveMsg").textContent="Start your test drive to unlock the next car."};
+function drawDrive(p){let c=$("driveCanvas"),x=c.getContext("2d");x.clearRect(0,0,600,250);x.fillStyle="#a9e1ff";x.fillRect(0,0,600,180);x.fillStyle="#8acb83";x.fillRect(0,175,600,75);x.fillStyle="#596574";x.fillRect(0,190,600,60);x.strokeStyle="white";x.lineWidth=5;x.setLineDash([25,20]);x.lineDashOffset=-p;x.beginPath();x.moveTo(0,222);x.lineTo(600,222);x.stroke();x.setLineDash([]);let a=70+(p%350);x.fillStyle=paint;x.beginPath();x.moveTo(a,175);x.lineTo(a+15,145);x.lineTo(a+48,135);x.lineTo(a+70,155);x.lineTo(a+115,158);x.lineTo(a+125,180);x.fill();[a+35,a+105].forEach(v=>{x.fillStyle="#17212d";x.beginPath();x.arc(v,180,13,0,7);x.fill()})}
+let driveRAF=0;$("startDrive").onclick=()=>{let p=0,btn=$("startDrive");btn.disabled=true;btn.textContent="Driving...";function run(){p+=3;drawDrive(p);if(p<360)driveRAF=requestAnimationFrame(run);else{btn.disabled=false;btn.textContent="Drive completed!";if(model<3&&level<model+1){level=model+1;localStorage.setItem("flk_car_level",String(level));$("driveMsg").textContent="🎉 "+NAMES[level]+" unlocked!";gallery()}else $("driveMsg").textContent="🏆 Great driving!";say("Test Drive completed successfully!")}}run()};
+$("closeDrive").onclick=()=>{$("driveOverlay").style.display="none";cancelAnimationFrame(driveRAF);$("startDrive").disabled=false;$("startDrive").textContent="Start Drive"};
+$("viewBtn").onclick=()=>{if(mode==="cover"){cover.visible=true;build.visible=false;camera.position.set(5.8,4.3,7.8);say("3D car view. Drag to rotate and pinch to zoom.")}else{cover.visible=false;build.visible=true;say("Build view. Tap parts to install or remove.")}};
+$("coins").onclick=()=>say("Coins are a display feature. Cars unlock by completing test drives; no payment needed.");
+init();drawDrive(0);gallery();
+</script></body></html>
