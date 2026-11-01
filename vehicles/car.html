@@ -172,7 +172,7 @@ button{font-family:inherit;cursor:pointer}
  box-shadow:0 8px 20px #0005;
  display:flex;align-items:center;justify-content:center;
  flex-direction:column;
- transform:translate(-50%,-100%);
+ transform:translate(-50%,-50%);
 }
 .drag-ghost b{font-size:30px}
 .drag-ghost small{font-size:10px;font-weight:bold}
@@ -540,9 +540,9 @@ function moveGhost(x,y){
 
  if(ghost){
 
-  
-ghost.style.left = (x - 5) + "px";
-ghost.style.top = (y + 15) + "px";
+  ghost.style.left = (x - 20) + "px";
+  ghost.style.top = (y + 25) + "px";
+
  }
 
 }
