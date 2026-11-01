@@ -178,7 +178,7 @@ button{font-family:inherit;cursor:pointer}
  box-shadow:0 8px 20px #0005;
  display:flex;align-items:center;justify-content:center;
  flex-direction:column;
- transform:translate(-50%,-50%);
+ transform:none;
 }
 .drag-ghost b{font-size:30px}
 .drag-ghost small{font-size:10px;font-weight:bold}
@@ -463,6 +463,9 @@ function removePart(p){
 
 let activePointer = null;
 
+ let dragOffsetX = 0;
+let dragOffsetY = 0;
+
 document.querySelectorAll(".part").forEach(card => {
 
  card.addEventListener("pointerdown", function(e){
@@ -472,6 +475,10 @@ document.querySelectorAll(".part").forEach(card => {
   e.preventDefault();
 
   dragPart = card.dataset.part;
+  const rect = card.getBoundingClientRect();
+
+dragOffsetX = e.clientX - rect.left;
+dragOffsetY = e.clientY - rect.top;
   activePointer = e.pointerId;
 
   ghost = document.createElement("div");
@@ -546,8 +553,8 @@ function moveGhost(x,y){
 
  if(ghost){
 
-  ghost.style.left = x + "px";
-  ghost.style.top = (y +45)+ "px";
+  ghost.style.left = (x - dragOffsetX) + "px";
+  ghost.style.top = (y - dragOffsetY) + "px";
 
  }
 
