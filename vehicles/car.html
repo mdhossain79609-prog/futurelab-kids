@@ -534,6 +534,18 @@ document.addEventListener("pointercancel",function(){
  activePointer = null;
 
 });
+ /* MOVE DRAG PART WITH FINGER */
+
+function moveGhost(x,y){
+
+ if(ghost){
+
+  ghost.style.left = x + "px";
+  ghost.style.top = (y + 40) + "px";
+
+ }
+
+}
 
 /* Tap installed parts on car to remove */
 document.querySelectorAll(".slot").forEach(slot=>{
