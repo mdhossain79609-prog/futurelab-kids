@@ -521,10 +521,27 @@ const installed={};
 const status=document.getElementById("status");
  /* CUSTOMIZATION STUDIO BUTTONS */
 
+/* COLOR STUDIO */
+
+const colorPanel=document.getElementById("colorPanel");
+
 document.getElementById("colorStudio").addEventListener("click",()=>{
- say("🎨 Color Studio is coming!");
+ colorPanel.style.display=
+ colorPanel.style.display==="block"?"none":"block";
 });
 
+document.querySelectorAll(".color-options button").forEach(button=>{
+ button.addEventListener("click",()=>{
+  const color=button.dataset.color;
+
+  document.querySelectorAll(".slot-body").forEach(slot=>{
+   slot.style.background=color;
+   slot.style.boxShadow="0 0 15px "+color;
+  });
+
+  say("🎨 Car body color changed!");
+ });
+});
 document.getElementById("lightStudio").addEventListener("click",()=>{
  say("💡 Lighting Studio is coming!");
 });
