@@ -760,6 +760,44 @@ document.getElementById("zoomReset").addEventListener("click",()=>{
  zoomLevel = 1;
  updateZoom();
 });
+
+ /* MOVE ZOOMED CAR */
+
+let panX = 0;
+let panY = 0;
+let startX = 0;
+let startY = 0;
+let isPanning = false;
+
+buildArea.addEventListener("pointerdown",function(e){
+
+ if(zoomLevel <= 1) return;
+ if(e.target.closest(".zoom-controls")) return;
+
+ e.preventDefault();
+
+ isPanning = true;
+ startX = e.clientX - panX;
+ startY = e.clientY - panY;
+
+ buildArea.setPointerCapture(e.pointerId);
+});
+
+buildArea.addEventListener("pointermove",function(e){
+
+ if(!isPanning) return;
+
+ panX = e.clientX - startX;
+ panY = e.clientY - startY;
+
+ updateZoom();
+});
+
+["pointerup","pointercancel"].forEach(ev=>{
+ buildArea.addEventListener(ev,function(){
+  isPanning = false;
+ });
+});
 </script>
 </body>
 </html>
