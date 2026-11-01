@@ -68,7 +68,7 @@ function makeCover(){
 function init(){
  if(!window.THREE){say("3D viewer did not load. Check your internet and reload.");return}
  scene=new THREE.Scene();scene.background=new THREE.Color(0xe7f4ff);
- camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(5.8,4.3,7.8);
+ camera=new THREE.PerspectiveCamera(38,1,.1,100);camera.position.set(5.8,4.3,7.8);camera.lookAt(0,0,0);
  renderer=new THREE.WebGLRenderer({canvas:$("view"),antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;
  scene.add(new THREE.HemisphereLight(0xffffff,0x7892ad,2));let l=new THREE.DirectionalLight(0xffffff,2.3);l.position.set(4,8,6);l.castShadow=true;scene.add(l);
  let floor=new THREE.Mesh(new THREE.CircleGeometry(5.8,48),material(0xd8eafb));floor.rotation.x=-Math.PI/2;floor.position.y=-.06;scene.add(floor);
