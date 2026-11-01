@@ -468,6 +468,19 @@ const icons={
 };
 const installed={};
 const status=document.getElementById("status");
+ /* CUSTOMIZATION STUDIO BUTTONS */
+
+document.getElementById("colorStudio").addEventListener("click",()=>{
+ say("🎨 Color Studio is coming!");
+});
+
+document.getElementById("lightStudio").addEventListener("click",()=>{
+ say("💡 Lighting Studio is coming!");
+});
+
+document.getElementById("musicStudio").addEventListener("click",()=>{
+ say("🎵 Music Studio is coming!");
+});
 let ghost=null,dragPart=null;
 
 function say(t){status.textContent=t}
