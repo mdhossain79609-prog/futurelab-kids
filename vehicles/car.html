@@ -600,6 +600,10 @@ function updateTestButton(){
 function canInstall(p){
  if(p==="chassis")return true;
  if(!installed.chassis)return false;
+ if(p==="cover"){
+ return installed.body &&
+ !installed.cover;
+}
  if(p==="body"){
   return ["engine","axle","wheels","steering","brakes"].every(x=>installed[x]);
  }
@@ -615,6 +619,13 @@ function putPart(p){
   return;
  }
  installed[p]=true;
+ if(p==="cover"){
+ document.querySelectorAll(".slot").forEach(slot=>{
+  if(slot.dataset.slot!=="cover"){
+   slot.style.visibility="hidden";
+  }
+ });
+}
  document.querySelectorAll('[data-slot="'+p+'"]').forEach(slot=>{
   slot.classList.add("filled");
   slot.innerHTML='<span class="installed-icon">'+icons[p]+'</span>';
