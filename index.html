@@ -1515,19 +1515,21 @@ button{
             </button>
 
 
-            <!-- Pilot -->
+            <!-- PILOT -->
 
-           <button class="career-card" onclick="openAviationScreen()">
+<button class="career-card"
+        type="button"
+        onclick="openAviationScreen()">
 
-                <span class="career-emoji">✈️</span>
+    <span class="career-emoji">✈️</span>
 
-                <h3>Pilot</h3>
+    <h3>Pilot</h3>
 
-                <p>
-                    Discover airplanes, flight and aviation.
-                </p>
+    <p>
+        Discover helicopters, airplanes and aviation.
+    </p>
 
-            </button>
+</button>
 
 
             <!-- Scientist -->
@@ -2034,7 +2036,6 @@ function openLabScreen(){
 
 }
 
-
 function openHomeScreen(){
 
     document.getElementById("homeScreen").style.display = "block";
@@ -2046,7 +2047,6 @@ function openHomeScreen(){
     window.scrollTo(0,0);
 
 }
-
 
 function openCareerScreen(){
 
@@ -2062,17 +2062,6 @@ function openCareerScreen(){
     window.scrollTo(0,0);
 
 }
-
-    document.getElementById("homeScreen").style.display = "none";
-    document.getElementById("labScreen").style.display = "none";
-    document.getElementById("careerScreen").style.display = "block";
-    document.getElementById("builderScreen").style.display = "none";
-    document.getElementById("carBuilderScreen").style.display = "none";
-
-    window.scrollTo(0,0);
-
-}
-
 
 function openBuilderScreen(){
 
