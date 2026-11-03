@@ -2048,9 +2048,21 @@ function openHomeScreen(){
 
 }
 
+
 function openCareerScreen(){
 
-    function openAviationScreen(){
+    document.getElementById("homeScreen").style.display = "none";
+    document.getElementById("labScreen").style.display = "none";
+    document.getElementById("careerScreen").style.display = "block";
+    document.getElementById("builderScreen").style.display = "none";
+    document.getElementById("carBuilderScreen").style.display = "none";
+    document.getElementById("aviationScreen").style.display = "none";
+
+    window.scrollTo(0,0);
+
+}
+
+function openAviationScreen(){
 
     document.getElementById("homeScreen").style.display = "none";
     document.getElementById("labScreen").style.display = "none";
@@ -2068,6 +2080,7 @@ function openBuilderScreen(){
     document.getElementById("homeScreen").style.display = "none";
     document.getElementById("labScreen").style.display = "none";
     document.getElementById("careerScreen").style.display = "none";
+    document.getElementById("aviationScreen").style.display = "none";
     document.getElementById("builderScreen").style.display = "block";
     document.getElementById("carBuilderScreen").style.display = "none";
 
@@ -2075,17 +2088,19 @@ function openBuilderScreen(){
 
 }
 
-    function openCarBuilderScreen(){
+function openCarBuilderScreen(){
 
     document.getElementById("homeScreen").style.display = "none";
     document.getElementById("labScreen").style.display = "none";
     document.getElementById("careerScreen").style.display = "none";
+    document.getElementById("aviationScreen").style.display = "none";
     document.getElementById("builderScreen").style.display = "none";
     document.getElementById("carBuilderScreen").style.display = "block";
 
     window.scrollTo(0,0);
 
 }
+
 
    let chassisAngle = 0;
 
