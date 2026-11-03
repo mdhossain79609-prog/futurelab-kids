@@ -1517,7 +1517,7 @@ button{
 
             <!-- Pilot -->
 
-            <button class="career-card">
+           <button class="career-card" onclick="openAviationScreen()">
 
                 <span class="career-emoji">✈️</span>
 
@@ -1552,6 +1552,78 @@ button{
             onclick="openLabScreen()">
 
             ← Back to Lab
+
+        </button>
+
+    </div>
+
+</div>
+
+    <!-- =================================
+     AVIATION WORLD SCREEN
+================================= -->
+
+<div id="aviationScreen" class="screen"
+     style="display:none; padding-bottom:30px;">
+
+    <div class="career-header">
+
+        <div class="career-icon">✈️</div>
+
+        <h1 class="career-title">
+            Aviation World
+        </h1>
+
+        <p class="career-subtitle">
+            Explore aircraft and become a young pilot!
+        </p>
+
+    </div>
+
+    <div class="builder-container">
+
+        <!-- HELICOPTER -->
+
+        <button class="builder-card">
+
+            <div class="builder-project-icon">
+                🚁
+            </div>
+
+            <div class="builder-project-text">
+                <h3>Helicopter Builder</h3>
+                <p>Build your own helicopter with different parts.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <!-- AIRPLANE -->
+
+        <button class="builder-card">
+
+            <div class="builder-project-icon">
+                ✈️
+            </div>
+
+            <div class="builder-project-text">
+                <h3>Airplane Builder</h3>
+                <p>Build and explore your own airplane.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <!-- BACK BUTTON -->
+
+        <button class="home-back"
+            onclick="openCareerScreen()">
+
+            ← Back to Career World
 
         </button>
 
