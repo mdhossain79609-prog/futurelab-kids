@@ -17,7 +17,7 @@
       height: 100%;
       height: 100dvh;
       overflow: hidden;
-      background: #090d16;
+      background: #060911;
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
       color: #fff;
       touch-action: none;
@@ -36,28 +36,52 @@
       display: flex;
     }
 
-    /* হেডার বার */
+    /* ওপরের হেডার বার ও গাড়ি খোলার বাটন */
     #top-bar {
       flex-shrink: 0;
-      background: linear-gradient(180deg, #131b2e 0%, rgba(19, 27, 46, 0.9) 100%);
+      background: linear-gradient(180deg, #0f172a 0%, rgba(15, 23, 42, 0.85) 100%);
       padding: 8px 12px;
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid #1e293b;
-      z-index: 20;
+      z-index: 25;
     }
-    #top-bar h1 {
-      font-size: 16px;
+    .header-text {
+      text-align: left;
+    }
+    .header-text h1 {
+      font-size: 15px;
       color: #38bdf8;
       letter-spacing: 0.5px;
     }
     #step-hint {
-      font-size: 12px;
+      font-size: 11px;
       color: #fbbf24;
       font-weight: 600;
-      margin-top: 2px;
+      margin-top: 1px;
+    }
+    #disassemble-btn {
+      background: #334155;
+      border: 1px solid #f97316;
+      color: #fdba74;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    }
+    #disassemble-btn:active {
+      transform: scale(0.95);
+      background: #ea580c;
+      color: #fff;
     }
 
-    /* মূল ওয়ার্কশপ ক্যানভাস */
+    /* মূল ক্যানভাস কন্টেইনার */
     #workshop-canvas-wrap {
       flex: 1;
       position: relative;
@@ -71,12 +95,12 @@
       height: 100%;
     }
 
-    /* নিচের কন্ট্রোল বাটন বার - মোবাইল ফ্রেন্ডলি */
+    /* নিচের কন্ট্রোল বাটন বার */
     #bottom-bar {
       flex-shrink: 0;
-      background: #0f172a;
+      background: #0b1120;
       border-top: 1px solid #1e293b;
-      padding: 8px 6px;
+      padding: 6px 8px;
       padding-bottom: max(10px, env(safe-area-inset-bottom));
       display: flex;
       gap: 6px;
@@ -85,7 +109,7 @@
     }
     .btn {
       flex: 1;
-      padding: 8px 4px;
+      padding: 7px 4px;
       border-radius: 8px;
       border: 1px solid #334155;
       background: #1e293b;
@@ -99,7 +123,7 @@
       align-items: center;
       gap: 2px;
     }
-    .btn span.icon { font-size: 15px; }
+    .btn span.icon { font-size: 14px; }
     .btn.drive-btn {
       background: linear-gradient(135deg, #059669 0%, #10b981 100%);
       border-color: #34d399;
@@ -110,7 +134,7 @@
     /* পপআপ ডায়ালগ */
     .popup-tray {
       position: absolute;
-      bottom: 70px;
+      bottom: 68px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(15, 23, 42, 0.95);
@@ -163,8 +187,8 @@
       padding: 8px;
     }
     #wheel {
-      width: 125px;
-      height: 125px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       border: 12px solid #334155;
       background: #1e293b;
@@ -182,8 +206,8 @@
       background: #475569;
     }
     #horn {
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       background: #dc2626;
       border: 2px solid #fff;
@@ -202,7 +226,7 @@
       align-items: flex-end;
     }
     .pedal {
-      width: 52px;
+      width: 50px;
       border-radius: 6px;
       display: flex;
       align-items: center;
@@ -211,8 +235,8 @@
       font-size: 11px;
       box-shadow: inset 0 0 8px #000, 0 3px 6px rgba(0,0,0,0.5);
     }
-    #p-brake { height: 75px; background: #991b1b; border: 2px solid #ef4444; }
-    #p-gas { height: 105px; background: #166534; border: 2px solid #22c55e; }
+    #p-brake { height: 70px; background: #991b1b; border: 2px solid #ef4444; }
+    #p-gas { height: 100px; background: #166534; border: 2px solid #22c55e; }
     .c-btn {
       background: #1e293b;
       border: 1px solid #38bdf8;
@@ -229,8 +253,13 @@
   <!-- স্ক্রিন ১: কার ওয়ার্কশপ -->
   <div id="workshop-screen" class="screen active">
     <div id="top-bar">
-      <h1>🏎️ ৩ডি স্পোর্টস কার বিল্ডার</h1>
-      <div id="step-hint">👉 ধাপ ১: নিচে থেকে শক্ত 'চেসিস ফ্রেম'টি টেনে গাড়ির প্ল্যাটফর্মে বসান</div>
+      <div class="header-text">
+        <h1>🏎️ ৩ডি স্পোর্টস কার ওয়ার্কশপ</h1>
+        <div id="step-hint">👉 ধাপ ১: নিচে থেকে 'চেসিস ফ্রেম'টি প্ল্যাটফর্মে বসান</div>
+      </div>
+      <button id="disassemble-btn" onclick="undoAssemble()">
+        <span>🔧</span> পার্টস খুলুন
+      </button>
     </div>
 
     <div id="workshop-canvas-wrap">
@@ -244,7 +273,7 @@
       <div class="color-swatch" style="background:#eab308;" onclick="pickCarColor('#eab308')"></div>
       <div class="color-swatch" style="background:#10b981;" onclick="pickCarColor('#10b981')"></div>
       <div class="color-swatch" style="background:#a855f7;" onclick="pickCarColor('#a855f7')"></div>
-      <div class="color-swatch" style="background:#0f172a;" onclick="pickCarColor('#1e293b')"></div>
+      <div class="color-swatch" style="background:#1e293b;" onclick="pickCarColor('#1e293b')"></div>
     </div>
 
     <!-- লাইটিং পপআপ -->
@@ -255,14 +284,14 @@
       <div class="opt-chip" onclick="pickLighting('gold')">🔥 গোল্ডেন ফ্লেম</div>
     </div>
 
-    <!-- মিউজিক পপআপ -->
+    <!-- সাউন্ড পপআপ -->
     <div id="music-pop" class="popup-tray">
       <div class="opt-chip" onclick="playLoudAudio('engine')">🔥 টার্বো রেভ</div>
       <div class="opt-chip" onclick="playLoudAudio('beat')">🎧 ড্রাইভ বিট</div>
-      <div class="opt-chip" onclick="playLoudAudio('siren')">🚨 রেসিং হর্ন</div>
+      <div class="opt-chip" onclick="playLoudAudio('siren')">🚨 রেসিং সাইরেন</div>
     </div>
 
-    <!-- নিচে ফিক্সড ও স্পষ্ট বাটন বার -->
+    <!-- নিচের ফিক্সড কন্ট্রোল বার -->
     <div id="bottom-bar">
       <button class="btn" onclick="togglePopup('color-pop')"><span class="icon">🎨</span>কালার</button>
       <button class="btn" onclick="togglePopup('light-pop')"><span class="icon">💡</span>নিয়ন লাইট</button>
@@ -291,7 +320,7 @@
 
       <button class="c-btn" id="ignition-btn" style="background:#ea580c; border-color:#f97316;" onclick="toggleEngine()">🔥 ইঞ্জিন স্টার্ট</button>
 
-      <!-- নিখুঁত স্পোর্টস প্যাডেলস -->
+      <!-- স্পোর্টস প্যাডেলস -->
       <div class="pedal-box">
         <div class="pedal" id="p-brake">ব্রেক</div>
         <div class="pedal" id="p-gas">এক্সেল</div>
@@ -300,12 +329,12 @@
   </div>
 
   <script>
-    // --- অডিও সিন্থেসাইজার (শতভাগ অফলাইন ও লাউড) ---
+    // --- অডিও সিন্থেসাইজার (শতভাগ অফলাইন ও স্পষ্ট সাউন্ড) ---
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     const aCtx = new AudioContextClass();
     let engineOsc = null;
 
-    function beep(freq, type, dur, vol = 0.5) {
+    function playTone(freq, type, dur, vol = 0.5) {
       try {
         if (aCtx.state === 'suspended') aCtx.resume();
         const o = aCtx.createOscillator();
@@ -322,29 +351,34 @@
     }
 
     function playSnap() {
-      beep(520, 'triangle', 0.1, 0.7);
-      setTimeout(() => beep(820, 'sine', 0.2, 0.8), 80);
+      playTone(520, 'triangle', 0.1, 0.7);
+      setTimeout(() => playTone(840, 'sine', 0.2, 0.8), 70);
+    }
+
+    function playDetachSound() {
+      playTone(600, 'sawtooth', 0.1, 0.5);
+      setTimeout(() => playTone(300, 'sine', 0.15, 0.6), 60);
     }
 
     function playHorn() {
-      beep(440, 'sawtooth', 0.35, 0.9);
-      beep(554, 'sawtooth', 0.35, 0.9);
+      playTone(440, 'sawtooth', 0.35, 0.9);
+      playTone(554, 'sawtooth', 0.35, 0.9);
     }
 
     function playLoudAudio(type) {
       hidePopups();
       if (type === 'engine') {
-        [80, 110, 160, 240, 320].forEach((f, i) => setTimeout(() => beep(f, 'sawtooth', 0.35, 0.8), i * 120));
+        [80, 110, 160, 240, 320].forEach((f, i) => setTimeout(() => playTone(f, 'sawtooth', 0.35, 0.8), i * 110));
       } else if (type === 'beat') {
-        [120, 260, 120, 380].forEach((f, i) => setTimeout(() => beep(f, 'square', 0.2, 0.7), i * 160));
+        [120, 260, 120, 380].forEach((f, i) => setTimeout(() => playTone(f, 'square', 0.2, 0.7), i * 150));
       } else {
-        [650, 850, 650, 850].forEach((f, i) => setTimeout(() => beep(f, 'triangle', 0.25, 0.9), i * 150));
+        [650, 850, 650, 850].forEach((f, i) => setTimeout(() => playTone(f, 'triangle', 0.25, 0.9), i * 140));
       }
     }
 
-    // --- পার্টস ও ধারাবাহিকতার তালিকা (Sequential Steps) ---
+    // --- পার্টস ও ধারাবাহিকতা ---
     const STEPS = [
-      { id: 'chassis', name: '১. চেসিস ফ্রেম', hint: "👉 ধাপ ১: নিচে থেকে শক্ত 'চেসিস ফ্রেম'টি টেনে গাড়ির প্ল্যাটফর্মে বসান" },
+      { id: 'chassis', name: '১. চেসিস ফ্রেম', hint: "👉 ধাপ ১: নিচে থেকে 'চেসিস ফ্রেম'টি প্ল্যাটফর্মে বসান" },
       { id: 'wheels', name: '২. স্পোর্টস চাকা ও রিম', hint: "👉 ধাপ ২: চমৎকার অ্যালয় রিমসহ 'স্পোর্টস চাকা' জোড়া লাগান" },
       { id: 'engine', name: '৩. টুইন টার্বো ইঞ্জিন', hint: "👉 ধাপ ৩: শক্তিশালী 'টার্বো ইঞ্জিন'টি মাঝখানে বসান" },
       { id: 'cockpit', name: '৪. রেসিং সিট ও স্টিয়ারিং', hint: "👉 ধাপ ৪: ভেতরের 'ককপিট ও স্টিয়ারিং' অংশটি ড্র্যাগ করুন" },
@@ -355,7 +389,7 @@
     let currentStepIndex = 0;
     let carColor = '#ef4444';
     let underglowColor = '#00f0ff';
-    let underglowGlow = 'rgba(0, 240, 255, 0.8)';
+    let underglowGlow = 'rgba(0, 240, 255, 0.85)';
 
     const wWrap = document.getElementById('workshop-canvas-wrap');
     const wCanvas = document.getElementById('wCanvas');
@@ -363,7 +397,6 @@
     let W = 0, H = 0;
     let stageX = 0, stageY = 0;
 
-    // পার্টস ডেটা ও স্ক্রিনে ভিন্ন ভিন্ন স্বতন্ত্র অবস্থান (Discrete Slots)
     let parts = [
       { id: 'chassis', name: 'চেসিস ফ্রেম', x: 0, y: 0, sx: 0, sy: 0, snapped: false },
       { id: 'wheels', name: 'স্পোর্টস চাকা', x: 0, y: 0, sx: 0, sy: 0, snapped: false },
@@ -377,16 +410,17 @@
       W = wCanvas.width = wWrap.clientWidth;
       H = wCanvas.height = wWrap.clientHeight;
       stageX = W / 2;
-      stageY = H * 0.38; // গাড়ির মূল প্ল্যাটফর্ম উপরে সুষম দূরত্বে
+      // ১. গাড়ি রাখার জায়গা উপরে শিফট করা হয়েছে (H এর ২৯% এ)
+      stageY = H * 0.29;
 
-      // নিচে পার্টস রাখার আলাদা আলাদা জায়গা (২ সারিতে ৩টি করে পৃথক স্লট)
-      const trayTop = H * 0.68;
+      // নিচে পার্টস রাখার সুবিন্যস্ত ও আলাদা স্লট (২ সারিতে ৩টি করে পৃথক ঘর)
+      const trayTop = H * 0.58;
       const colW = W / 3;
       parts.forEach((p, idx) => {
         const row = Math.floor(idx / 3);
         const col = idx % 3;
         const px = colW * col + colW / 2;
-        const py = trayTop + row * (H * 0.14) + 18;
+        const py = trayTop + row * (H * 0.18) + 24;
         p.sx = px;
         p.sy = py;
         if (!p.snapped && !dragTarget) {
@@ -398,167 +432,243 @@
 
     function updateStepHint() {
       const hintEl = document.getElementById('step-hint');
+      const disBtn = document.getElementById('disassemble-btn');
       if (currentStepIndex < STEPS.length) {
         hintEl.innerText = STEPS[currentStepIndex].hint;
         hintEl.style.color = '#fbbf24';
       } else {
-        hintEl.innerHTML = "🎉 <strong style='color:#34d399;'>দারুণ! স্পোর্টস কার তৈরি সম্পন্ন! এবার 'টেস্ট ড্রাইভ' বাটনে চাপ দিন!</strong>";
+        hintEl.innerHTML = "🎉 <strong style='color:#34d399;'>দারুণ! স্পোর্টস কার সম্পূর্ণ! এবার 'টেস্ট ড্রাইভ' দিন!</strong>";
+      }
+      // যদি অন্তত ১টি পার্ট লাগানো থাকে তবেই খোলা যাবে
+      disBtn.style.opacity = currentStepIndex > 0 ? '1' : '0.5';
+    }
+
+    // --- গাড়ি খোলার লজিক (Disassembly / Undo) ---
+    function undoAssemble() {
+      if (currentStepIndex === 0) return;
+      currentStepIndex--;
+      const targetStep = STEPS[currentStepIndex];
+      const partToDetach = parts.find(p => p.id === targetStep.id);
+      if (partToDetach) {
+        partToDetach.snapped = false;
+        partToDetach.x = partToDetach.sx;
+        partToDetach.y = partToDetach.sy;
+        playDetachSound();
+        updateStepHint();
       }
     }
 
-    // --- পার্টসগুলোর স্পষ্ট ও নিখুঁত গ্রাফিক্স ড্রয়িং ---
+    // --- পার্টসগুলোর স্পষ্ট, নিখুঁত ও সহজে চেনা যায় এমন গ্রাফিক্স ---
     function drawPartIcon(ctx, p, isGhost = false) {
       ctx.save();
       if (isGhost) {
-        ctx.globalAlpha = 0.25;
+        ctx.globalAlpha = 0.28;
         ctx.strokeStyle = '#38bdf8';
         ctx.setLineDash([4, 4]);
       }
 
       switch (p.id) {
-        case 'chassis': // মজবুত মেটালিক ফ্রেম
-          ctx.fillStyle = '#334155';
-          ctx.fillRect(-85, -6, 170, 12);
-          ctx.fillStyle = '#64748b';
-          ctx.fillRect(-70, -14, 140, 8);
-          ctx.fillRect(-60, 6, 120, 6);
+        case 'chassis': // মজবুত মেটাল ফ্রেম + হলুদ শক-অ্যাবজরবার ও এক্সেল
+          // ফ্রেম বিম
+          ctx.fillStyle = '#1e293b';
+          ctx.fillRect(-90, -5, 180, 10);
+          ctx.fillStyle = '#475569';
+          ctx.fillRect(-75, -12, 150, 7);
+          ctx.fillRect(-65, 5, 130, 5);
+
+          // হলুদ সাসপেনশন স্প্রিং (Shock Absorber Springs)
+          [-60, 60].forEach(sx => {
+            ctx.fillStyle = '#eab308';
+            ctx.fillRect(sx - 4, -14, 8, 18);
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 1.5;
+            for(let y = -12; y <= 2; y += 4) {
+              ctx.beginPath();
+              ctx.moveTo(sx - 4, y);
+              ctx.lineTo(sx + 4, y + 2);
+              ctx.stroke();
+            }
+          });
           break;
 
-        case 'wheels': // অ্যালয় রিমসহ ২টি চমৎকার বড় চাকা
-          [-55, 55].forEach(wx => {
-            // টায়ার
-            ctx.fillStyle = '#0f172a';
+        case 'wheels': // খাঁজকাটা কালো রাবার টায়ার + উজ্জ্বল স্টার-অ্যালয় রিম + লাল ব্রেক ক্যালিপার
+          [-60, 60].forEach(wx => {
+            // রাবার টায়ার
+            ctx.fillStyle = '#090d16';
             ctx.beginPath();
-            ctx.arc(wx, 0, 23, 0, Math.PI * 2);
+            ctx.arc(wx, 0, 24, 0, Math.PI * 2);
             ctx.fill();
             ctx.strokeStyle = '#334155';
             ctx.lineWidth = 3;
             ctx.stroke();
 
-            // ৫-স্পোক অ্যালয় রিম
+            // টায়ারের খাঁজ (Tread Lines)
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 2;
+            for (let a = 0; a < Math.PI * 2; a += Math.PI / 4) {
+              ctx.beginPath();
+              ctx.moveTo(wx + Math.cos(a) * 19, Math.sin(a) * 19);
+              ctx.lineTo(wx + Math.cos(a) * 24, Math.sin(a) * 24);
+              ctx.stroke();
+            }
+
+            // স্টার অ্যালয় রিম
             ctx.fillStyle = '#cbd5e1';
             ctx.beginPath();
-            ctx.arc(wx, 0, 13, 0, Math.PI * 2);
+            ctx.arc(wx, 0, 14, 0, Math.PI * 2);
             ctx.fill();
 
-            // ব্রেক ক্যালিপার
+            // লাল রেসিং ব্রেক ক্যালিপার
             ctx.fillStyle = '#dc2626';
             ctx.beginPath();
-            ctx.arc(wx - 4, -4, 5, 0, Math.PI * 2);
+            ctx.arc(wx - 4, -5, 6, 0, Math.PI * 2);
             ctx.fill();
 
-            // রিম সেন্টার
-            ctx.fillStyle = '#1e293b';
+            // রিম স্পোকস ও সেন্টার ক্যাপ
+            ctx.fillStyle = '#0f172a';
             ctx.beginPath();
-            ctx.arc(wx, 0, 4, 0, Math.PI * 2);
+            ctx.arc(wx, 0, 5, 0, Math.PI * 2);
             ctx.fill();
           });
           break;
 
-        case 'engine': // টুইন টার্বো ভি৮ ইঞ্জিন
-          ctx.fillStyle = '#f59e0b';
-          ctx.fillRect(-22, -18, 44, 28);
-          ctx.fillStyle = '#b45309';
-          ctx.fillRect(-18, -25, 36, 7);
-          ctx.fillStyle = '#60a5fa';
+        case 'engine': // টুইন-টার্বো ভি৮ ইঞ্জিন ব্লক + ক্রোম এয়ার ফিল্টার ও সিলিন্ডার হেড
+          // সিলিন্ডার ব্লক
+          ctx.fillStyle = '#dc2626'; // রেসিং রেড ইঞ্জিন কভার
+          ctx.fillRect(-24, -20, 48, 26);
+          // মেটালিক হেড
+          ctx.fillStyle = '#94a3b8';
+          ctx.fillRect(-28, -25, 56, 6);
+          // টুইন ক্রোম টার্বো ফিল্টার (Twin Turbo Air Filters)
+          ctx.fillStyle = '#38bdf8';
           ctx.beginPath();
-          ctx.arc(-14, -10, 6, 0, Math.PI * 2);
-          ctx.arc(14, -10, 6, 0, Math.PI * 2);
+          ctx.arc(-16, -11, 7, 0, Math.PI * 2);
+          ctx.arc(16, -11, 7, 0, Math.PI * 2);
           ctx.fill();
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(-6, -18, 12, 12);
           break;
 
-        case 'cockpit': // লাল রেসিং সিট ও স্টিয়ারিং
+        case 'cockpit': // লাল রেসিং বাকেট সিট + ৩-স্পোক স্টিয়ারিং হুইল
+          // স্পোর্টস সিট
           ctx.fillStyle = '#dc2626';
           ctx.beginPath();
-          ctx.moveTo(-16, 10);
-          ctx.lineTo(6, 10);
-          ctx.lineTo(2, -20);
-          ctx.lineTo(-12, -20);
+          ctx.moveTo(-18, 12);
+          ctx.lineTo(4, 12);
+          ctx.lineTo(0, -22);
+          ctx.lineTo(-14, -22);
           ctx.closePath();
           ctx.fill();
-          // স্টিয়ারিং
+          // হারনেস বেল্ট
+          ctx.strokeStyle = '#fbbf24';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(-10, -20);
+          ctx.lineTo(-6, 8);
+          ctx.stroke();
+          // স্পোর্টস স্টিয়ারিং
           ctx.strokeStyle = '#38bdf8';
           ctx.lineWidth = 3;
           ctx.beginPath();
-          ctx.arc(16, -6, 9, 0, Math.PI * 2);
+          ctx.arc(18, -6, 10, 0, Math.PI * 2);
           ctx.stroke();
+          // স্টিয়ারিং স্পোকস
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(16, -8, 4, 4);
           break;
 
-        case 'body': // অ্যারোডাইনামিক স্পোর্টস কার বডি ও উইন্ডশীল্ড
-          const grad = ctx.createLinearGradient(-110, -50, 110, 20);
-          grad.addColorStop(0, carColor);
-          grad.addColorStop(0.5, '#fff');
-          grad.addColorStop(0.55, carColor);
-          grad.addColorStop(1, '#000');
-
-          // স্পোর্টস কার সাইড প্রোফাইল কার্ভ
+        case 'body': // প্রিমিয়াম অ্যারোডাইনামিক স্পোর্টস কার বডি ও গ্লাস
+          // স্পোর্টস কার বডি প্রোফাইল
           ctx.fillStyle = carColor;
           ctx.beginPath();
-          ctx.moveTo(-105, 12); // রিয়ার লো
-          ctx.lineTo(105, 12);  // ফ্রন্ট স্প্লিটার
-          ctx.lineTo(100, -2);  // ফ্রন্ট বাম্পার
-          ctx.lineTo(70, -12);  // হুড
-          ctx.lineTo(35, -34);  // উইন্ডশীল্ড
-          ctx.lineTo(-35, -34); // রুফ
-          ctx.lineTo(-75, -12); // রিয়ার গ্লাস
-          ctx.lineTo(-102, -8); // ট্রাঙ্ক
+          ctx.moveTo(-108, 12);
+          ctx.lineTo(108, 12);  // ফ্রন্ট স্প্লিটার
+          ctx.lineTo(104, -2);
+          ctx.lineTo(72, -12);  // হুড
+          ctx.lineTo(36, -35);  // উইন্ডশীল্ড
+          ctx.lineTo(-36, -35); // রুফ
+          ctx.lineTo(-78, -12); // রিয়ার গ্লাস
+          ctx.lineTo(-105, -8); // ট্রাঙ্ক
           ctx.closePath();
           ctx.fill();
 
-          // স্পোর্টস উইন্ডো গ্লাস
-          ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
+          // স্পোর্টস হোয়াইট রেসিং স্ট্রাইপ
+          ctx.fillStyle = '#f8fafc';
+          ctx.fillRect(-25, -34, 50, 3);
+
+          // ডার্ক ব্লু স্মোকড উইন্ডশীল্ড
+          ctx.fillStyle = 'rgba(56, 189, 248, 0.75)';
           ctx.beginPath();
-          ctx.moveTo(30, -31);
-          ctx.lineTo(-30, -31);
-          ctx.lineTo(-58, -14);
-          ctx.lineTo(52, -14);
+          ctx.moveTo(32, -32);
+          ctx.lineTo(-32, -32);
+          ctx.lineTo(-60, -14);
+          ctx.lineTo(54, -14);
           ctx.closePath();
           ctx.fill();
 
-          // বডি শ্যাডো ও স্পোর্টস লাইন
-          ctx.strokeStyle = 'rgba(0,0,0,0.35)';
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(-70, 0);
-          ctx.lineTo(75, 0);
-          ctx.stroke();
+          // সাইড মিরর
+          ctx.fillStyle = carColor;
+          ctx.fillRect(18, -18, 8, 4);
           break;
 
-        case 'spoiler': // রেসিং জিটি উইং ও এলইডি লাইট
-          // জিটি স্পয়লার
+        case 'spoiler': // কার্বন জিটি উইং ও ক্রিস্টাল এলইডি হেডলাইট
+          // রেসিং স্পয়লার
           ctx.fillStyle = '#0f172a';
-          ctx.fillRect(-105, -32, 28, 5); // উইং
-          ctx.fillRect(-98, -27, 4, 16);  // উইং স্ট্যান্ড
-          ctx.fillRect(-88, -27, 4, 16);
-          // এলইডি হেডলাইট ও ব্যাকলাইট
+          ctx.fillRect(-110, -34, 32, 6); // আপার উইং
+          ctx.fillRect(-102, -28, 4, 18); // স্ট্যান্ড
+          ctx.fillRect(-92, -28, 4, 18);
+          // ক্রিস্টাল এলইডি হেডলাইট
           ctx.fillStyle = '#fef08a';
           ctx.beginPath();
-          ctx.arc(98, -4, 4, 0, Math.PI * 2); // ফ্রন্ট এলইডি
+          ctx.arc(102, -4, 5, 0, Math.PI * 2);
           ctx.fill();
+          // রিয়ার স্পোর্টস টেললাইট
           ctx.fillStyle = '#ef4444';
           ctx.beginPath();
-          ctx.arc(-102, -2, 4, 0, Math.PI * 2); // রিয়ার এলইডি
+          ctx.arc(-106, -2, 5, 0, Math.PI * 2);
           ctx.fill();
           break;
       }
       ctx.restore();
     }
 
-    // --- ওয়ার্কশপ মূল অ্যানিমেশন লুপ ---
+    // --- ওয়ার্কশপ রেন্ডারিং ---
     function renderWorkshop() {
       wCtx.clearRect(0, 0, W, H);
 
-      // ১. হাই-টেক শো-রুম প্ল্যাটফর্ম
+      // ১. উপর থেকে আসা উজ্জ্বল স্পটলাইট বিম (Spotlight on Showroom)
       wCtx.save();
+      const spotGrad = wCtx.createRadialGradient(stageX, 0, 10, stageX, stageY + 30, W * 0.45);
+      spotGrad.addColorStop(0, 'rgba(56, 189, 248, 0.2)');
+      spotGrad.addColorStop(1, 'rgba(6, 9, 17, 0)');
+      wCtx.fillStyle = spotGrad;
+      wCtx.beginPath();
+      wCtx.moveTo(stageX - 40, 0);
+      wCtx.lineTo(stageX + 40, 0);
+      wCtx.lineTo(stageX + W * 0.42, stageY + 50);
+      wCtx.lineTo(stageX - W * 0.42, stageY + 50);
+      wCtx.closePath();
+      wCtx.fill();
+
+      // ২. উজ্জ্বল হাই-টেক শো-রুম প্ল্যাটফর্ম (Clean, Visible Turntable Platform)
       wCtx.fillStyle = '#111827';
       wCtx.beginPath();
       wCtx.ellipse(stageX, stageY + 36, W * 0.42, 28, 0, 0, Math.PI * 2);
       wCtx.fill();
-      wCtx.strokeStyle = '#1e293b';
-      wCtx.lineWidth = 3;
+
+      // প্ল্যাটফর্মের নিয়ন বর্ডার
+      wCtx.strokeStyle = '#38bdf8';
+      wCtx.lineWidth = 2.5;
       wCtx.stroke();
 
-      // গাড়ির নিচে জীবন্ত নিয়ন আন্ডারগ্লো লাইটিং
+      // প্ল্যাটফর্মের সেন্ট্রাল গ্রিড লাইন
+      wCtx.strokeStyle = 'rgba(56, 189, 248, 0.2)';
+      wCtx.lineWidth = 1;
+      wCtx.beginPath();
+      wCtx.ellipse(stageX, stageY + 36, W * 0.26, 17, 0, 0, Math.PI * 2);
+      wCtx.stroke();
+
+      // গাড়ির নিচের জীবন্ত নিয়ন আন্ডারগ্লো লাইটিং
       const glowGrad = wCtx.createRadialGradient(stageX, stageY + 30, 10, stageX, stageY + 30, 120);
       glowGrad.addColorStop(0, underglowGlow);
       glowGrad.addColorStop(1, 'rgba(0,0,0,0)');
@@ -568,18 +678,17 @@
       wCtx.fill();
       wCtx.restore();
 
-      // ২. প্ল্যাটফর্মে জোড়া লাগা পার্টসগুলো ক্রমানুসারে দৃশ্যমান করা
+      // ৩. প্ল্যাটফর্মে জোড়া লাগা পার্টসগুলো ক্রমানুসারে দৃশ্যমান করা
       wCtx.save();
       wCtx.translate(stageX, stageY);
 
-      // ফ্রেম গাইড
+      // পরবর্তী যে পার্টসটি বসাতে হবে তার হালকা ঘোস্ট গাইড
       if (currentStepIndex < STEPS.length) {
         const nextPart = parts.find(p => p.id === STEPS[currentStepIndex].id);
         if (nextPart) drawPartIcon(wCtx, nextPart, true);
       }
 
-      // স্কেল বড় করে দেখানো আসল স্পোর্টস কার
-      // জোড়া লাগা পার্টসগুলো রেন্ডার:
+      // অ্যাসেম্বল হওয়া পার্টসগুলো রেন্ডার:
       const hasChassis = parts.find(p => p.id === 'chassis').snapped;
       const hasWheels = parts.find(p => p.id === 'wheels').snapped;
       const hasEngine = parts.find(p => p.id === 'engine').snapped;
@@ -591,51 +700,51 @@
       if (hasEngine && !hasBody) drawPartIcon(wCtx, { id: 'engine' });
       if (hasCockpit && !hasBody) drawPartIcon(wCtx, { id: 'cockpit' });
       if (hasBody) drawPartIcon(wCtx, { id: 'body' });
-      if (hasWheels) drawPartIcon(wCtx, { id: 'wheels' }); // চাকা বডির সাথে নিখুঁতভাবে প্রদর্শিত
+      if (hasWheels) drawPartIcon(wCtx, { id: 'wheels' }); // আসল বড় স্পোর্টস চাকা
       if (hasSpoiler) drawPartIcon(wCtx, { id: 'spoiler' });
 
       wCtx.restore();
 
-      // ৩. নিচের ওয়ার্কশপ ট্রের ব্যাকগ্রাউন্ড
-      wCtx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-      wCtx.fillRect(8, H * 0.63, W - 16, H * 0.35);
+      // ৪. নিচের ওয়ার্কশপ শেলফ কন্টেইনার
+      wCtx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      wCtx.fillRect(6, H * 0.54, W - 12, H * 0.44);
       wCtx.strokeStyle = '#1e293b';
       wCtx.lineWidth = 1;
-      wCtx.strokeRect(8, H * 0.63, W - 16, H * 0.35);
+      wCtx.strokeRect(6, H * 0.54, W - 12, H * 0.44);
 
-      // ৪. ট্রের পার্টসগুলো তাদের নিজ নিজ স্থানে স্পষ্ট করে প্রদর্শন
-      parts.forEach((p, idx) => {
+      // ৫. পার্টসগুলোর সুষম ও স্পষ্ট ডিসপ্লে (Clear Slots)
+      parts.forEach((p) => {
         if (!p.snapped) {
           const isCurrentStep = (STEPS[currentStepIndex] && STEPS[currentStepIndex].id === p.id);
           wCtx.save();
           wCtx.translate(p.x, p.y);
 
-          // স্লট বক্স
-          wCtx.fillStyle = isCurrentStep ? 'rgba(56, 189, 248, 0.15)' : '#1e293b';
+          // ব্যাকগ্রাউন্ড কার্ড
+          wCtx.fillStyle = isCurrentStep ? 'rgba(56, 189, 248, 0.18)' : '#1e293b';
           wCtx.strokeStyle = isCurrentStep ? '#38bdf8' : '#334155';
           wCtx.lineWidth = isCurrentStep ? 2 : 1;
           wCtx.beginPath();
-          wCtx.roundRect(-44, -28, 88, 56, 10);
+          wCtx.roundRect(-46, -30, 92, 60, 10);
           wCtx.fill();
           wCtx.stroke();
 
-          // মিনি আইকন স্কেল
+          // পার্টসের সুস্পষ্ট আইকন
           wCtx.save();
-          wCtx.scale(0.44, 0.44);
+          wCtx.scale(0.42, 0.42);
           drawPartIcon(wCtx, p);
           wCtx.restore();
 
-          // পার্টসের নাম
-          wCtx.fillStyle = isCurrentStep ? '#38bdf8' : '#94a3b8';
-          wCtx.font = 'bold 10px sans-serif';
+          // নাম
+          wCtx.fillStyle = isCurrentStep ? '#38bdf8' : '#cbd5e1';
+          wCtx.font = 'bold 11px sans-serif';
           wCtx.textAlign = 'center';
-          wCtx.fillText(p.name, 0, 22);
+          wCtx.fillText(p.name, 0, 24);
 
-          // তীর বা হাইলাইট
+          // তীর ও নোটিফিকেশন ডট
           if (isCurrentStep) {
             wCtx.fillStyle = '#fbbf24';
             wCtx.beginPath();
-            wCtx.arc(0, -32, 4, 0, Math.PI * 2);
+            wCtx.arc(0, -34, 4, 0, Math.PI * 2);
             wCtx.fill();
           }
 
@@ -658,15 +767,22 @@
 
     wCanvas.addEventListener('touchstart', (e) => {
       const pos = getCoords(e);
-      // শুধুমাত্র বর্তমান সক্রিয় ধাপের পার্টসটি বা যেকোনো বাকি থাকা পার্টস সিলেক্ট হবে
+
+      // যদি ওপরের গাড়ির প্ল্যাটফর্মে সরাসরি ট্যাপ করা হয়, তবে গাড়ি খোলা যাবে
+      if (Math.hypot(pos.x - stageX, pos.y - stageY) < 70 && currentStepIndex > 0) {
+        undoAssemble();
+        return;
+      }
+
+      // ট্রের পার্টস ড্র্যাগ শুরু
       for (let i = parts.length - 1; i >= 0; i--) {
         const p = parts[i];
-        if (!p.snapped && Math.hypot(pos.x - p.x, pos.y - p.y) < 45) {
+        if (!p.snapped && Math.hypot(pos.x - p.x, pos.y - p.y) < 46) {
           // ধারাবাহিকতা পরীক্ষা
           if (STEPS[currentStepIndex] && STEPS[currentStepIndex].id !== p.id) {
-            document.getElementById('step-hint').innerText = "⚠️ অনুগ্রহ করে আগে " + STEPS[currentStepIndex].name + " লাগান!";
+            document.getElementById('step-hint').innerText = "⚠️ আগে " + STEPS[currentStepIndex].name + " লাগান!";
             document.getElementById('step-hint').style.color = '#f87171';
-            beep(220, 'sawtooth', 0.15, 0.5);
+            playTone(220, 'sawtooth', 0.15, 0.5);
             return;
           }
           dragTarget = p;
@@ -687,9 +803,9 @@
 
     wCanvas.addEventListener('touchend', () => {
       if (!dragTarget) return;
-      // প্ল্যাটফর্মের কাছাকাছি নিয়ে ছাড়লে লক হবে
+      // প্ল্যাটফর্মের কাছে আনলে স্বয়ংক্রিয় লক হবে
       const dist = Math.hypot(dragTarget.x - stageX, dragTarget.y - stageY);
-      if (dist < 85) {
+      if (dist < 90) {
         dragTarget.snapped = true;
         dragTarget.x = stageX;
         dragTarget.y = stageY;
@@ -769,7 +885,7 @@
       isRunning = !isRunning;
       const b = document.getElementById('ignition-btn');
       if (isRunning) {
-        b.innerText = "🛑 ইঞ্জিন বন্ধ";
+        b.innerText = "🛑 বন্ধ করুন";
         b.style.background = "#dc2626";
         targetSpeed = 4;
         startMotorSound();
@@ -808,7 +924,7 @@
       speed = targetSpeed = 0;
     }
 
-    // প্যাডেল
+    // প্যাডেলস
     const gasBtn = document.getElementById('p-gas');
     const brakeBtn = document.getElementById('p-brake');
 
@@ -825,7 +941,7 @@
       targetSpeed = 0;
     });
 
-    // স্টিয়ারিং টাচ
+    // স্টিয়ারিং
     const wheelEl = document.getElementById('wheel');
     wheelEl.addEventListener('touchmove', (e) => {
       e.preventDefault();
@@ -847,11 +963,11 @@
       speed += (targetSpeed - speed) * 0.08;
       roadY += speed;
 
-      // পার্শ্ববর্তী ঘাস ও ট্র্যাক
+      // ঘাস ও সাইড ট্র্যাক
       rCtx.fillStyle = '#064e3b';
       rCtx.fillRect(0, 0, rW, rH);
 
-      // আঁকাবাঁকা পিচঢালা সড়ক
+      // আঁকাবাঁকা সড়ক
       rCtx.fillStyle = '#1e293b';
       rCtx.beginPath();
       rCtx.moveTo(rW * 0.15, 0);
@@ -860,7 +976,7 @@
       rCtx.lineTo(rW * 0.15, rH);
       rCtx.fill();
 
-      // রাস্তার মাঝের ডিভাইডার লাইন
+      // ডিভাইডার লাইন
       rCtx.strokeStyle = '#f8fafc';
       rCtx.lineWidth = 4;
       rCtx.setLineDash([22, 22]);
@@ -871,26 +987,26 @@
       rCtx.stroke();
       rCtx.setLineDash([]);
 
-      // আপনার তৈরি স্পোর্টস কারটি ট্র্যাকে রেন্ডার (টপ-ডাউন থ্রিডি ভিউ)
+      // স্পোর্টস কার টেস্ট ড্রাইভ ভিউ
       rCtx.save();
       rCtx.translate(rCarX, rCarY);
       rCtx.rotate((steerAngle * Math.PI / 180) * 0.4);
 
-      // টেস্ট রোডে নিয়ন আন্ডারগ্লো
+      // আন্ডারগ্লো
       rCtx.shadowColor = underglowColor;
       rCtx.shadowBlur = 16;
 
-      // স্পোর্টস কার বডি শেপ
+      // বডি
       rCtx.fillStyle = carColor;
       rCtx.beginPath();
       rCtx.roundRect(-24, -46, 48, 92, 10);
       rCtx.fill();
 
-      // রেসিং উইন্ডশীল্ড ও গ্লাস
+      // গ্লাস
       rCtx.fillStyle = '#0284c7';
       rCtx.fillRect(-18, -26, 36, 24);
 
-      // স্পোর্টস স্পয়লার উইং
+      // জিটি স্পয়লার
       rCtx.fillStyle = '#0f172a';
       rCtx.fillRect(-26, 40, 52, 7);
 
@@ -913,13 +1029,11 @@
       }
     }
 
-    // উইন্ডো রিসাইজ
     window.addEventListener('resize', () => {
       resizeCanvas();
       if (document.getElementById('drive-screen').classList.contains('active')) initDriveRoad();
     });
 
-    // চালু করা
     resizeCanvas();
     updateStepHint();
     renderWorkshop();
