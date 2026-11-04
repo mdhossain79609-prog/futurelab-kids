@@ -25,7 +25,13 @@ body{
 ========================= */
 
 .screen{
+    display:none;
     min-height:100vh;
+}
+
+/* Only Home Screen visible at start */
+#homeScreen{
+    display:block;
 }
 
 button{
@@ -875,16 +881,63 @@ button{
 
 <script>
 
-function openLabScreen(){
+// COMMON SCREEN CONTROL
 
-    document.getElementById("homeScreen").style.display = "none";
-    document.getElementById("labScreen").style.display = "block";
-    document.getElementById("careerScreen").style.display = "none";
-    document.getElementById("builderScreen").style.display = "none";
-    document.getElementById("carBuilderScreen").style.display = "none";
+function showScreen(screenId){
+
+    document.querySelectorAll(".screen").forEach(function(screen){
+        screen.style.display = "none";
+    });
+
+    const target = document.getElementById(screenId);
+
+    if(target){
+        target.style.display = "block";
+    }
 
     window.scrollTo(0,0);
+}
 
+
+// HOME SCREEN
+
+function openHomeScreen(){
+    showScreen("homeScreen");
+}
+
+
+// CATEGORY SCREEN
+
+function openLabScreen(){
+    showScreen("labScreen");
+}
+
+
+// CAREER SCREEN
+
+function openCareerScreen(){
+    showScreen("careerScreen");
+}
+
+
+// AVIATION WORLD
+
+function openAviationScreen(){
+    showScreen("aviationScreen");
+}
+
+
+// JUNIOR BUILDER
+
+function openBuilderScreen(){
+    showScreen("builderScreen");
+}
+
+
+// CAR BUILDER
+
+function openCarBuilderScreen(){
+    showScreen("carBuilderScreen");
 }
 
 function openHomeScreen(){
