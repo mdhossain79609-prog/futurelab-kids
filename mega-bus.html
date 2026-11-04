@@ -1,1 +1,293 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="২০টি রঙিন অংশ জোড়া লাগিয়ে আধুনিক বাস তৈরি করো।">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>🚌 বাস তৈরি করো</title>
+<style>
+:root{--ink:#0f172a;--paper:#fff;--muted:#f1f5f9;--soft:#64748b;--control:#475569;--active:#22d3ee;--shadow:#0003}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:system-ui,sans-serif;background:#fff;color:var(--ink);user-select:none;-webkit-user-select:none;touch-action:none}
+main{display:flex;flex-direction:column;height:100dvh;height:100vh}
+@supports(height:100dvh){main{height:100dvh}}
+header{display:flex;align-items:center;gap:6px;padding:6px 8px 4px}
+h1{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(1rem,4.6vw,1.75rem);font-weight:800;
+background:linear-gradient(90deg,#0284c7,#8b5cf6,#f43f5e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{border-radius:99px;padding:4px 10px;font-size:13px;font-weight:700;border:0}
+#count{background:var(--muted)}
+#reset{background:#1e293b;color:#fff;cursor:pointer}
+#boardWrap{flex:0 0 38%;min-height:0;padding:0 8px 4px;position:relative}
+#board{position:absolute;inset:0 8px 4px;border:2px dashed #93c5fd;border-radius:8px;overflow:hidden;
+background:linear-gradient(180deg,#cfe8fb,#f3f9fd);transition:background .5s}
+#board.night{background:linear-gradient(180deg,#0b1026,#1e2a55)}
+#board svg{position:absolute;inset:0;width:100%;height:100%}
+#hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:600;color:var(--soft);text-align:center;padding:16px}
+#tray{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;padding:6px;background:#fff;box-shadow:0 -4px 12px #0001;border-radius:20px 20px 0 0}
+#tray{flex:1;min-height:0;align-content:center}
+@media(max-width:640px){#tray{grid-template-columns:repeat(5,1fr);gap:4px;padding:6px}.slot{height:clamp(48px,9vh,78px)}.slot span{font-size:11px}}
+.slot{height:clamp(54px,9vh,90px);border-radius:8px;background:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.slot svg{width:100%;height:70%;filter:drop-shadow(0 2px 2px #0004);cursor:grab}
+.slot span{font-size:10px;color:var(--soft);white-space:nowrap;overflow:hidden;max-width:100%}
+.slot.gone>*{visibility:hidden}
+#controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px;padding:6px 6px 8px;max-width:100vw;overflow:hidden;background:#fff}
+.btns{display:flex;gap:4px;flex-shrink:1;min-width:0}
+.cbtn{width:clamp(44px,13vw,62px);height:clamp(44px,13vw,62px);border-radius:8px;border:0;color:#fff;font-weight:800;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 4px 0 var(--shadow);line-height:1.1;cursor:pointer}
+.cbtn b{font-size:20px}
+.cbtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--shadow)}
+#bColor{background:linear-gradient(135deg,#f43f5e,#f59e0b,#22c55e,#3b82f6)}
+#bLight{background:linear-gradient(135deg,#facc15,#f97316)}
+#bStart{background:linear-gradient(135deg,#22c55e,#15803d)}
+#bStart.on{background:linear-gradient(135deg,#ef4444,#991b1b)}
+#remote{display:grid;grid-template-columns:repeat(4,clamp(30px,8.5vw,40px));grid-template-rows:repeat(2,clamp(30px,8.5vw,40px));gap:3px;padding:5px;flex-shrink:0;border-radius:8px;background:linear-gradient(160deg,#334155,var(--ink));box-shadow:0 4px 0 #0005}
+.r{border:0;border-radius:8px;background:var(--control);color:#fff;font-size:17px;font-weight:800;cursor:pointer}
+.r:active,.r.act{background:var(--active);color:var(--ink)}
+.r.run{background:#16a34a}.r.run.act{background:#facc15}
+.cbtn:disabled,.r:disabled{opacity:.4}
+#drag{position:fixed;pointer-events:none;z-index:50;filter:drop-shadow(0 6px 6px #0005)}
+#msg{position:fixed;left:50%;top:60px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:6px 14px;border-radius:99px;font-size:13px;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none;z-index:60}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.15}}
+@keyframes blink2{0%,49%{opacity:.15}50%,100%{opacity:1}}
+.bl1{animation:blink .8s infinite}.bl2{animation:blink2 .8s infinite}
+</style>
+</head>
+<body>
+<main>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+<header>
+  <h1>🚌 বাস তৈরি করো</h1>
+  <span id="count" class="pill">0 / 20</span>
+  <button id="reset" class="pill">আবার শুরু</button>
+</header>
+<div id="boardWrap"><div id="board">
+  <svg id="scene" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <radialGradient id="beam" cx="0" cy="0.5" r="1"><stop offset="0" stop-color="#fff7b0" stop-opacity=".95"/><stop offset="1" stop-color="#fff7b0" stop-opacity="0"/></radialGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <g id="mover"><g id="facer"><g id="tilter"><g id="bus"></g><g id="lights"></g></g></g></g>
+  </svg>
+  <div id="hint">নিচের ২০টি অংশ টেনে এখানে বসাও</div>
+</div></div>
+<section id="tray"></section>
+<div id="controls">
+  <div class="btns">
+    <button class="cbtn" id="bColor"><b>🎨</b>১ রং</button>
+    <button class="cbtn" id="bLight"><b>💡</b>২ আলো</button>
+    <button class="cbtn" id="bSound" style="background:linear-gradient(135deg,#0ea5e9,#6366f1)"><b>🔊</b>সাউন্ড</button>
+    <button class="cbtn" id="bStart"><b>▶</b>৩ স্টার্ট</button>
+  </div>
+  <div id="remote" title="৪ রিমোট">
+    <button class="r" data-k="faster" aria-label="গতি বাড়াও">＋</button>
+    <button class="r" data-k="left" aria-label="বামে চালাও">◀</button>
+    <button class="r" data-k="right" aria-label="ডানে চালাও">▶</button>
+    <button class="r" data-k="horn" aria-label="বাসের হর্ন">📣</button>
+    <button class="r" data-k="slower" aria-label="গতি কমাও">−</button>
+    <button class="r" data-k="turn" aria-label="দিক বদলাও">⇄</button>
+    <button class="r run" data-k="run" style="grid-column:span 2;font-size:13px">🚌 রান</button>
+  </div>
+</div>
+</main>
+<div id="msg"></div>
 
+<script>
+// ---------- বাসের ২০টি অংশের ডিজাইন ----------
+const BUS_RULES={parts:20,minSpeed:60,maxSpeed:260,speedStep:40};
+function adjustedSpeed(current,change){return Math.max(BUS_RULES.minSpeed,Math.min(BUS_RULES.maxSpeed,current+change));}
+const VB={x:20,y:30,w:1100,h:280};
+const S='stroke="#1e293b" stroke-width="2.5"';
+const g=c=>`url(#g-${c})`;
+const sh=(x,y,w,h)=>`<rect x="${x+w*.05}" y="${y+h*.08}" width="${w*.9}" height="${Math.max(3,h*.12)}" rx="4" fill="#fff" opacity=".4"/>`;
+const wheel=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${g('dark')}" ${S}/><circle cx="${x}" cy="${y}" r="${r-8}" fill="${g('silver')}" stroke="#475569" stroke-width="2"/><g class="wheel" data-c="${x},${y}"><path d="M${x-r+6},${y} H${x+r-6} M${x},${y-r+6} V${y+r-6}" stroke="#1e293b" stroke-width="4"/></g><circle cx="${x}" cy="${y}" r="6" fill="${g('gold')}"/>`;
+
+const PARTS=[
+  // ১. মূল বডি
+  {id:1,n:"বাসের মূল বডি",b:[140,102,820,118],a:`<rect x="145" y="105" width="810" height="112" rx="16" fill="${g('blue')}" ${S}/>${sh(145,105,810,112)}<rect x="145" y="185" width="810" height="32" rx="4" fill="${g('dark')}" opacity=".3"/>`},
+  // ২. সামনের উইন্ডশীল্ড
+  {id:2,n:"সামনের উইন্ডশীল্ড",b:[140,105,95,75],a:`<path d="M230 108 L155 118 Q145 125 145 145 L145 178 L230 178 Z" fill="${g('cyan')}" ${S}/><path d="M160 128 L210 168" stroke="#fff" stroke-width="7" opacity=".65"/>`},
+  // ৩. বাসের ছাদ
+  {id:3,n:"বাসের ছাদ",b:[140,86,820,24],a:`<rect x="144" y="88" width="812" height="18" rx="8" fill="${g('indigo')}" ${S}/>${sh(144,88,812,18)}`},
+  // ৪. ছাদের এসি ইউনিট
+  {id:4,n:"ছাদের এসি ইউনিট",b:[380,68,280,24],a:`<rect x="390" y="70" width="260" height="18" rx="6" fill="${g('silver')}" ${S}/><rect x="410" y="74" width="60" height="10" rx="3" fill="${g('dark')}"/><rect x="490" y="74" width="60" height="10" rx="3" fill="${g('dark')}"/><rect x="570" y="74" width="60" height="10" rx="3" fill="${g('dark')}"/>`},
+  // ৫. গ্রিল ও বাম্পার
+  {id:5,n:"গ্রিল ও বাম্পার",b:[122,182,75,38],a:`<rect x="125" y="185" width="68" height="32" rx="8" fill="${g('silver')}" ${S}/><line x1="132" y1="193" x2="185" y2="193" stroke="#1e293b" stroke-width="3"/><line x1="132" y1="202" x2="185" y2="202" stroke="#1e293b" stroke-width="3"/><circle cx="158" cy="202" r="6" fill="${g('gold')}"/>`},
+  // ৬. সামনের হেডলাইট
+  {id:6,n:"সামনের হেডলাইট",b:[128,154,26,28],a:`<rect x="130" y="156" width="22" height="24" rx="6" fill="${g('gold')}" ${S}/>${sh(130,156,22,24)}<circle cx="141" cy="168" r="6" fill="#fff"/>`},
+  // ৭. চালকের দরজা
+  {id:7,n:"চালকের দরজা",b:[232,106,62,108],a:`<rect x="235" y="108" width="56" height="104" rx="6" fill="${g('orange')}" ${S}/><rect x="241" y="114" width="44" height="42" rx="4" fill="${g('cyan')}" ${S}/><rect x="282" y="165" width="5" height="14" rx="2" fill="${g('gold')}"/>`},
+  // ৮. যাত্রী ওঠার দরজা
+  {id:8,n:"যাত্রী ওঠার দরজা",b:[520,106,68,108],a:`<rect x="524" y="108" width="60" height="104" rx="6" fill="${g('teal')}" ${S}/><rect x="530" y="114" width="22" height="60" rx="4" fill="${g('cyan')}" ${S}/><rect x="556" y="114" width="22" height="60" rx="4" fill="${g('cyan')}" ${S}/><line x1="554" y1="108" x2="554" y2="212" stroke="#1e293b" stroke-width="2"/>`},
+  // ৯. যাত্রী জানালা ১
+  {id:9,n:"যাত্রী জানালা ১",b:[294,110,108,52],a:`<rect x="298" y="112" width="100" height="48" rx="6" fill="${g('blue')}" ${S}/><line x1="348" y1="112" x2="348" y2="160" stroke="#1e293b" stroke-width="2"/><path d="M304 148 L330 120 M354 148 L380 120" stroke="#fff" stroke-width="5" opacity=".55"/>`},
+  // ১০. যাত্রী জানালা ২
+  {id:10,n:"যাত্রী জানালা ২",b:[404,110,116,52],a:`<rect x="408" y="112" width="108" height="48" rx="6" fill="${g('blue')}" ${S}/><line x1="462" y1="112" x2="462" y2="160" stroke="#1e293b" stroke-width="2"/><path d="M414 148 L440 120 M468 148 L494 120" stroke="#fff" stroke-width="5" opacity=".55"/>`},
+  // ১১. যাত্রী জানালা ৩
+  {id:11,n:"যাত্রী জানালা ৩",b:[588,110,132,52],a:`<rect x="592" y="112" width="124" height="48" rx="6" fill="${g('blue')}" ${S}/><line x1="654" y1="112" x2="654" y2="160" stroke="#1e293b" stroke-width="2"/><path d="M598 148 L624 120 M660 148 L686 120" stroke="#fff" stroke-width="5" opacity=".55"/>`},
+  // ১২. যাত্রী জানালা ৪
+  {id:12,n:"যাত্রী জানালা ৪",b:[724,110,132,52],a:`<rect x="728" y="112" width="124" height="48" rx="6" fill="${g('blue')}" ${S}/><line x1="790" y1="112" x2="790" y2="160" stroke="#1e293b" stroke-width="2"/><path d="M734 148 L760 120 M796 148 L822 120" stroke="#fff" stroke-width="5" opacity=".55"/>`},
+  // ১৩. পেছনের ব্যাক গ্লাস
+  {id:13,n:"পেছনের ব্যাক গ্লাস",b:[858,110,96,72],a:`<path d="M862 112 H940 Q952 120 952 145 L952 178 H862 Z" fill="${g('cyan')}" ${S}/><path d="M875 125 L930 168" stroke="#fff" stroke-width="6" opacity=".55"/>`},
+  // ১৪. রুট নেমপ্লেট বোর্ড
+  {id:14,n:"রুট নেমপ্লেট",b:[170,92,150,20],a:`<rect x="175" y="93" width="140" height="17" rx="4" fill="${g('dark')}" ${S}/><text x="245" y="106" font-size="11" font-weight="bold" fill="#facc15" text-anchor="middle" font-family="sans-serif">ঢাকা ⇄ চট্টগ্রাম</text>`},
+  // ১৫. লুকিং গ্লাস
+  {id:15,n:"লুকিং গ্লাস",b:[114,120,32,48],a:`<path d="M142 125 L120 122 L118 158 L142 142" fill="${g('silver')}" ${S}/><ellipse cx="120" cy="140" rx="4" ry="16" fill="${g('cyan')}"/>`},
+  // ১৬. বডি স্পিড স্ট্রাইপ
+  {id:16,n:"বডি স্পিড স্ট্রাইপ",b:[150,165,790,20],a:`<path d="M152 172 Q400 162 600 174 T945 170" stroke="${g('yellow')}" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M160 178 Q400 168 600 180 T940 176" stroke="${g('red')}" stroke-width="4" stroke-linecap="round" fill="none"/>`},
+  // ১৭. সামনের চাকা
+  {id:17,n:"সামনের চাকা",b:[222,192,72,72],a:wheel(258,226,30)},
+  // ১৮. পেছনের চাকা ১
+  {id:18,n:"পেছনের চাকা ১",b:[704,192,72,72],a:wheel(740,226,30)},
+  // ১৯. পেছনের চাকা ২
+  {id:19,n:"পেছনের চাকা ২",b:[794,192,72,72],a:wheel(830,226,30)},
+  // ২০. ব্যাকলাইট ও সাইলেন্সার
+  {id:20,n:"ব্যাকলাইট ও এক্সহস্ট",b:[945,152,24,48],a:`<rect x="948" y="154" width="16" height="14" rx="3" fill="${g('red')}" ${S}/><rect x="948" y="172" width="16" height="12" rx="3" fill="${g('orange')}" ${S}/><circle cx="952" cy="192" r="5" fill="${g('dark')}" ${S}/>`}
+];
+
+const BASE={red:"#ef4444",blue:"#3b82f6",cyan:"#22d3ee",orange:"#f97316",yellow:"#facc15",green:"#22c55e",steel:"#64748b",purple:"#a855f7",pink:"#ec4899",gold:"#f59e0b",teal:"#14b8a6",lime:"#84cc16",indigo:"#6366f1",dark:"#334155",silver:"#94a3b8",coral:"#fb7185"};
+
+// রঙের থিম (১ নম্বর বাটন)
+const THEMES=[
+ {name:"রঙধনু ভলভো",map:{}},
+ {name:"বিআরটিসি লাল",map:{blue:"#dc2626",indigo:"#991b1b",orange:"#f8fafc",yellow:"#facc15",teal:"#b91c1c"}},
+ {name:"সবুজ এক্সপ্রেস",map:{blue:"#15803d",indigo:"#14532d",orange:"#22c55e",yellow:"#84cc16",teal:"#166534"}},
+ {name:"রয়েল ব্লু ভিআইপি",map:{blue:"#1d4ed8",indigo:"#1e3a8a",orange:"#38bdf8",yellow:"#facc15",teal:"#2563eb"}},
+ {name:"হলুদ স্কুল বাস",map:{blue:"#f59e0b",indigo:"#b45309",orange:"#1e293b",yellow:"#1e293b",teal:"#d97706"}},
+ {name:"সিলভার প্রিমিয়াম",map:{blue:"#64748b",indigo:"#334155",orange:"#94a3b8",yellow:"#38bdf8",teal:"#475569"}},
+];
+
+const defs=document.getElementById('defs');
+function paint(t){
+  const m={...BASE,...THEMES[t].map};
+  defs.innerHTML=Object.entries(m).map(([k,c])=>`<linearGradient id="g-${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${mix(c,'#ffffff',.55)}"/><stop offset=".5" stop-color="${c}"/><stop offset="1" stop-color="${mix(c,'#000000',.35)}"/></linearGradient>`).join('');
+}
+function mix(a,b,t){const p=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));const A=p(a),B=p(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')}
+paint(0);
+
+// এলোমেলো ট্রের ক্রম (২০টি পার্টস)
+const TRAY=[17,3,1,14,8,12,5,19,10,4,15,11,6,18,2,9,20,7,13,16];
+const $=id=>document.getElementById(id);
+const scene=$('scene'),plane=$('bus'),board=$('board'),tray=$('tray');
+tray.setAttribute('aria-label','বাসের ২০টি অংশ');
+scene.setAttribute('viewBox',`${VB.x} ${VB.y} ${VB.w} ${VB.h}`);
+let placed=new Set(),drag=null,dragEl=null;
+function fit(){const r=board.getBoundingClientRect();const s=Math.min(r.width/VB.w,r.height/VB.h);return{r,s,ox:(r.width-VB.w*s)/2,oy:(r.height-VB.h*s)/2}}
+function buildTray(){
+  tray.innerHTML='';
+  TRAY.forEach(id=>{const p=PARTS.find(q=>q.id===id);const d=document.createElement('div');d.className='slot'+(placed.has(id)?' gone':'');d.dataset.id=id;
+    d.innerHTML=`<svg viewBox="${p.b.join(' ')}">${p.a}</svg><span>${p.n}</span>`;
+    d.querySelector('svg').addEventListener('pointerdown',e=>startDrag(e,id));tray.appendChild(d);});
+}
+function renderBus(){
+  let h='';PARTS.forEach(p=>{if(placed.has(p.id))h+=p.a;});
+  plane.innerHTML=h;
+  $('count').textContent=placed.size+' / 20';
+  $('hint').style.display=placed.size?'none':'flex';
+  updateLights();
+}
+function startDrag(e,id){
+  if(drag||placed.has(id))return; e.preventDefault();const p=PARTS.find(q=>q.id===id);const {s}=fit();
+  drag={id,s,x:e.clientX,y:e.clientY};dragEl=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  dragEl.id='drag';dragEl.setAttribute('viewBox',p.b.join(' '));dragEl.setAttribute('width',p.b[2]*s);dragEl.setAttribute('height',p.b[3]*s);
+  dragEl.innerHTML=p.a;document.body.appendChild(dragEl);
+  tray.querySelector(`[data-id="${id}"]`).classList.add('gone');moveDrag(e);
+}
+function moveDrag(e){if(!drag)return;const p=PARTS.find(q=>q.id===drag.id);dragEl.style.left=(e.clientX-p.b[2]*drag.s/2)+'px';dragEl.style.top=(e.clientY-p.b[3]*drag.s/2)+'px';drag.x=e.clientX;drag.y=e.clientY}
+window.addEventListener('pointermove',e=>{if(drag){e.preventDefault();moveDrag(e)}},{passive:false});
+function endDrag(){
+  if(!drag)return;const {r}=fit();
+  if(drag.x>=r.left&&drag.x<=r.right&&drag.y>=r.top&&drag.y<=r.bottom){placed.add(drag.id);renderBus()}
+  else tray.querySelector(`[data-id="${drag.id}"]`).classList.remove('gone');
+  dragEl.remove();dragEl=null;drag=null;
+}
+window.addEventListener('pointerup',e=>{if(drag)moveDrag(e);endDrag()});window.addEventListener('pointercancel',cancelDrag);
+
+// ---------- ২য় ধাপ: রং, আলো, স্টার্ট, রিমোট ----------
+const msg=t=>{const m=$('msg');m.textContent=t;m.style.opacity=1;clearTimeout(msg.t);msg.t=setTimeout(()=>m.style.opacity=0,1200)};
+let theme=0;
+$('bColor').onclick=()=>{theme=(theme+1)%THEMES.length;cancelDrag();paint(theme);buildTray();msg('🎨 '+THEMES[theme].name)};
+
+const LIGHTS=["আলো বন্ধ","জ্বলা-নেভা বাতি","সামনের হেডলাইট","রঙিন নিয়ন","রাতের আলো"];
+let light=0;
+$('bLight').onclick=()=>{light=(light+1)%LIGHTS.length;updateLights();msg('💡 '+LIGHTS[light])};
+function updateLights(){
+ const L=$('lights');board.classList.toggle('night',light===4);
+ plane.style.filter=light===3?'drop-shadow(0 0 8px #22d3ee)':'';
+ let h='';
+ if(light===1||light===4)h='<circle class="bl1" cx="141" cy="168" r="9" fill="#fff7b0"/><circle class="bl2" cx="956" cy="161" r="7" fill="#ef4444"/>';
+ if(light===2||light===4)h+='<polygon points="140,168 -40,110 -40,240" fill="url(#beam)"/>';
+ L.innerHTML=placed.has(6)?h:'';
+}
+
+let started=false,run=false,face=-1,travelSpeed=140,speed=0,wheelAngle=0;
+const pos={x:0,y:0};const held=new Set();const runButton=document.querySelector('[data-k="run"]');
+function stopRun(){run=false;held.clear();runButton.classList.remove('act');document.querySelectorAll('.r').forEach(b=>b.classList.remove('act'));}
+$('bStart').onclick=()=>{
+ if(placed.size<BUS_RULES.parts){msg('আগে ২০টি অংশ বসাও');return}
+ started=!started;ensureAudio();$('bStart').classList.toggle('on',started);
+ $('bStart').innerHTML=started?'<b>■</b>৩ বন্ধ':'<b>▶</b>৩ স্টার্ট';
+ if(!started)stopRun();updSound();
+};
+
+document.querySelectorAll('.r').forEach(b=>{
+ const k=b.dataset.k;
+ const ready=()=>{if(!started){msg('আগে স্টার্ট চাপো');return false}return true};
+ if(k==='run'){b.onclick=()=>{if(!ready())return;run=!run;b.classList.toggle('act',run)};return}
+ if(k==='turn'){b.onclick=()=>{if(ready())face*=-1};return}
+ if(k==='horn'){b.onclick=()=>{ensureAudio();horn()};return}
+ if(k==='faster'||k==='slower'){b.onclick=()=>{travelSpeed=adjustedSpeed(travelSpeed,k==='faster'?40:-40);msg('গতি: '+travelSpeed)};return}
+ b.addEventListener('pointerdown',e=>{e.preventDefault();if(!ready())return;face=k==='left'?-1:1;held.add(k);b.classList.add('act');b.setPointerCapture(e.pointerId)});
+ const off=()=>{held.delete(k);b.classList.remove('act')};
+ b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);
+});
+
+const KEY={ArrowLeft:'left',ArrowRight:'right'};
+addEventListener('keydown',e=>{if(KEY[e.key]&&started){e.preventDefault();held.add(KEY[e.key]);face=e.key==='ArrowLeft'?-1:1}});
+addEventListener('keyup',e=>held.delete(KEY[e.key]));
+addEventListener('blur',()=>{held.clear();if(drag)cancelDrag()});
+
+let last=performance.now(),moving=false;
+function loop(t){
+ const dt=Math.min(.05,(t-last)/1000);last=t;
+ moving=started&&(run||held.size>0);
+ speed+=((moving?travelSpeed:0)-speed)*Math.min(1,dt*4);
+ pos.x+=speed*face*dt;
+ if(pos.x>1100)pos.x=-1100;if(pos.x<-1100)pos.x=1100;
+ wheelAngle+=speed*face*dt*2.2;
+ plane.querySelectorAll('.wheel').forEach(w=>w.setAttribute('transform',`rotate(${wheelAngle} ${w.dataset.c.replace(',',' ')})`));
+ $('mover').setAttribute('transform',`translate(${pos.x} 0)`);
+ $('facer').setAttribute('transform',`translate(550 180) scale(${-face} 1) translate(-550 -180)`);
+ requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+function cancelDrag(){if(!drag)return;dragEl.remove();dragEl=null;drag=null;buildTray()}
+$('reset').onclick=()=>{cancelDrag();placed=new Set();started=false;stopRun();speed=0;pos.x=0;face=-1;wheelAngle=0;travelSpeed=140;
+ $('bStart').classList.remove('on');$('bStart').innerHTML='<b>▶</b>৩ স্টার্ট';buildTray();renderBus();updSound()};
+buildTray();renderBus();
+
+// ---------- বাসের ডিজেল ইঞ্জিন ও হাইড্রোলিক হর্ন ----------
+let snd=true,actx=null,J=null;
+function ensureAudio(){
+ if(actx){actx.resume();return}
+ const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio){msg('এই ব্রাউজারে সাউন্ড নেই');return}
+ actx=new Audio();const master=actx.createGain();master.gain.value=0;master.connect(actx.destination);
+ const engine=actx.createOscillator();engine.type='sawtooth';engine.frequency.value=52;
+ const eg=actx.createGain();eg.gain.value=.15;engine.connect(eg);eg.connect(master);engine.start();
+ J={master,engine};actx.resume();
+}
+function horn(){
+ if(!actx||!snd)return;const t=actx.currentTime,gain=actx.createGain();gain.connect(actx.destination);
+ gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(.15,t+.05);gain.gain.setValueAtTime(.15,t+.5);gain.gain.exponentialRampToValueAtTime(.001,t+.9);
+ [196,247,294].forEach(f=>{const o=actx.createOscillator();o.type='sawtooth';o.frequency.value=f;o.connect(gain);o.start(t);o.stop(t+.95)});
+ setTimeout(()=>gain.disconnect(),1100);
+}
+function updSound(){
+ if(!actx||!J)return;const t=actx.currentTime;
+ J.master.gain.setTargetAtTime(snd&&started?.4:0,t,.12);
+ J.engine.frequency.setTargetAtTime(48+speed*.22,t,.15);
+}
+$('bSound').onclick=()=>{ensureAudio();snd=!snd;$('bSound').innerHTML=snd?'<b>🔊</b>সাউন্ড':'<b>🔇</b>বন্ধ';updSound()};
+setInterval(updSound,40);
+</script>
+</body>
+</html>
