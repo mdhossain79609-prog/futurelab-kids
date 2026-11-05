@@ -868,22 +868,24 @@ button{
 
 </button>
 
-    <!-- TRAIN BUILDER -->
-    <button class="builder-card"
-        onclick="window.location.href='train.html'">
+    <!-- TRAIN BUILDER BUTTON -->
+<div class="builder-card" onclick="openTrainBuilder()">
 
-        <div class="builder-project-icon">
-            🚆
-        </div>
+    <div class="builder-card-icon">🚆</div>
 
-        <div class="builder-project-text">
-            <h3>Train Builder</h3>
-            <p>Build, design and explore your own train.</p>
-        </div>
+    <h3>Train Builder</h3>
 
-        <div class="arrow">›</div>
+    <p>Build Your Own Train</p>
 
-    </button>
+    <span>START BUILDING ➜</span>
+
+</div>
+
+<script>
+function openTrainBuilder(){
+    window.location.href = "train-builder.html";
+}
+</script>
     <!-- BACK BUTTON -->
     <button class="home-back"
         onclick="openLabScreen()">
