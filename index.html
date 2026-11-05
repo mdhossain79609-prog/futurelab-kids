@@ -448,6 +448,39 @@ button{
     line-height:1.4;
     color:#77849a;
 }
+    
+/* HOME SCREEN SCROLL FIX */
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#homeScreen {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    overflow: visible;
+    padding-bottom: 20px;
+}
+
+#homeScreen .home {
+    width: 100%;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    padding: 10px 20px 40px;
+}
+
+#homeScreen .footer-text {
+    padding-bottom: 15px;
+}
+
 
 </style>
 </head>
@@ -1058,18 +1091,6 @@ function openCarBuilderScreen(){
 
 function openComputerScienceScreen(){
     showScreen("computerScienceScreen");
-}
-
-function openHomeScreen(){
-
-    document.getElementById("homeScreen").style.display = "block";
-    document.getElementById("labScreen").style.display = "none";
-    document.getElementById("careerScreen").style.display = "none";
-    document.getElementById("builderScreen").style.display = "none";
-    document.getElementById("carBuilderScreen").style.display = "none";
-
-    window.scrollTo(0,0);
-
 }
 
 
