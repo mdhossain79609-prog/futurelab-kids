@@ -1,1 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Build and run a custom RGB Gaming Desktop PC using 20 modular hardware parts with an interactive desktop OS.">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>🖥️ Build & Run RGB Gaming PC</title>
+<style>
+:root{
+  --ink:#0f172a;
+  --panel:#1e293b;
+  --accent:#38bdf8;
+  --rgb1:#f43f5e;
+  --rgb2:#8b5cf6;
+  --rgb3:#06b6d4;
+  --muted:#f1f5f9;
+  --border:#334155;
+  --active:#22c55e;
+  --shadow:#0004;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#090d16;color:#e2e8f0;user-select:none;-webkit-user-select:none;touch-action:none}
+main{display:flex;flex-direction:column;height:100dvh;height:100vh}
+@supports(height:100dvh){main{height:100dvh}}
 
+header{display:flex;align-items:center;gap:8px;padding:6px 12px 4px;background:#0f172a;border-bottom:1px solid var(--border);flex-shrink:0}
+h1{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(1rem,3.8vw,1.5rem);font-weight:800;
+background:linear-gradient(90deg,#38bdf8,#a855f7,#ec4899);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{border-radius:99px;padding:4px 10px;font-size:12px;font-weight:700;border:0}
+#count{background:#1e293b;color:#38bdf8;border:1px solid #334155}
+#reset{background:#334155;color:#fff;cursor:pointer;transition:background 0.2s}
+#reset:hover{background:#475569}
+
+/* Workspace Canvas */
+#boardWrap{flex:0 0 42%;min-height:180px;max-height:360px;padding:4px 8px;position:relative}
+#board{position:absolute;inset:4px 8px;border:2px dashed #38bdf855;border-radius:12px;overflow:hidden;
+background:radial-gradient(ellipse at 50% 20%,#1e293b 0%,#090d16 80%);transition:background .5s}
+#board.powered{border-color:#38bdf8;box-shadow:0 0 25px #0284c733}
+#board svg{position:absolute;inset:0;width:100%;height:100%}
+#hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:600;color:#64748b;text-align:center;padding:12px;font-size:13px;pointer-events:none}
+
+/* 20 Parts Tray */
+#tray{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(2,1fr);gap:6px;padding:6px 8px;background:#0f172a;box-shadow:0 -4px 12px #0003;border-radius:14px 14px 0 0;flex:1;min-height:0;align-content:stretch;border-top:1px solid var(--border)}
+@media(max-width:768px){
+  #tray{grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:4px;padding:4px 6px}
+}
+.slot{height:100%;min-height:clamp(46px,7.5vh,72px);border-radius:8px;background:#1e293b;border:1px solid #334155;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;transition:transform .15s,box-shadow .15s,border-color .15s}
+.slot:hover{transform:translateY(-1px);box-shadow:0 3px 8px #0004;border-color:#38bdf8}
+.slot svg{width:94%;height:72%;filter:drop-shadow(0 2px 2px #0005);cursor:grab}
+.slot span{font-size:clamp(8.5px,1.7vw,10.5px);font-weight:700;color:#94a3b8;white-space:nowrap;overflow:hidden;max-width:100%;text-overflow:ellipsis;padding:0 2px}
+.slot.gone>*{visibility:hidden}
+
+/* Bottom Controls & Interaction Deck */
+#controls{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px 8px;background:#0b0f19;border-top:1px solid var(--border);box-shadow:0 -4px 12px #0003;z-index:20;max-width:100vw;overflow:hidden}
+
+/* Power & Lighting Deck */
+.ctrl-left{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.power-strip{display:flex;align-items:center;gap:6px}
+.pwr-btn{padding:4px 10px;font-size:11px;font-weight:800;border-radius:6px;border:0;background:#334155;color:#e2e8f0;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all 0.2s}
+.pwr-btn.on{background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;box-shadow:0 0 10px #22c55e88}
+.pwr-led{width:8px;height:8px;border-radius:50%;background:#ef4444;box-shadow:0 0 6px #ef4444}
+.pwr-btn.on .pwr-led{background:#22c55e;box-shadow:0 0 8px #22c55e}
+
+.btns{display:flex;gap:5px}
+.cbtn{width:clamp(38px,8.2vw,48px);height:clamp(34px,7.5vw,44px);border-radius:8px;border:0;color:#fff;font-weight:800;font-size:9.5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;box-shadow:0 2px 0 var(--shadow);line-height:1.1;cursor:pointer}
+.cbtn b{font-size:15px}
+.cbtn:active{transform:translateY(2px)}
+#bRGB{background:linear-gradient(135deg,#ec4899,#8b5cf6,#06b6d4)}
+#bSound{background:linear-gradient(135deg,#0ea5e9,#6366f1)}
+#bApp{background:linear-gradient(135deg,#f59e0b,#ea580c)}
+
+/* Peripheral Interactive Area: Keyboard and Mouse Console */
+.peripherals-bar{display:flex;align-items:center;gap:8px;flex-shrink:1;min-width:0}
+.desk-keyboard{display:flex;flex-direction:column;gap:2px;background:#1e293b;padding:4px 6px;border-radius:6px;border:1px solid #334155}
+.kb-row{display:flex;gap:2px}
+.kkey{width:clamp(16px,3.2vw,22px);height:clamp(15px,3vw,20px);border-radius:3px;border:0;background:#334155;color:#f8fafc;font-size:8px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.1s,transform 0.05s}
+.kkey.wide{width:clamp(26px,5.2vw,36px)}
+.kkey.space{width:clamp(44px,8.5vw,60px)}
+.kkey:active,.kkey.pressed{background:#38bdf8;color:#0f172a;transform:scale(0.92)}
+
+.desk-mouse{display:flex;flex-direction:column;align-items:center;gap:2px;background:#1e293b;padding:4px 6px;border-radius:8px;border:1px solid #334155;cursor:pointer;flex-shrink:0}
+.mouse-body{width:clamp(26px,5.5vw,32px);height:clamp(36px,7.5vw,44px);border-radius:14px 14px 12px 12px;background:#0f172a;border:2px solid #38bdf8;position:relative;display:flex;justify-content:center;align-items:flex-start;padding-top:4px}
+.mouse-wheel{width:4px;height:8px;border-radius:2px;background:#38bdf8;box-shadow:0 0 4px #38bdf8}
+.mouse-tag{font-size:8.5px;font-weight:700;color:#94a3b8}
+
+#drag{position:fixed;pointer-events:none;z-index:50;filter:drop-shadow(0 6px 8px #0008)}
+#msg{position:fixed;left:50%;top:50px;transform:translateX(-50%);background:#0f172a;border:1px solid #38bdf8;color:#38bdf8;padding:6px 16px;border-radius:99px;font-size:12px;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none;z-index:60;box-shadow:0 0 12px #38bdf844}
+
+/* Fan rotation and animations */
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.fan-spin{animation:spin 0.4s linear infinite;transform-origin:center}
+</style>
+</head>
+<body>
+<main>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+<header>
+  <h1>🖥️ Build & Run RGB Gaming PC</h1>
+  <span id="count" class="pill">0 / 20</span>
+  <button id="reset" class="pill">Reset</button>
+</header>
+
+<div id="boardWrap">
+  <div id="board">
+    <svg id="scene" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="pc-glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <radialGradient id="monitor-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#38bdf8" stop-opacity="0.25"/><stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/></radialGradient>
+      </defs>
+      <g id="workstation">
+        <g id="assembled"></g>
+        <!-- Interactive Monitor OS Screen Overlay -->
+        <g id="os-screen" style="display:none">
+          <rect id="screen-bg" x="180" y="55" width="440" height="230" rx="4" fill="#0f172a"/>
+          <!-- Desktop Header Bar -->
+          <rect x="180" y="55" width="440" height="18" fill="#1e293b"/>
+          <circle cx="192" cy="64" r="4" fill="#ef4444"/>
+          <circle cx="204" cy="64" r="4" fill="#facc15"/>
+          <circle cx="216" cy="64" r="4" fill="#22c55e"/>
+          <text x="400" y="68" font-size="10" font-weight="bold" fill="#94a3b8" text-anchor="middle" font-family="monospace">CyberOS v4.2 - Gaming Rig Ready</text>
+          
+          <!-- Desktop Background Graphic -->
+          <polygon points="260,240 380,120 450,180 560,90 620,240" fill="#38bdf8" opacity="0.12"/>
+          <circle cx="520" cy="110" r="30" fill="#a855f7" opacity="0.2"/>
+
+          <!-- System Diagnostics Widget -->
+          <rect x="195" y="85" width="125" height="135" rx="6" fill="#1e293be6" stroke="#334155"/>
+          <text x="205" y="103" font-size="10" font-weight="bold" fill="#38bdf8" font-family="sans-serif">SYSTEM STATS</text>
+          <text x="205" y="122" font-size="9" fill="#94a3b8" font-family="monospace">CPU: 4.8 GHz (34°C)</text>
+          <text x="205" y="138" font-size="9" fill="#94a3b8" font-family="monospace">GPU: RTX 4090 (42°C)</text>
+          <text x="205" y="154" font-size="9" fill="#94a3b8" font-family="monospace">RAM: 32 GB DDR5</text>
+          <text x="205" y="170" font-size="9" fill="#22c55e" font-family="monospace">STATUS: OPTIMAL</text>
+          <text x="205" y="186" font-size="9" fill="#e2e8f0" font-family="monospace">FPS: 240 ULTRA</text>
+          <rect x="205" y="196" width="105" height="14" rx="3" fill="#0284c7"/>
+          <text x="257" y="206" font-size="8.5" font-weight="bold" fill="#fff" text-anchor="middle" font-family="sans-serif">TEST BENCH</text>
+
+          <!-- Interactive Typing Window -->
+          <rect x="330" y="85" width="275" height="135" rx="6" fill="#0f172ae6" stroke="#0284c7"/>
+          <rect x="330" y="85" width="275" height="18" fill="#0284c7"/>
+          <text x="340" y="98" font-size="9" font-weight="bold" fill="#fff" font-family="sans-serif">📝 Quick Note (Type with Keyboard)</text>
+          <text id="os-note-text" x="340" y="125" font-size="11" font-weight="bold" fill="#38bdf8" font-family="monospace">HELLO GAMER! WELCOME TO CYBEROS_</text>
+          <text x="340" y="150" font-size="9" fill="#64748b" font-family="monospace">Click keys below or type on your keyboard.</text>
+          <text x="340" y="170" font-size="9" fill="#a855f7" font-family="monospace">All 20 high-speed hardware parts active!</text>
+          <text id="os-click-counter" x="340" y="195" font-size="9" font-weight="bold" fill="#22c55e" font-family="monospace">Clicks: 0 | Keypresses: 0</text>
+
+          <!-- Bottom Taskbar -->
+          <rect x="180" y="265" width="440" height="20" fill="#0f172af2" stroke="#334155"/>
+          <rect x="185" y="267" width="24" height="16" rx="3" fill="#0284c7"/>
+          <text x="197" y="279" font-size="9" font-weight="bold" fill="#fff" text-anchor="middle">❖</text>
+          <text x="216" y="279" font-size="8.5" fill="#94a3b8" font-family="sans-serif">Start</text>
+          <text x="590" y="279" font-size="8.5" fill="#94a3b8" font-family="monospace">12:00 PM</text>
+          
+          <!-- Virtual Mouse Cursor on Screen -->
+          <g id="screen-cursor" transform="translate(420,160)">
+            <polygon points="0,0 0,14 4,11 7,17 9,16 6,10 11,10" fill="#38bdf8" stroke="#0f172a" stroke-width="1.5"/>
+          </g>
+        </g>
+      </g>
+    </svg>
+    <div id="hint">Drag and drop all 20 hardware components to assemble the RGB PC</div>
+  </div>
+</div>
+
+<section id="tray"></section>
+
+<div id="controls">
+  <!-- Power & Mode Selection -->
+  <div class="ctrl-left">
+    <div class="power-strip">
+      <button class="pwr-btn" id="bPower">
+        <span class="pwr-led"></span>
+        <span id="pwr-label">POWER PC</span>
+      </button>
+    </div>
+    <div class="btns">
+      <button class="cbtn" id="bRGB"><b>🌈</b>RGB</button>
+      <button class="cbtn" id="bSound"><b>🔊</b>Audio</button>
+      <button class="cbtn" id="bApp"><b>💻</b>Mode</button>
+    </div>
+  </div>
+
+  <!-- Interactive Keyboard and Mouse Deck -->
+  <div class="peripherals-bar">
+    <div class="desk-keyboard" id="deskKb">
+      <div class="kb-row">
+        <button class="kkey" data-k="Q">Q</button>
+        <button class="kkey" data-k="W">W</button>
+        <button class="kkey" data-k="E">E</button>
+        <button class="kkey" data-k="R">R</button>
+        <button class="kkey" data-k="T">T</button>
+        <button class="kkey" data-k="Y">Y</button>
+        <button class="kkey" data-k="U">U</button>
+        <button class="kkey" data-k="I">I</button>
+        <button class="kkey" data-k="O">O</button>
+        <button class="kkey" data-k="P">P</button>
+      </div>
+      <div class="kb-row">
+        <button class="kkey" data-k="A">A</button>
+        <button class="kkey" data-k="S">S</button>
+        <button class="kkey" data-k="D">D</button>
+        <button class="kkey" data-k="F">F</button>
+        <button class="kkey" data-k="G">G</button>
+        <button class="kkey" data-k="H">H</button>
+        <button class="kkey" data-k="J">J</button>
+        <button class="kkey" data-k="K">K</button>
+        <button class="kkey" data-k="L">L</button>
+        <button class="kkey wide" data-k="ENTER">ENT</button>
+      </div>
+      <div class="kb-row">
+        <button class="kkey wide" data-k="SHIFT">SHF</button>
+        <button class="kkey" data-k="Z">Z</button>
+        <button class="kkey" data-k="X">X</button>
+        <button class="kkey" data-k="C">C</button>
+        <button class="kkey" data-k="V">V</button>
+        <button class="kkey space" data-k="SPACE">SPACE</button>
+        <button class="kkey" data-k="B">B</button>
+        <button class="kkey" data-k="N">N</button>
+        <button class="kkey" data-k="M">M</button>
+        <button class="kkey" data-k="DEL">DEL</button>
+      </div>
+    </div>
+
+    <div class="desk-mouse" id="deskMouse" title="Click or Drag Mouse">
+      <div class="mouse-body">
+        <div class="mouse-wheel"></div>
+      </div>
+      <span class="mouse-tag">MOUSE</span>
+    </div>
+  </div>
+</div>
+</main>
+<div id="msg"></div>
+
+<script>
+// ---------- 20 Hardware Parts Configuration ----------
+const PC_RULES = { parts: 20 };
+const VB = { x: 50, y: 20, w: 900, h: 360 };
+const S = 'stroke="#0f172a" stroke-width="2"';
+const g = c => `url(#g-${c})`;
+const sh = (x,y,w,h) => `<rect x="${x+w*.05}" y="${y+h*.05}" width="${w*.9}" height="${Math.max(3,h*.1)}" rx="3" fill="#fff" opacity=".35"/>`;
+
+const PARTS = [
+  // 1. Desk Surface & RGB Gaming Mat
+  { id: 1, n: "Gaming Desk & Mat", b: [60, 270, 800, 50], a: `
+    <polygon points="60,310 120,270 800,270 860,310" fill="${g('dark')}" ${S}/>
+    <polygon points="100,305 145,275 770,275 815,305" fill="${g('steel')}" stroke="${g('teal')}" stroke-width="3"/>
+    <rect x="70" y="310" width="780" height="10" fill="#090d16"/>
+  `},
+  // 2. Heavy Aluminum Monitor Stand Base
+  { id: 2, n: "Monitor Stand Base", b: [350, 260, 100, 25], a: `
+    <polygon points="360,280 380,262 420,262 440,280" fill="${g('silver')}" ${S}/>
+    ${sh(375, 264, 50, 10)}
+  `},
+  // 3. Ergonomic Monitor Arm Support
+  { id: 3, n: "Monitor Arm Support", b: [385, 180, 30, 90], a: `
+    <rect x="390" y="185" width="20" height="82" rx="4" fill="${g('steel')}" ${S}/>
+    <circle cx="400" cy="220" r="6" fill="${g('silver')}"/>
+  `},
+  // 4. Ultra-Thin Monitor Outer Bezel Frame
+  { id: 4, n: "Curved Monitor Bezel", b: [170, 48, 460, 245], a: `
+    <rect x="175" y="50" width="450" height="240" rx="8" fill="${g('dark')}" stroke="${g('silver')}" stroke-width="3"/>
+    <circle cx="400" cy="285" r="3" fill="${g('teal')}"/>
+    <rect x="178" y="286" width="444" height="4" fill="#0f172a"/>
+  `},
+  // 5. IPS Gaming LED Display Panel
+  { id: 5, n: "LED Display Panel", b: [180, 55, 440, 230], a: `
+    <rect x="180" y="55" width="440" height="230" rx="4" fill="#090d16" stroke="#1e293b" stroke-width="1.5"/>
+    <rect x="182" y="57" width="436" height="226" fill="url(#monitor-glow)"/>
+    <path d="M220 70 L580 260" stroke="#ffffff" stroke-width="2" opacity="0.06"/>
+  `},
+  // 6. Mid-Tower PC Chassis Case
+  { id: 6, n: "PC Tower Case", b: [640, 40, 210, 260], a: `
+    <rect x="645" y="45" width="200" height="250" rx="8" fill="${g('dark')}" stroke="${g('silver')}" stroke-width="3"/>
+    <rect x="655" y="55" width="180" height="230" rx="4" fill="#090d16" stroke="#334155"/>
+    <line x1="645" y1="250" x2="845" y2="250" stroke="#334155" stroke-width="2"/>
+  `},
+  // 7. ATX Gaming Motherboard
+  { id: 7, n: "Gaming Motherboard", b: [660, 60, 170, 185], a: `
+    <rect x="665" y="65" width="160" height="175" rx="4" fill="${g('steel')}" ${S}/>
+    <rect x="675" y="75" width="45" height="35" fill="${g('dark')}" rx="2"/>
+    <rect x="672" y="125" width="20" height="95" fill="${g('dark')}" rx="2"/>
+    <line x1="720" y1="120" x2="800" y2="120" stroke="#475569" stroke-width="2"/>
+    <line x1="720" y1="130" x2="800" y2="130" stroke="#475569" stroke-width="2"/>
+  `},
+  // 8. Multi-Core CPU Processor
+  { id: 8, n: "CPU Processor Chip", b: [720, 75, 42, 42], a: `
+    <rect x="722" y="77" width="38" height="38" rx="3" fill="${g('silver')}" stroke="${g('gold')}" stroke-width="2"/>
+    <rect x="730" y="85" width="22" height="22" fill="${g('steel')}" rx="2"/>
+    <circle cx="741" cy="96" r="5" fill="${g('gold')}"/>
+  `},
+  // 9. CPU Liquid Cooler AIO Block
+  { id: 9, n: "AIO Liquid Cooler", b: [710, 70, 64, 55], a: `
+    <circle cx="741" cy="96" r="20" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="3"/>
+    <circle cx="741" cy="96" r="14" fill="#090d16"/>
+    <circle cx="741" cy="96" r="8" fill="${g('teal')}" opacity="0.8"/>
+    <path d="M756 90 Q790 70 810 58" fill="none" stroke="${g('dark')}" stroke-width="5"/>
+    <path d="M756 102 Q790 85 810 65" fill="none" stroke="${g('dark')}" stroke-width="5"/>
+  `},
+  // 10. Radiator & Top Dual RGB Fans
+  { id: 10, n: "Top Radiator & Fans", b: [665, 48, 160, 24], a: `
+    <rect x="670" y="50" width="150" height="20" rx="3" fill="${g('dark')}" ${S}/>
+    <g class="pc-fan" transform-origin="705 60"><circle cx="705" cy="60" r="8" fill="${g('teal')}"/><line x1="697" y1="60" x2="713" y2="60" stroke="#fff" stroke-width="2"/><line x1="705" y1="52" x2="705" y2="68" stroke="#fff" stroke-width="2"/></g>
+    <g class="pc-fan" transform-origin="780 60"><circle cx="780" cy="60" r="8" fill="${g('purple')}"/><line x1="772" y1="60" x2="788" y2="60" stroke="#fff" stroke-width="2"/><line x1="780" y1="52" x2="780" y2="68" stroke="#fff" stroke-width="2"/></g>
+  `},
+  // 11. Dual High-Speed RGB DDR5 RAM
+  { id: 11, n: "Dual RGB DDR5 RAM", b: [772, 70, 24, 55], a: `
+    <rect x="774" y="72" width="8" height="50" rx="2" fill="${g('dark')}" ${S}/>
+    <rect x="774" y="72" width="8" height="12" rx="1" fill="${g('pink')}"/>
+    <rect x="785" y="72" width="8" height="50" rx="2" fill="${g('dark')}" ${S}/>
+    <rect x="785" y="72" width="8" height="12" rx="1" fill="${g('teal')}"/>
+  `},
+  // 12. Triple-Fan Gaming GPU Card
+  { id: 12, n: "RTX Gaming GPU", b: [670, 140, 150, 48], a: `
+    <rect x="675" y="145" width="140" height="38" rx="4" fill="${g('steel')}" ${S}/>
+    <g class="pc-fan" transform-origin="705 164"><circle cx="705" cy="164" r="12" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2"/><line x1="695" y1="164" x2="715" y2="164" stroke="#fff" stroke-width="2"/></g>
+    <g class="pc-fan" transform-origin="745 164"><circle cx="745" cy="164" r="12" fill="${g('dark')}" stroke="${g('pink')}" stroke-width="2"/><line x1="735" y1="164" x2="755" y2="164" stroke="#fff" stroke-width="2"/></g>
+    <g class="pc-fan" transform-origin="785 164"><circle cx="785" cy="164" r="12" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2"/><line x1="775" y1="164" x2="795" y2="164" stroke="#fff" stroke-width="2"/></g>
+    <rect x="680" y="145" width="130" height="4" fill="${g('gold')}"/>
+  `},
+  // 13. Modular Power Supply Unit (PSU)
+  { id: 13, n: "Modular Power Supply", b: [650, 238, 190, 52], a: `
+    <rect x="655" y="240" width="180" height="48" rx="4" fill="${g('dark')}" ${S}/>
+    <circle cx="690" cy="264" r="18" fill="#1e293b" stroke="#475569" stroke-width="2"/>
+    <rect x="760" y="250" width="60" height="15" rx="2" fill="#0f172a"/>
+    <text x="790" y="261" font-size="8" font-weight="bold" fill="${g('gold')}" text-anchor="middle">1000W GOLD</text>
+  `},
+  // 14. Front Triple RGB Intake Fans
+  { id: 14, n: "Triple Front RGB Fans", b: [820, 60, 26, 175], a: `
+    <rect x="822" y="65" width="22" height="165" rx="3" fill="#0f172a" ${S}/>
+    <g class="pc-fan" transform-origin="833 90"><circle cx="833" cy="90" r="11" fill="${g('teal')}"/><line x1="824" y1="90" x2="842" y2="90" stroke="#fff" stroke-width="2"/></g>
+    <g class="pc-fan" transform-origin="833 145"><circle cx="833" cy="145" r="11" fill="${g('pink')}"/><line x1="824" y1="145" x2="842" y2="145" stroke="#fff" stroke-width="2"/></g>
+    <g class="pc-fan" transform-origin="833 200"><circle cx="833" cy="200" r="11" fill="${g('purple')}"/><line x1="824" y1="200" x2="842" y2="200" stroke="#fff" stroke-width="2"/></g>
+  `},
+  // 15. Tempered Glass Side Window
+  { id: 15, n: "Tempered Glass Panel", b: [650, 50, 190, 240], a: `
+    <rect x="653" y="52" width="184" height="236" rx="5" fill="#38bdf8" opacity="0.15" stroke="#38bdf8" stroke-width="2"/>
+    <circle cx="660" cy="60" r="3" fill="${g('silver')}"/>
+    <circle cx="830" cy="60" r="3" fill="${g('silver')}"/>
+    <circle cx="660" cy="280" r="3" fill="${g('silver')}"/>
+    <circle cx="830" cy="280" r="3" fill="${g('silver')}"/>
+    <path d="M665 65 L810 270" stroke="#fff" stroke-width="4" opacity="0.25"/>
+  `},
+  // 16. RGB Mechanical Keyboard Base
+  { id: 16, n: "Mechanical Keyboard", b: [270, 275, 260, 36], a: `
+    <polygon points="270,308 285,278 515,278 530,308" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2"/>
+    <rect x="290" y="280" width="220" height="24" rx="2" fill="#0f172a"/>
+  `},
+  // 17. Dual-Tone PBT Keycaps Set
+  { id: 17, n: "PBT Keycaps Set", b: [285, 276, 230, 28], a: `
+    ${Array.from({length: 12}).map((_,i)=>`<rect x="${292+i*18}" y="282" width="14" height="8" rx="1" fill="${i%3===0?g('teal'):g('silver')}"/>`).join('')}
+    ${Array.from({length: 11}).map((_,i)=>`<rect x="${295+i*19}" y="293" width="15" height="9" rx="1" fill="${i===5?g('pink'):g('steel')}"/>`).join('')}
+  `},
+  // 18. Ergonomic RGB Gaming Mouse
+  { id: 18, n: "RGB Gaming Mouse", b: [555, 276, 46, 34], a: `
+    <ellipse cx="578" cy="293" rx="16" ry="12" fill="${g('dark')}" stroke="${g('pink')}" stroke-width="2"/>
+    <line x1="578" y1="281" x2="578" y2="293" stroke="#334155" stroke-width="2"/>
+    <ellipse cx="578" cy="286" rx="2" ry="4" fill="${g('teal')}"/>
+  `},
+  // 19. Left & Right RGB Stereo Speakers
+  { id: 19, n: "RGB Desktop Speakers", b: [120, 160, 520, 120], a: `
+    <!-- Left Speaker -->
+    <rect x="125" y="165" width="42" height="105" rx="5" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2"/>
+    <circle cx="146" cy="195" r="14" fill="#090d16" stroke="#334155" stroke-width="2"/>
+    <circle cx="146" cy="240" r="18" fill="#090d16" stroke="${g('teal')}" stroke-width="2"/>
+    <!-- Right Speaker -->
+    <rect x="590" y="165" width="42" height="105" rx="5" fill="${g('dark')}" stroke="${g('pink')}" stroke-width="2"/>
+    <circle cx="611" cy="195" r="14" fill="#090d16" stroke="#334155" stroke-width="2"/>
+    <circle cx="611" cy="240" r="18" fill="#090d16" stroke="${g('pink')}" stroke-width="2"/>
+  `},
+  // 20. Screen Light Bar & 4K Webcam
+  { id: 20, n: "Light Bar & Webcam", b: [320, 36, 160, 24], a: `
+    <rect x="330" y="44" width="140" height="6" rx="2" fill="${g('silver')}" stroke="#0f172a"/>
+    <line x1="335" y1="47" x2="465" y2="47" stroke="#fff" stroke-width="2"/>
+    <rect x="385" y="38" width="30" height="12" rx="3" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="1.5"/>
+    <circle cx="400" cy="44" r="3.5" fill="#090d16"/>
+    <circle cx="400" cy="44" r="1.5" fill="${g('teal')}"/>
+  `}
+];
+
+// Color palettes for linear gradients
+const BASE = {
+  red: "#ef4444", blue: "#0284c7", cyan: "#06b6d4", orange: "#f97316",
+  yellow: "#facc15", green: "#22c55e", steel: "#334155", purple: "#a855f7",
+  pink: "#ec4899", gold: "#eab308", teal: "#14b8a6", dark: "#0f172a",
+  silver: "#94a3b8"
+};
+
+const THEMES = [
+  { name: "Cyberpunk Neon", map: { teal: "#06b6d4", pink: "#ec4899", purple: "#a855f7" } },
+  { name: "Ice Blue Aurora", map: { teal: "#38bdf8", pink: "#0284c7", purple: "#6366f1" } },
+  { name: "Toxic Matrix", map: { teal: "#22c55e", pink: "#10b981", purple: "#84cc16" } },
+  { name: "Blood Orange", map: { teal: "#f97316", pink: "#ef4444", purple: "#facc15" } },
+  { name: "Stealth Dark", map: { teal: "#64748b", pink: "#475569", purple: "#334155" } }
+];
+
+const defs = document.getElementById('defs');
+function paint(themeIdx){
+  const m = { ...BASE, ...THEMES[themeIdx].map };
+  defs.innerHTML = Object.entries(m).map(([k,c]) => `
+    <linearGradient id="g-${k}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${mix(c,'#ffffff',0.45)}"/>
+      <stop offset="60%" stop-color="${c}"/>
+      <stop offset="100%" stop-color="${mix(c,'#000000',0.4)}"/>
+    </linearGradient>
+  `).join('');
+}
+
+function mix(a,b,t){
+  const p = h => [1,3,5].map(i=>parseInt(h.substr(i,2),16));
+  const A = p(a), B = p(b);
+  return '#' + A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('');
+}
+paint(0);
+
+// Tray order
+const TRAY = [1, 6, 4, 13, 7, 19, 8, 10, 11, 2, 9, 12, 16, 5, 14, 18, 3, 17, 20, 15];
+const $ = id => document.getElementById(id);
+const scene = $('scene'), assembled = $('assembled'), board = $('board'), tray = $('tray');
+scene.setAttribute('viewBox', `${VB.x} ${VB.y} ${VB.w} ${VB.h}`);
+
+let placed = new Set(), drag = null, dragEl = null;
+
+function fit(){
+  const r = board.getBoundingClientRect();
+  const s = Math.min(r.width / VB.w, r.height / VB.h);
+  return { r, s, ox: (r.width - VB.w * s) / 2, oy: (r.height - VB.h * s) / 2 };
+}
+
+function buildTray(){
+  tray.innerHTML = '';
+  TRAY.forEach(id => {
+    const p = PARTS.find(q => q.id === id);
+    const d = document.createElement('div');
+    d.className = 'slot' + (placed.has(id) ? ' gone' : '');
+    d.dataset.id = id;
+    d.innerHTML = `<svg viewBox="${p.b.join(' ')}">${p.a}</svg><span>${p.n}</span>`;
+    d.querySelector('svg').addEventListener('pointerdown', e => startDrag(e, id));
+    tray.appendChild(d);
+  });
+}
+
+function renderPC(){
+  let h = '';
+  PARTS.forEach(p => { if(placed.has(p.id)) h += p.a; });
+  assembled.innerHTML = h;
+  $('count').textContent = placed.size + ' / 20';
+  $('hint').style.display = placed.size ? 'none' : 'flex';
+  checkPowerState();
+}
+
+function startDrag(e, id){
+  if(drag || placed.has(id)) return;
+  e.preventDefault();
+  const p = PARTS.find(q => q.id === id);
+  const { s } = fit();
+  drag = { id, s, x: e.clientX, y: e.clientY };
+  dragEl = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  dragEl.id = 'drag';
+  dragEl.setAttribute('viewBox', p.b.join(' '));
+  dragEl.setAttribute('width', p.b[2] * s);
+  dragEl.setAttribute('height', p.b[3] * s);
+  dragEl.innerHTML = p.a;
+  document.body.appendChild(dragEl);
+  tray.querySelector(`[data-id="${id}"]`).classList.add('gone');
+  moveDrag(e);
+}
+
+function moveDrag(e){
+  if(!drag) return;
+  const p = PARTS.find(q => q.id === drag.id);
+  dragEl.style.left = (e.clientX - p.b[2] * drag.s / 2) + 'px';
+  dragEl.style.top = (e.clientY - p.b[3] * drag.s / 2) + 'px';
+  drag.x = e.clientX;
+  drag.y = e.clientY;
+}
+
+window.addEventListener('pointermove', e => {
+  if(drag){ e.preventDefault(); moveDrag(e); }
+}, { passive: false });
+
+function endDrag(){
+  if(!drag) return;
+  const { r } = fit();
+  if(drag.x >= r.left && drag.x <= r.right && drag.y >= r.top && drag.y <= r.bottom){
+    placed.add(drag.id);
+    playSnapSound();
+    renderPC();
+  } else {
+    tray.querySelector(`[data-id="${drag.id}"]`).classList.remove('gone');
+  }
+  dragEl.remove();
+  dragEl = null;
+  drag = null;
+}
+
+window.addEventListener('pointerup', e => { if(drag) moveDrag(e); endDrag(); });
+window.addEventListener('pointercancel', cancelDrag);
+
+function cancelDrag(){
+  if(!drag) return;
+  dragEl.remove();
+  dragEl = null;
+  drag = null;
+  buildTray();
+}
+
+// ---------- UI Notification Message Toast ----------
+const msg = t => {
+  const m = $('msg');
+  m.textContent = t;
+  m.style.opacity = 1;
+  clearTimeout(msg.t);
+  msg.t = setTimeout(() => m.style.opacity = 0, 1400);
+};
+
+// ---------- Power and OS Simulation ----------
+let isPowered = false;
+let currentTheme = 0;
+let noteText = "HELLO GAMER! WELCOME TO CYBEROS_";
+let clickCount = 0;
+let keyCount = 0;
+
+function checkPowerState(){
+  if(placed.size < PC_RULES.parts && isPowered){
+    setPower(false);
+  }
+}
+
+function setPower(state){
+  if(state && placed.size < PC_RULES.parts){
+    msg("Assemble all 20 parts first!");
+    return;
+  }
+  isPowered = state;
+  const pwrBtn = $('bPower');
+  pwrBtn.classList.toggle('on', isPowered);
+  $('pwr-label').textContent = isPowered ? "PC RUNNING" : "POWER PC";
+  board.classList.toggle('powered', isPowered);
+  $('os-screen').style.display = isPowered ? 'block' : 'none';
+
+  // Toggle fan animations in SVG
+  document.querySelectorAll('.pc-fan').forEach(fan => {
+    fan.classList.toggle('fan-spin', isPowered);
+  });
+
+  if(isPowered){
+    playBootSound();
+    msg("🖥️ CyberOS Booted: System Online!");
+  } else {
+    playPowerOffSound();
+    msg("System Powered Off");
+  }
+  updateSoundState();
+}
+
+$('bPower').onclick = () => setPower(!isPowered);
+
+$('bRGB').onclick = () => {
+  currentTheme = (currentTheme + 1) % THEMES.length;
+  paint(currentTheme);
+  buildTray();
+  renderPC();
+  msg("RGB Mode: " + THEMES[currentTheme].name);
+};
+
+let appMode = 0;
+const MODES = ["Gaming Ultra", "Cyber Benchmark", "Overclock Mode", "Silent Eco"];
+$('bApp').onclick = () => {
+  if(!isPowered){ msg("Turn PC ON first!"); return; }
+  appMode = (appMode + 1) % MODES.length;
+  msg("Preset: " + MODES[appMode]);
+  playKeySound(500);
+};
+
+// ---------- Interactive Keyboard Operations ----------
+function typeKey(k){
+  ensureAudio();
+  playKeySound(380);
+  keyCount++;
+  
+  if(!isPowered){
+    msg("Turn PC ON to use keyboard!");
+    return;
+  }
+
+  if(k === "DEL"){
+    if(noteText.length > 0) noteText = noteText.slice(0, -1);
+  } else if(k === "SPACE"){
+    noteText += " ";
+  } else if(k === "ENTER"){
+    noteText += " | ";
+  } else if(k === "SHIFT"){
+    // Shift effect
+  } else {
+    if(noteText.length > 40) noteText = noteText.slice(1);
+    noteText += k;
+  }
+  
+  $('os-note-text').textContent = noteText + "_";
+  $('os-click-counter').textContent = `Clicks: ${clickCount} | Keypresses: ${keyCount}`;
+}
+
+document.querySelectorAll('.kkey').forEach(btn => {
+  btn.onclick = () => {
+    btn.classList.add('pressed');
+    setTimeout(() => btn.classList.remove('pressed'), 120);
+    typeKey(btn.dataset.k);
+  };
+});
+
+window.addEventListener('keydown', e => {
+  const k = e.key.toUpperCase();
+  let mapped = k;
+  if(e.key === "Backspace") mapped = "DEL";
+  else if(e.key === " ") mapped = "SPACE";
+  else if(e.key === "Enter") mapped = "ENTER";
+  else if(e.key === "Shift") mapped = "SHIFT";
+
+  const btn = document.querySelector(`.kkey[data-k="${mapped}"]`);
+  if(btn){
+    btn.classList.add('pressed');
+    setTimeout(() => btn.classList.remove('pressed'), 120);
+  }
+  if(mapped.length === 1 || ["DEL","SPACE","ENTER"].includes(mapped)){
+    typeKey(mapped);
+  }
+});
+
+// ---------- Interactive Mouse Operations ----------
+const deskMouse = $('deskMouse');
+let mousePosX = 420, mousePosY = 160;
+
+function moveVirtualCursor(dx, dy){
+  mousePosX = Math.max(185, Math.min(610, mousePosX + dx));
+  mousePosY = Math.max(75, Math.min(270, mousePosY + dy));
+  $('screen-cursor').setAttribute('transform', `translate(${mousePosX},${mousePosY})`);
+}
+
+deskMouse.onclick = () => {
+  ensureAudio();
+  playMouseClickSound();
+  clickCount++;
+  if(isPowered){
+    $('os-click-counter').textContent = `Clicks: ${clickCount} | Keypresses: ${keyCount}`;
+    msg(`🖱️ Mouse Click at (${Math.round(mousePosX)}, ${Math.round(mousePosY)})`);
+  } else {
+    msg("Turn PC ON to operate!");
+  }
+};
+
+let isMouseDragging = false, startMX = 0, startMY = 0;
+deskMouse.addEventListener('pointerdown', e => {
+  isMouseDragging = true;
+  startMX = e.clientX;
+  startMY = e.clientY;
+  deskMouse.setPointerCapture(e.pointerId);
+});
+
+window.addEventListener('pointermove', e => {
+  if(!isMouseDragging || !isPowered) return;
+  const dx = (e.clientX - startMX) * 1.5;
+  const dy = (e.clientY - startMY) * 1.5;
+  startMX = e.clientX;
+  startMY = e.clientY;
+  moveVirtualCursor(dx, dy);
+});
+
+window.addEventListener('pointerup', () => { isMouseDragging = false; });
+
+// Reset entire setup
+$('reset').onclick = () => {
+  cancelDrag();
+  placed = new Set();
+  setPower(false);
+  noteText = "HELLO GAMER! WELCOME TO CYBEROS_";
+  clickCount = 0;
+  keyCount = 0;
+  $('os-note-text').textContent = noteText;
+  $('os-click-counter').textContent = `Clicks: 0 | Keypresses: 0`;
+  buildTray();
+  renderPC();
+  msg("Computer reset. Start building!");
+};
+
+buildTray();
+renderPC();
+
+// ---------- Web Audio Synthesis Engine ----------
+let audioEnabled = true;
+let actx = null;
+let fanHumNode = null;
+
+function ensureAudio(){
+  if(actx){
+    if(actx.state === 'suspended') actx.resume();
+    return;
+  }
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if(!AudioContext) return;
+  actx = new AudioContext();
+
+  const humOsc = actx.createOscillator();
+  humOsc.type = 'sine';
+  humOsc.frequency.value = 58;
+  const humGain = actx.createGain();
+  humGain.gain.value = 0;
+  humOsc.connect(humGain);
+  humGain.connect(actx.destination);
+  humOsc.start();
+  fanHumNode = humGain;
+}
+
+function updateSoundState(){
+  if(!actx || !fanHumNode) return;
+  const t = actx.currentTime;
+  fanHumNode.gain.setTargetAtTime(audioEnabled && isPowered ? 0.08 : 0, t, 0.1);
+}
+
+function playSnapSound(){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(320, t);
+  osc.frequency.exponentialRampToValueAtTime(880, t + 0.08);
+  gain.gain.setValueAtTime(0.15, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+  osc.connect(gain);
+  gain.connect(actx.destination);
+  osc.start(t);
+  osc.stop(t + 0.1);
+}
+
+function playKeySound(freq = 420){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = 'square';
+  osc.frequency.setValueAtTime(freq, t);
+  gain.gain.setValueAtTime(0.08, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+  osc.connect(gain);
+  gain.connect(actx.destination);
+  osc.start(t);
+  osc.stop(t + 0.04);
+}
+
+function playMouseClickSound(){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(900, t);
+  osc.frequency.exponentialRampToValueAtTime(200, t + 0.03);
+  gain.gain.setValueAtTime(0.12, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+  osc.connect(gain);
+  gain.connect(actx.destination);
+  osc.start(t);
+  osc.stop(t + 0.04);
+}
+
+function playBootSound(){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const notes = [261.63, 329.63, 392.00, 523.25];
+  notes.forEach((f, idx) => {
+    const osc = actx.createOscillator();
+    const gain = actx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(f, t + idx * 0.1);
+    gain.gain.setValueAtTime(0, t + idx * 0.1);
+    gain.gain.linearRampToValueAtTime(0.18, t + idx * 0.1 + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.1 + 0.45);
+    osc.connect(gain);
+    gain.connect(actx.destination);
+    osc.start(t + idx * 0.1);
+    osc.stop(t + idx * 0.1 + 0.5);
+  });
+}
+
+function playPowerOffSound(){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(440, t);
+  osc.frequency.exponentialRampToValueAtTime(60, t + 0.3);
+  gain.gain.setValueAtTime(0.15, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+  osc.connect(gain);
+  gain.connect(actx.destination);
+  osc.start(t);
+  osc.stop(t + 0.35);
+}
+
+$('bSound').onclick = () => {
+  ensureAudio();
+  audioEnabled = !audioEnabled;
+  $('bSound').innerHTML = audioEnabled ? '<b>🔊</b>Audio' : '<b>🔇</b>Mute';
+  updateSoundState();
+  msg(audioEnabled ? "Audio Enabled" : "Audio Muted");
+};
+</script>
+</body>
+</html>
