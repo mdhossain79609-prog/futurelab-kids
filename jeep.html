@@ -1,1 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Assemble 20 precision parts to build a high-performance Supercar or rugged 4x4 Off-Road Jeep with corner zoom HUD, realistic sound, lighting modes, and driving simulation.">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">
+<title>Vehicle Builder: Supercar & 4x4 Jeep</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{position:fixed;width:100%;height:100%;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#060911;color:#f8fafc;user-select:none;-webkit-user-select:none;touch-action:none}
+main{display:flex;flex-direction:column;width:100%;height:100%;max-width:1400px;margin:0 auto;position:relative}
+header{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#0f172a;border-bottom:1px solid #1e293b;flex-shrink:0;z-index:20}
+.header-titles{flex:1;min-width:0;display:flex;align-items:center;gap:8px}
+h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(0.95rem,3.8vw,1.35rem);font-weight:900;
+background:linear-gradient(90deg,#38bdf8,#a855f7,#ef4444);-webkit-background-clip:text;background-clip:text;color:transparent}
+.model-switch{display:flex;background:#070d1a;padding:2px;border-radius:999px;border:1px solid #334155}
+.model-btn{border:0;background:transparent;color:#94a3b8;font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;cursor:pointer;transition:all .15s}
+.model-btn.active{background:linear-gradient(135deg,#0284c7,#2563eb);color:#fff;box-shadow:0 2px 6px #0284c766}
+.pill{border-radius:999px;padding:5px 10px;font-size:11px;font-weight:800;border:0;cursor:pointer;transition:transform .15s}
+.pill:active{transform:scale(.95)}
+#count{background:#1e293b;color:#38bdf8;border:1px solid #334155}
+#reset{background:#ef4444;color:#fff;box-shadow:0 2px 8px #ef444455}
 
+#boardWrap{flex:0 0 39%;min-height:0;padding:4px 8px;position:relative;z-index:1}
+#board{position:absolute;inset:4px 8px;border:2px dashed #0ea5e9;border-radius:18px;overflow:hidden;
+background:radial-gradient(circle at 50% 35%,#172033 0%,#050811 100%);transition:background .5s;box-shadow:inset 0 0 40px #000000aa;touch-action:none}
+#board.night{background:radial-gradient(circle at 50% 35%,#040712 0%,#010206 100%)}
+#board svg#scene{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(12px,2.8vw,15px);color:#64748b;text-align:center;padding:16px;pointer-events:none}
+
+#zoomHud{position:absolute;right:8px;top:8px;display:flex;align-items:center;gap:3px;background:#0f172ae6;border:1px solid #334155;border-radius:999px;padding:3px 8px;z-index:40;box-shadow:0 4px 12px #0008;touch-action:auto}
+.zbtn{width:24px;height:24px;border-radius:50%;border:0;background:#334155;color:#fff;font-weight:900;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.zbtn:active{background:#0ea5e9;color:#0f172a}
+#zoomVal{font-size:11px;font-weight:800;color:#0ea5e9;min-width:34px;text-align:center}
+
+#tray{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;padding:6px 8px;background:#0b1120;border-top:2px solid #1e293b;flex:1;min-height:0;align-content:center;z-index:10;touch-action:none}
+@media(max-width:768px){
+  #tray{grid-template-columns:repeat(5,1fr);gap:4px;padding:5px;align-content:start;overflow-y:auto}
+}
+.slot{height:clamp(48px,8.5vh,68px);border-radius:10px;background:#0f172a;border:1px solid #334155;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative;cursor:grab;touch-action:none;-webkit-touch-callout:none;transition:border-color .15s}
+.slot:active{border-color:#38bdf8}
+.slot svg{width:100%;height:65%;filter:drop-shadow(0 2px 4px #000a);pointer-events:none}
+.slot span{font-size:9.5px;font-weight:700;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:94%;margin-top:1px;pointer-events:none}
+.slot.gone{opacity:.15;pointer-events:none;border-color:#1e293b}
+
+#controls{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 10px;background:#0f172a;border-top:1px solid #1e293b;flex-shrink:0;z-index:20}
+.btns{display:flex;gap:5px;flex:1;max-width:520px}
+.cbtn{flex:1;height:46px;border-radius:10px;border:0;color:#fff;font-weight:800;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;box-shadow:0 3px 0 #070b14;transition:transform .1s}
+.cbtn b{font-size:15px;line-height:1}
+.cbtn:active{transform:translateY(2px);box-shadow:0 1px 0 #070b14}
+#bColor{background:linear-gradient(135deg,#f43f5e,#f59e0b)}
+#bLight{background:linear-gradient(135deg,#eab308,#f97316)}
+#bSound{background:linear-gradient(135deg,#0ea5e9,#6366f1)}
+#bSound.muted{background:#334155!important;color:#94a3b8;border:1px solid #475569}
+#bStart{background:linear-gradient(135deg,#10b981,#047857)}
+#bStart.on{background:linear-gradient(135deg,#ef4444,#991b1b)}
+
+#remote{display:grid;grid-template-columns:repeat(4,38px);grid-template-rows:repeat(2,30px);gap:3px;padding:4px;border-radius:10px;background:#070d1a;border:1px solid #1e293b;flex-shrink:0}
+.r{border:0;border-radius:6px;background:#1e293b;color:#fff;font-size:14px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .1s}
+.r:active,.r.act{background:#38bdf8;color:#070d1a}
+.r.run{background:#059669;grid-column:span 2;font-size:11px;font-weight:800}.r.run.act{background:#facc15;color:#070d1a}
+.cbtn:disabled,.r:disabled{opacity:.35;cursor:not-allowed}
+
+#drag{position:fixed;pointer-events:none;z-index:9999;filter:drop-shadow(0 12px 18px #000c);transform:scale(1.08)}
+#msg{position:fixed;left:50%;top:50px;transform:translateX(-50%);background:#070d1ae8;border:1px solid #38bdf8;color:#fff;padding:6px 16px;border-radius:999px;font-size:12px;font-weight:800;opacity:0;transition:opacity .25s;pointer-events:none;z-index:90;box-shadow:0 4px 15px #000a}
+
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.15}}
+@keyframes blink2{0%,49%{opacity:.15}50%,100%{opacity:1}}
+.bl1{animation:blink .6s infinite}.bl2{animation:blink2 .6s infinite}
+@keyframes nitroFire{0%{opacity:.8;transform:scaleX(1)}50%{opacity:1;transform:scaleX(1.35)}100%{opacity:.8;transform:scaleX(1)}}
+.nitro{animation:nitroFire .2s infinite alternate;transform-origin:left center}
+</style>
+</head>
+<body>
+<main>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+<header>
+  <div class="header-titles">
+    <h1 id="mainTitle">🏎️ Supercar Builder</h1>
+    <div class="model-switch">
+      <button class="model-btn active" id="btnCar" onclick="selectModel('car')">🏎️ Car</button>
+      <button class="model-btn" id="btnJeep" onclick="selectModel('jeep')">🚙 Jeep 4x4</button>
+    </div>
+  </div>
+  <span id="count" class="pill">0 / 20</span>
+  <button id="reset" class="pill">Reset</button>
+</header>
+<div id="boardWrap">
+  <div id="board">
+    <div id="zoomHud">
+      <button class="zbtn" id="zOut" title="Zoom Out">−</button>
+      <span id="zoomVal">100%</span>
+      <button class="zbtn" id="zIn" title="Zoom In">+</button>
+      <button class="zbtn" id="zReset" title="Reset Zoom">↺</button>
+    </div>
+    <svg id="scene" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <radialGradient id="beam" cx="0" cy="0.5" r="1">
+          <stop offset="0" stop-color="#38bdf8" stop-opacity=".95"/>
+          <stop offset="0.6" stop-color="#fff" stop-opacity=".6"/>
+          <stop offset="1" stop-color="#38bdf8" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="flame" cx="0" cy="0.5" r="1">
+          <stop offset="0" stop-color="#67e8f9" stop-opacity="1"/>
+          <stop offset="0.4" stop-color="#3b82f6" stop-opacity=".85"/>
+          <stop offset="0.8" stop-color="#ef4444" stop-opacity=".6"/>
+          <stop offset="1" stop-color="#ef4444" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="6" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g id="camera">
+        <g id="mover">
+          <g id="facer">
+            <g id="tilter">
+              <g id="vehicle"></g>
+              <g id="lights"></g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </svg>
+    <div id="hint">Drag and drop 20 parts here to assemble the vehicle</div>
+  </div>
+</div>
+<section id="tray" aria-label="Vehicle Assembly Parts"></section>
+<div id="controls">
+  <div class="btns">
+    <button class="cbtn" id="bColor"><b>🎨</b>Theme</button>
+    <button class="cbtn" id="bLight"><b>💡</b>Lights</button>
+    <button class="cbtn" id="bSound"><b>🔊</b>Sound: ON</button>
+    <button class="cbtn" id="bStart"><b>▶</b>Start</button>
+  </div>
+  <div id="remote" title="Remote Driving Controls">
+    <button class="r" data-k="faster" aria-label="Faster">＋</button>
+    <button class="r" data-k="left" aria-label="Drive Left">◀</button>
+    <button class="r" data-k="right" aria-label="Drive Right">▶</button>
+    <button class="r" data-k="horn" aria-label="Horn">📣</button>
+    <button class="r" data-k="slower" aria-label="Slower">−</button>
+    <button class="r" data-k="turn" aria-label="Turn Around">⇄</button>
+    <button class="r run" data-k="run" id="btnRun">🏎️ Run</button>
+  </div>
+</div>
+</main>
+<div id="msg"></div>
+
+<script>
+// Prevent mobile browser page zoom / pull-to-refresh
+window.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+document.addEventListener('gesturestart', e => e.preventDefault());
+document.addEventListener('gesturechange', e => e.preventDefault());
+document.addEventListener('gestureend', e => e.preventDefault());
+
+const VB = { x: 20, y: 30, w: 1100, h: 300 };
+const S = 'stroke="#0f172a" stroke-width="2.5"';
+const g = c => `url(#g-${c})`;
+const sh = (x, y, w, h) => `<rect x="${x + w * .05}" y="${y + h * .08}" width="${w * .9}" height="${Math.max(3, h * .12)}" rx="3" fill="#fff" opacity=".35"/>`;
+
+// Sport Wheel Artwork (For Supercar)
+const sportWheel = (x, y, r, isRear = false) => {
+  const dr = r - 10;
+  return `
+    <g>
+      <circle cx="${x}" cy="${y}" r="${r}" fill="${g('dark')}" ${S}/>
+      <circle cx="${x}" cy="${y}" r="${r - 4}" fill="none" stroke="#1e293b" stroke-width="2" stroke-dasharray="6,4"/>
+      <circle cx="${x}" cy="${y}" r="${dr}" fill="${g('silver')}" stroke="#475569" stroke-width="1.5"/>
+      <path d="M${x - dr + 2} ${y - 12} A${dr} ${dr} 0 0 1 ${x - dr + 12} ${y + 14} L${x - dr + 2} ${y + 8} Z" fill="#dc2626" stroke="#991b1b" stroke-width="1.5"/>
+      <g class="wheel" data-c="${x},${y}">
+        <circle cx="${x}" cy="${y}" r="${dr - 2}" fill="none" stroke="${g('dark')}" stroke-width="3"/>
+        <line x1="${x}" y1="${y - dr + 4}" x2="${x}" y2="${y + dr - 4}" stroke="${g('gold')}" stroke-width="3.5"/>
+        <line x1="${x - dr + 4}" y1="${y}" x2="${x + dr - 4}" y2="${y}" stroke="${g('gold')}" stroke-width="3.5"/>
+        <line x1="${x - dr * .7}" y1="${y - dr * .7}" x2="${x + dr * .7}" y2="${y + dr * .7}" stroke="${g('gold')}" stroke-width="3.5"/>
+        <line x1="${x - dr * .7}" y1="${y + dr * .7}" x2="${x + dr * .7}" y2="${y - dr * .7}" stroke="${g('gold')}" stroke-width="3.5"/>
+        <circle cx="${x}" cy="${y}" r="8" fill="${g('gold')}" stroke="#0f172a" stroke-width="2"/>
+        <circle cx="${x}" cy="${y}" r="3" fill="#dc2626"/>
+      </g>
+    </g>
+  `;
+};
+
+// Rugged 35-inch Mud-Terrain Beadlock Wheel (For 4x4 Jeep)
+const jeepWheel = (x, y, r) => {
+  const dr = r - 13;
+  return `
+    <g>
+      <!-- Deep Lug Offroad Tire -->
+      <circle cx="${x}" cy="${y}" r="${r}" fill="${g('dark')}" stroke="#0f172a" stroke-width="3"/>
+      <!-- Knobby Tire Lugs -->
+      <circle cx="${x}" cy="${y}" r="${r - 5}" fill="none" stroke="#111827" stroke-width="6" stroke-dasharray="8,8"/>
+      <!-- Beadlock Outer Ring -->
+      <circle cx="${x}" cy="${y}" r="${dr}" fill="${g('dark')}" stroke="#ea580c" stroke-width="3"/>
+      <circle cx="${x}" cy="${y}" r="${dr - 2}" fill="none" stroke="#facc15" stroke-width="1.5" stroke-dasharray="3,6"/>
+      <!-- Heavy 4x4 Steel Rim -->
+      <g class="wheel" data-c="${x},${y}">
+        <circle cx="${x}" cy="${y}" r="${dr - 4}" fill="${g('silver')}" stroke="#0f172a" stroke-width="2"/>
+        <!-- 5-Lug Bolt Pattern & Center Hub -->
+        <circle cx="${x}" cy="${y}" r="14" fill="${g('dark')}" stroke="#475569" stroke-width="2"/>
+        <circle cx="${x}" cy="${y - 8}" r="2" fill="#fff"/>
+        <circle cx="${x + 8}" cy="${y - 3}" r="2" fill="#fff"/>
+        <circle cx="${x + 5}" cy="${y + 7}" r="2" fill="#fff"/>
+        <circle cx="${x - 5}" cy="${y + 7}" r="2" fill="#fff"/>
+        <circle cx="${x - 8}" cy="${y - 3}" r="2" fill="#fff"/>
+        <!-- Locking Hub -->
+        <rect x="${x - 4}" y="${y - 4}" width="8" height="8" rx="2" fill="#dc2626"/>
+      </g>
+    </g>
+  `;
+};
+
+// ==================== SUPERCAR 20 PARTS ====================
+const CAR_PARTS = [
+  { id: 1, n: "Monocoque Chassis", b: [170, 185, 730, 48], a: `<rect x="180" y="195" width="710" height="24" rx="6" fill="${g('dark')}" ${S}/>${sh(180, 195, 710, 24)}<line x1="200" y1="207" x2="870" y2="207" stroke="#38bdf8" stroke-width="2" stroke-dasharray="14,10" opacity=".6"/><rect x="230" y="215" width="600" height="6" fill="#0f172a"/>` },
+  { id: 2, n: "Twin-Turbo V8 Engine", b: [605, 128, 160, 72], a: `<rect x="615" y="138" width="140" height="52" rx="8" fill="#b91c1c" ${S}/><rect x="622" y="142" width="60" height="14" rx="3" fill="#ef4444" stroke="#7f1d1d" stroke-width="1.5"/><rect x="690" y="142" width="58" height="14" rx="3" fill="#ef4444" stroke="#7f1d1d" stroke-width="1.5"/><circle cx="638" cy="172" r="14" fill="${g('silver')}" ${S}/><circle cx="704" cy="172" r="14" fill="${g('silver')}" ${S}/><path d="M638 172 Q670 160 704 172" stroke="${g('cyan')}" stroke-width="4" fill="none"/><rect x="655" y="132" width="32" height="10" rx="3" fill="${g('gold')}"/>` },
+  { id: 3, n: "Front Pushrod Suspension", b: [248, 172, 116, 48], a: `<line x1="255" y1="180" x2="335" y2="205" stroke="${g('silver')}" stroke-width="4"/><line x1="255" y1="208" x2="335" y2="190" stroke="${g('silver')}" stroke-width="4"/><rect x="280" y="186" width="34" height="12" rx="3" fill="${g('gold')}" ${S}/><line x1="284" y1="188" x2="284" y2="196" stroke="#0f172a" stroke-width="2"/><line x1="292" y1="188" x2="292" y2="196" stroke="#0f172a" stroke-width="2"/><line x1="300" y1="188" x2="300" y2="196" stroke="#0f172a" stroke-width="2"/><line x1="308" y1="188" x2="308" y2="196" stroke="#0f172a" stroke-width="2"/>` },
+  { id: 4, n: "Rear Multilink Suspension", b: [730, 172, 116, 48], a: `<line x1="740" y1="180" x2="820" y2="205" stroke="${g('silver')}" stroke-width="4"/><line x1="740" y1="208" x2="820" y2="190" stroke="${g('silver')}" stroke-width="4"/><rect x="765" y="186" width="34" height="12" rx="3" fill="${g('gold')}" ${S}/><line x1="769" y1="188" x2="769" y2="196" stroke="#0f172a" stroke-width="2"/><line x1="777" y1="188" x2="777" y2="196" stroke="#0f172a" stroke-width="2"/><line x1="785" y1="188" x2="785" y2="196" stroke="#0f172a" stroke-width="2"/><line x1="793" y1="188" x2="793" y2="196" stroke="#0f172a" stroke-width="2"/>` },
+  { id: 5, n: "Cockpit & Racing Seat", b: [415, 120, 165, 75], a: `<path d="M435 185 L445 130 Q450 122 465 125 L475 145 L470 185 Z" fill="#991b1b" ${S}/><rect x="448" y="132" width="16" height="20" rx="3" fill="#dc2626"/><line x1="450" y1="135" x2="465" y2="175" stroke="${g('gold')}" stroke-width="3"/><line x1="462" y1="135" x2="455" y2="175" stroke="${g('gold')}" stroke-width="3"/><path d="M425 185 L490 125 L555 185" fill="none" stroke="${g('silver')}" stroke-width="4"/>` },
+  { id: 6, n: "F1 Wheel & Digital Dash", b: [362, 128, 75, 60], a: `<rect x="375" y="150" width="36" height="18" rx="4" fill="${g('dark')}" ${S}/><rect x="380" y="154" width="26" height="8" rx="2" fill="#0284c7"/><circle cx="384" cy="158" r="1.5" fill="#22c55e"/><circle cx="390" cy="158" r="1.5" fill="#facc15"/><circle cx="396" cy="158" r="1.5" fill="#ef4444"/><path d="M370 152 Q372 144 380 144 L396 144 Q404 144 406 152 L402 168 L374 168 Z" fill="none" stroke="${g('cyan')}" stroke-width="3"/>` },
+  { id: 7, n: "Front Carbon Splitter", b: [135, 192, 125, 38], a: `<path d="M140 215 L250 215 L245 204 L165 204 Q148 205 140 215 Z" fill="${g('dark')}" ${S}/><polygon points="155,200 185,198 178,206" fill="${g('cyan')}" ${S}/><polygon points="170,192 195,190 190,197" fill="${g('cyan')}" ${S}/>` },
+  { id: 8, n: "Rear Downforce Diffuser", b: [855, 192, 110, 42], a: `<polygon points="865,204 955,204 945,224 870,224" fill="${g('dark')}" ${S}/><line x1="885" y1="204" x2="888" y2="223" stroke="#38bdf8" stroke-width="3"/><line x1="905" y1="204" x2="908" y2="223" stroke="#38bdf8" stroke-width="3"/><line x1="925" y1="204" x2="928" y2="223" stroke="#38bdf8" stroke-width="3"/><rect x="902" y="212" width="10" height="6" rx="2" fill="#ef4444" stroke="#fff" stroke-width="1"/>` },
+  { id: 9, n: "Supercar Aerobody", b: [195, 105, 690, 105], a: `<path d="M205 178 Q220 135 340 132 L400 132 L560 125 Q710 120 840 148 L875 168 Q885 180 875 198 L210 198 Q198 190 205 178 Z" fill="${g('blue')}" ${S}/>${sh(215, 132, 650, 48)}<path d="M225 170 Q420 140 640 152 T865 175" fill="none" stroke="${g('gold')}" stroke-width="3.5"/>` },
+  { id: 10, n: "Sculpted Front Hood", b: [195, 130, 200, 60], a: `<path d="M200 176 L320 138 L385 138 L375 165 L220 182 Z" fill="${g('blue')}" ${S}/><polygon points="260,158 310,144 340,148 290,165" fill="${g('dark')}" ${S}/><line x1="275" y1="156" x2="320" y2="150" stroke="#38bdf8" stroke-width="2"/>` },
+  { id: 11, n: "Tinted Speed Windshield", b: [368, 86, 190, 70], a: `<path d="M382 138 L450 92 L535 92 L550 126 L382 138 Z" fill="${g('cyan')}" ${S}/><polygon points="440,93 532,93 528,103 448,103" fill="${g('dark')}"/><path d="M405 130 L495 98" stroke="#fff" stroke-width="6" opacity=".55"/>` },
+  { id: 12, n: "Carbon Roof & Scoop", b: [430, 74, 250, 40], a: `<path d="M445 92 L565 92 Q640 98 670 120 L550 124 L445 92 Z" fill="${g('dark')}" ${S}/><path d="M480 82 L535 82 Q545 88 535 92 L475 92 Q465 85 480 82 Z" fill="${g('cyan')}" ${S}/><ellipse cx="482" cy="87" rx="5" ry="3" fill="#0f172a"/>` },
+  { id: 13, n: "Dihedral Scissor Door", b: [380, 120, 220, 90], a: `<path d="M388 138 L540 126 L585 178 L570 198 L410 198 Z" fill="${g('orange')}" ${S}/>${sh(395, 132, 175, 40)}<path d="M420 162 Q490 148 555 160" fill="none" stroke="#0f172a" stroke-width="3"/><rect x="525" y="152" width="16" height="4" rx="2" fill="${g('silver')}"/>` },
+  { id: 14, n: "Side Intercooler Scoops", b: [590, 136, 150, 70], a: `<path d="M598 132 L665 130 L730 168 L710 196 L615 196 Z" fill="${g('teal')}" ${S}/><polygon points="612,148 660,140 680,185 635,185" fill="${g('dark')}" ${S}/><line x1="624" y1="156" x2="668" y2="172" stroke="#38bdf8" stroke-width="2"/><line x1="632" y1="168" x2="656" y2="180" stroke="#38bdf8" stroke-width="2"/>` },
+  { id: 15, n: "Quad-LED Headlights", b: [180, 140, 85, 40], a: `<path d="M190 162 L250 148 L255 162 L198 174 Z" fill="${g('dark')}" ${S}/><circle cx="214" cy="164" r="5" fill="#fff" stroke="${g('cyan')}" stroke-width="1.5"/><circle cx="232" cy="158" r="5" fill="#fff" stroke="${g('cyan')}" stroke-width="1.5"/><path d="M198 168 L246 154" stroke="#facc15" stroke-width="2.5" stroke-linecap="round"/>` },
+  { id: 16, n: "Carbon Aero Wing Mirrors", b: [350, 116, 55, 42], a: `<path d="M382 135 L360 122 Q352 120 354 130 L378 140 Z" fill="${g('silver')}" ${S}/><ellipse cx="360" cy="126" rx="4" ry="7" fill="${g('cyan')}"/><line x1="366" y1="126" x2="378" y2="134" stroke="#ef4444" stroke-width="2"/>` },
+  { id: 17, n: "Carbon GT Racing Wing", b: [800, 65, 155, 85], a: `<path d="M820 148 Q840 82 865 72 L895 72 Q865 85 850 148 Z" fill="${g('dark')}" ${S}/><path d="M855 148 Q875 82 900 72 L930 72 Q900 85 885 148 Z" fill="${g('dark')}" ${S}/><rect x="815" y="68" width="130" height="9" rx="3" fill="${g('dark')}" ${S}/><rect x="822" y="79" width="115" height="5" rx="2" fill="${g('silver')}"/><polygon points="938,60 952,62 944,92 932,88" fill="${g('cyan')}" ${S}/>` },
+  { id: 18, n: "Front Forged Wheel", b: [242, 182, 90, 90], a: sportWheel(287, 227, 40) },
+  { id: 19, n: "Rear Forged Wheel", b: [742, 178, 98, 98], a: sportWheel(791, 227, 44, true) },
+  { id: 20, n: "Exhaust & Lightbar", b: [875, 148, 75, 56], a: `<g><circle cx="895" cy="184" r="8" fill="${g('dark')}" ${S}/><circle cx="895" cy="184" r="5" fill="#38bdf8"/><circle cx="918" cy="184" r="8" fill="${g('dark')}" ${S}/><circle cx="918" cy="184" r="5" fill="#38bdf8"/><path d="M880 156 L942 166 L938 174 L880 162 Z" fill="#dc2626" ${S}/><line x1="882" y1="159" x2="940" y2="169" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/></g>` }
+];
+
+// ==================== 4x4 JEEP 20 PARTS ====================
+const JEEP_PARTS = [
+  // 1. Heavy Ladder Frame Chassis & Skid Plate
+  { id: 1, n: "Ladder Frame Chassis", b: [180, 185, 720, 52], a: `<rect x="190" y="194" width="700" height="26" rx="4" fill="${g('dark')}" ${S}/>${sh(190, 194, 700, 26)}<rect x="360" y="214" width="360" height="8" rx="2" fill="#0f172a"/><circle cx="210" cy="207" r="5" fill="${g('silver')}"/><circle cx="870" cy="207" r="5" fill="${g('silver')}"/>` },
+  // 2. 4x4 Turbo Diesel V6 Engine
+  { id: 2, n: "Turbo Diesel V6 Engine", b: [270, 132, 150, 68], a: `<rect x="280" y="140" width="130" height="52" rx="6" fill="${g('dark')}" ${S}/><rect x="290" y="146" width="50" height="18" rx="3" fill="#ea580c" stroke="#9a3412" stroke-width="1.5"/><rect x="350" y="146" width="50" height="18" rx="3" fill="#ea580c" stroke="#9a3412" stroke-width="1.5"/><circle cx="310" cy="178" r="12" fill="${g('silver')}" ${S}/><circle cx="370" cy="178" r="12" fill="${g('silver')}" ${S}/><path d="M322 178 H358" stroke="${g('cyan')}" stroke-width="4"/>` },
+  // 3. Front Solid Dana Axle & Springs
+  { id: 3, n: "Front Solid Axle & Coils", b: [265, 175, 110, 52], a: `<rect x="272" y="196" width="96" height="14" rx="4" fill="${g('silver')}" ${S}/><rect x="298" y="178" width="28" height="28" rx="4" fill="${g('gold')}" ${S}/><line x1="304" y1="180" x2="304" y2="204" stroke="#0f172a" stroke-width="2"/><line x1="312" y1="180" x2="312" y2="204" stroke="#0f172a" stroke-width="2"/><line x1="320" y1="180" x2="320" y2="204" stroke="#0f172a" stroke-width="2"/>` },
+  // 4. Rear Heavy-Duty Differential Axle
+  { id: 4, n: "Rear Differential Axle", b: [730, 175, 110, 52], a: `<rect x="738" y="196" width="96" height="14" rx="4" fill="${g('silver')}" ${S}/><circle cx="786" cy="203" r="15" fill="${g('dark')}" ${S}/><circle cx="786" cy="203" r="8" fill="${g('gold')}"/><rect x="750" y="178" width="24" height="28" rx="4" fill="${g('gold')}" ${S}/>` },
+  // 5. Heavy Tubular Rollcage & Seats
+  { id: 5, n: "Tubular Rollcage & Seats", b: [410, 78, 290, 120], a: `<path d="M425 195 L425 96 L675 96 L685 195" fill="none" stroke="${g('dark')}" stroke-width="7" stroke-linecap="round"/><path d="M525 96 L525 195 M600 96 L600 195" fill="none" stroke="${g('dark')}" stroke-width="6"/><path d="M425 96 L685 195" stroke="#facc15" stroke-width="3" stroke-dasharray="8,6"/><rect x="460" y="130" width="32" height="48" rx="4" fill="#991b1b" ${S}/><rect x="540" y="130" width="32" height="48" rx="4" fill="#991b1b" ${S}/>` },
+  // 6. Rugged Steering & 4WD Shifter
+  { id: 6, n: "Rugged Wheel & 4WD Gear", b: [390, 125, 75, 68], a: `<rect x="402" y="146" width="34" height="18" rx="4" fill="${g('dark')}" ${S}/><line x1="422" y1="164" x2="428" y2="188" stroke="${g('silver')}" stroke-width="4"/><circle cx="428" cy="188" r="5" fill="#ef4444"/><circle cx="410" cy="142" r="14" fill="none" stroke="${g('cyan')}" stroke-width="4"/><path d="M398 142 H422 M410 130 V410 154" stroke="${g('silver')}" stroke-width="2.5"/>` },
+  // 7. Offroad Winch & Bull Bumper
+  { id: 7, n: "Steel Winch Bumper", b: [135, 185, 120, 48], a: `<rect x="142" y="196" width="105" height="24" rx="5" fill="${g('dark')}" ${S}/><rect x="160" y="184" width="45" height="18" rx="3" fill="#ea580c" ${S}/><circle cx="182" cy="193" r="6" fill="${g('silver')}"/><circle cx="152" cy="208" r="6" fill="none" stroke="${g('gold')}" stroke-width="3"/><rect x="144" y="174" width="6" height="22" rx="2" fill="${g('silver')}"/>` },
+  // 8. Rear Steel Bumper & Tow Hitch
+  { id: 8, n: "Rear Bumper & Tow Hitch", b: [860, 188, 105, 45], a: `<rect x="868" y="196" width="90" height="22" rx="5" fill="${g('dark')}" ${S}/><rect x="942" y="202" width="18" height="10" rx="3" fill="${g('silver')}"/><circle cx="956" cy="207" r="5" fill="${g('gold')}"/><circle cx="880" cy="207" r="6" fill="none" stroke="${g('gold')}" stroke-width="3"/>` },
+  // 9. Boxy 4x4 Jeep Steel Body
+  { id: 9, n: "4x4 Steel Tub Body", b: [220, 115, 660, 95], a: `<polygon points="230,196 230,148 420,148 440,118 695,118 705,196" fill="${g('blue')}" ${S}/>${sh(235, 148, 450, 40)}<path d="M230 196 H875 V148 H695 Z" fill="${g('blue')}" ${S}/>` },
+  // 10. Front Offroad Hood & Latches
+  { id: 10, n: "Offroad Hood & Latches", b: [225, 135, 195, 45], a: `<rect x="232" y="142" width="182" height="22" rx="4" fill="${g('blue')}" ${S}/><rect x="250" y="148" width="80" height="6" rx="2" fill="${g('dark')}"/><circle cx="242" cy="154" r="4" fill="${g('gold')}"/><circle cx="404" cy="154" r="4" fill="${g('gold')}"/>` },
+  // 11. Vertical Fold-Down Windshield
+  { id: 11, n: "Fold-Down Windshield", b: [415, 85, 70, 75], a: `<polygon points="426,150 440,94 456,94 442,150" fill="${g('cyan')}" ${S}/><line x1="428" y1="144" x2="442" y2="98" stroke="#fff" stroke-width="4" opacity=".6"/><circle cx="426" cy="150" r="4" fill="${g('gold')}"/>` },
+  // 12. Safari Roof Rack & Jerry Cans
+  { id: 12, n: "Safari Roof Rack", b: [430, 64, 255, 45], a: `<rect x="440" y="76" width="235" height="12" rx="3" fill="${g('dark')}" ${S}/><line x1="440" y1="88" x2="675" y2="88" stroke="${g('dark')}" stroke-width="4"/><rect x="470" y="66" width="30" height="18" rx="3" fill="#dc2626" ${S}/><rect x="510" y="66" width="30" height="18" rx="3" fill="#dc2626" ${S}/><rect x="560" y="68" width="70" height="10" rx="2" fill="#ea580c"/>` },
+  // 13. Heavy Tube Safari Doors
+  { id: 13, n: "Tube Half-Doors", b: [435, 138, 145, 64], a: `<rect x="444" y="146" width="128" height="48" rx="6" fill="none" stroke="${g('orange')}" stroke-width="6"/><line x1="444" y1="146" x2="572" y2="194" stroke="${g('orange')}" stroke-width="5"/><circle cx="560" cy="160" r="4" fill="${g('gold')}"/>` },
+  // 14. High-Mount Snorkel Intake
+  { id: 14, n: "High-Mount Snorkel", b: [390, 80, 45, 80], a: `<path d="M422 154 L422 92 Q422 84 410 84 L396 84" fill="none" stroke="${g('dark')}" stroke-width="8" stroke-linecap="round"/><rect x="392" y="80" width="14" height="10" rx="3" fill="#ea580c"/>` },
+  // 15. 7-Slot Grille & Round Lights
+  { id: 15, n: "7-Slot Grille & Headlight", b: [205, 142, 55, 48], a: `<rect x="214" y="148" width="38" height="38" rx="5" fill="${g('dark')}" ${S}/><circle cx="230" cy="164" r="10" fill="#fef08a" stroke="${g('silver')}" stroke-width="2"/><circle cx="230" cy="164" r="6" fill="#fff"/><line x1="244" y1="152" x2="244" y2="182" stroke="#38bdf8" stroke-width="2.5"/><line x1="248" y1="152" x2="248" y2="182" stroke="#38bdf8" stroke-width="2.5"/>` },
+  // 16. Rugged Folding Side Mirrors
+  { id: 16, n: "Rugged Wing Mirror", b: [395, 115, 42, 40], a: `<line x1="422" y1="138" x2="406" y2="124" stroke="${g('silver')}" stroke-width="4"/><rect x="398" y="118" width="12" height="22" rx="3" fill="${g('dark')}" ${S}/><rect x="400" y="120" width="8" height="18" rx="2" fill="${g('cyan')}"/>` },
+  // 17. Rear Spare Offroad Wheel
+  { id: 17, n: "Rear Mount Spare Tire", b: [865, 110, 85, 85], a: `<g transform="translate(40, -45) scale(0.9)">${jeepWheel(865, 205, 38)}</g><rect x="850" y="140" width="24" height="8" rx="2" fill="${g('dark')}"/>` },
+  // 18. Front 35-inch Mud Tire
+  { id: 18, n: "Front 35in Mud Tire", b: [265, 180, 95, 95], a: jeepWheel(312, 227, 44) },
+  // 19. Rear 35-inch Mud Tire
+  { id: 19, n: "Rear 35in Mud Tire", b: [735, 180, 95, 95], a: jeepWheel(782, 227, 44) },
+  // 20. Roof LED Lightbar & Taillights
+  { id: 20, n: "Roof Lightbar & Taillight", b: [435, 58, 250, 40], a: `<rect x="444" y="66" width="225" height="10" rx="3" fill="${g('dark')}" ${S}/><circle cx="460" cy="71" r="3" fill="#fef08a"/><circle cx="485" cy="71" r="3" fill="#fef08a"/><circle cx="510" cy="71" r="3" fill="#fef08a"/><circle cx="535" cy="71" r="3" fill="#fef08a"/><circle cx="560" cy="71" r="3" fill="#fef08a"/><circle cx="585" cy="71" r="3" fill="#fef08a"/><circle cx="610" cy="71" r="3" fill="#fef08a"/><circle cx="635" cy="71" r="3" fill="#fef08a"/><circle cx="660" cy="71" r="3" fill="#fef08a"/><rect x="888" y="152" width="12" height="24" rx="3" fill="#dc2626" ${S}/><rect x="890" y="156" width="8" height="8" fill="#facc15"/>` }
+];
+
+const BASE = {
+  red: "#ef4444", blue: "#2563eb", cyan: "#06b6d4", orange: "#f97316",
+  yellow: "#eab308", green: "#10b981", steel: "#64748b", purple: "#a855f7",
+  pink: "#ec4899", gold: "#f59e0b", teal: "#14b8a6", lime: "#84cc16",
+  indigo: "#6366f1", dark: "#1e293b", silver: "#94a3b8", coral: "#fb7185"
+};
+
+const CAR_THEMES = [
+  { name: "Rosso Corsa Red", map: { blue: "#dc2626", orange: "#b91c1c", teal: "#991b1b", cyan: "#38bdf8" } },
+  { name: "Papaya McLaren Orange", map: { blue: "#f97316", orange: "#ea580c", teal: "#c2410c", cyan: "#0284c7" } },
+  { name: "Mantis Neon Green", map: { blue: "#10b981", orange: "#059669", teal: "#047857", cyan: "#a3e635" } },
+  { name: "French Racing Blue", map: { blue: "#2563eb", orange: "#1d4ed8", teal: "#1e3a8a", cyan: "#60a5fa" } },
+  { name: "Cyberpunk Glow Cyan", map: { blue: "#06b6d4", orange: "#0891b2", teal: "#0e7490", cyan: "#f43f5e" } },
+  { name: "Stealth Matte Carbon", map: { blue: "#334155", orange: "#1e293b", teal: "#0f172a", cyan: "#f59e0b" } }
+];
+
+const JEEP_THEMES = [
+  { name: "Sahara Desert Tan", map: { blue: "#d97706", orange: "#b45309", teal: "#92400e", cyan: "#fef08a" } },
+  { name: "Army Olive Green", map: { blue: "#15803d", orange: "#166534", teal: "#14532d", cyan: "#84cc16" } },
+  { name: "Rubicon Trail Red", map: { blue: "#b91c1c", orange: "#991b1b", teal: "#7f1d1d", cyan: "#f87171" } },
+  { name: "Arctic Glacier Blue", map: { blue: "#0284c7", orange: "#0369a1", teal: "#075985", cyan: "#38bdf8" } },
+  { name: "Outback Canyon Orange", map: { blue: "#ea580c", orange: "#c2410c", teal: "#9a3412", cyan: "#fed7aa" } },
+  { name: "Night Raid Stealth Black", map: { blue: "#1e293b", orange: "#0f172a", teal: "#020617", cyan: "#facc15" } }
+];
+
+let currentModel = 'car'; // 'car' or 'jeep'
+let activeParts = CAR_PARTS;
+let activeThemes = CAR_THEMES;
+
+const defs = document.getElementById('defs');
+function paint(t) {
+  const m = { ...BASE, ...activeThemes[t].map };
+  defs.innerHTML = Object.entries(m).map(([k, c]) =>
+    `<linearGradient id="g-${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${mix(c, '#ffffff', .55)}"/><stop offset=".5" stop-color="${c}"/><stop offset="1" stop-color="${mix(c, '#000000', .35)}"/></linearGradient>`
+  ).join('');
+}
+function mix(a, b, t) {
+  const p = h => [1, 3, 5].map(i => parseInt(h.substr(i, 2), 16));
+  const A = p(a), B = p(b);
+  return '#' + A.map((v, i) => Math.round(v + (B[i] - v) * t).toString(16).padStart(2, '0')).join('');
+}
+paint(0);
+
+const TRAY = [18, 5, 1, 15, 9, 13, 3, 19, 7, 11, 2, 17, 8, 14, 6, 12, 20, 10, 4, 16];
+const $ = id => document.getElementById(id);
+const scene = $('scene'), vehicle = $('vehicle'), board = $('board'), tray = $('tray');
+scene.setAttribute('viewBox', `${VB.x} ${VB.y} ${VB.w} ${VB.h}`);
+
+// Zoom & Pan System strictly scoped inside #board
+let zoom = 1, panX = 0, panY = 0;
+function updateCamera() {
+  zoom = Math.max(0.8, Math.min(3.5, zoom));
+  const cx = VB.x + VB.w / 2;
+  const cy = VB.y + VB.h / 2;
+  $('camera').setAttribute('transform', `translate(${panX} ${panY}) translate(${cx} ${cy}) scale(${zoom}) translate(${-cx} ${-cy})`);
+  $('zoomVal').textContent = Math.round(zoom * 100) + '%';
+}
+$('zIn').onclick = () => { zoom = Math.min(3.5, zoom + 0.25); updateCamera(); msg('Zoom: ' + Math.round(zoom * 100) + '%'); };
+$('zOut').onclick = () => { zoom = Math.max(0.8, zoom - 0.25); updateCamera(); msg('Zoom: ' + Math.round(zoom * 100) + '%'); };
+$('zReset').onclick = () => { zoom = 1; panX = 0; panY = 0; updateCamera(); msg('Zoom Reset'); };
+
+// Mouse wheel zoom over board only
+board.addEventListener('wheel', e => {
+  e.preventDefault();
+  const delta = e.deltaY < 0 ? 0.15 : -0.15;
+  zoom = Math.max(0.8, Math.min(3.5, zoom + delta));
+  updateCamera();
+}, { passive: false });
+
+// Two-finger Touch Pinch Zoom & Pan strictly on board
+let boardTouches = new Map(), initialDist = null, initialZoom = 1;
+board.addEventListener('touchstart', e => {
+  if (drag) return;
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const t = e.changedTouches[i];
+    boardTouches.set(t.identifier, { x: t.clientX, y: t.clientY });
+  }
+  if (boardTouches.size === 2) {
+    const pts = Array.from(boardTouches.values());
+    initialDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    initialZoom = zoom;
+  }
+}, { passive: true });
+
+board.addEventListener('touchmove', e => {
+  if (drag) return;
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const t = e.changedTouches[i];
+    boardTouches.set(t.identifier, { x: t.clientX, y: t.clientY });
+  }
+  if (boardTouches.size === 2 && initialDist) {
+    e.preventDefault();
+    const pts = Array.from(boardTouches.values());
+    const currentDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    const scaleFactor = currentDist / initialDist;
+    zoom = Math.max(0.8, Math.min(3.5, initialZoom * scaleFactor));
+    updateCamera();
+  }
+}, { passive: false });
+
+const clearBoardTouch = e => {
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    boardTouches.delete(e.changedTouches[i].identifier);
+  }
+  if (boardTouches.size < 2) {
+    initialDist = null;
+  }
+};
+board.addEventListener('touchend', clearBoardTouch);
+board.addEventListener('touchcancel', clearBoardTouch);
+
+// Board Dimensions Calculation
+function fit() {
+  const r = board.getBoundingClientRect();
+  const s = Math.min(r.width / VB.w, r.height / VB.h);
+  return { r, s, ox: (r.width - VB.w * s) / 2, oy: (r.height - VB.h * s) / 2 };
+}
+
+let placed = new Set();
+let drag = null;
+let dragEl = null;
+
+function buildTray() {
+  tray.innerHTML = '';
+  TRAY.forEach(id => {
+    const p = activeParts.find(q => q.id === id);
+    const d = document.createElement('div');
+    d.className = 'slot' + (placed.has(id) ? ' gone' : '');
+    d.dataset.id = id;
+    d.innerHTML = `<svg viewBox="${p.b.join(' ')}">${p.a}</svg><span>${p.n}</span>`;
+
+    // Direct Touch Support (Mobile/Tablet)
+    d.addEventListener('touchstart', e => {
+      if (placed.has(id) || drag) return;
+      e.preventDefault();
+      const t = e.changedTouches[0];
+      initDrag(id, t.clientX, t.clientY, t.identifier);
+    }, { passive: false });
+
+    // Mouse Support (Desktop)
+    d.addEventListener('mousedown', e => {
+      if (e.button !== 0 || placed.has(id) || drag) return;
+      e.preventDefault();
+      initDrag(id, e.clientX, e.clientY, null);
+    });
+
+    tray.appendChild(d);
+  });
+}
+
+function initDrag(id, clientX, clientY, touchId) {
+  const p = activeParts.find(q => q.id === id);
+  const { s } = fit();
+  drag = { id, s, x: clientX, y: clientY, touchId };
+
+  dragEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  dragEl.id = 'drag';
+  dragEl.setAttribute('viewBox', p.b.join(' '));
+  dragEl.setAttribute('width', Math.max(54, p.b[2] * s * 1.25));
+  dragEl.setAttribute('height', Math.max(54, p.b[3] * s * 1.25));
+  dragEl.innerHTML = p.a;
+  document.body.appendChild(dragEl);
+
+  const slot = tray.querySelector(`[data-id="${id}"]`);
+  if (slot) slot.classList.add('gone');
+
+  updateDragPosition(clientX, clientY);
+}
+
+function updateDragPosition(x, y) {
+  if (!drag || !dragEl) return;
+  drag.x = x;
+  drag.y = y;
+  const w = parseFloat(dragEl.getAttribute('width'));
+  const h = parseFloat(dragEl.getAttribute('height'));
+  dragEl.style.left = (x - w / 2) + 'px';
+  dragEl.style.top = (y - h / 2) + 'px';
+}
+
+// Global Touch Move & End
+window.addEventListener('touchmove', e => {
+  if (!drag || drag.touchId === null) return;
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const t = e.changedTouches[i];
+    if (t.identifier === drag.touchId) {
+      e.preventDefault();
+      updateDragPosition(t.clientX, t.clientY);
+      break;
+    }
+  }
+}, { passive: false });
+
+window.addEventListener('touchend', e => {
+  if (!drag || drag.touchId === null) return;
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const t = e.changedTouches[i];
+    if (t.identifier === drag.touchId) {
+      finishDrag(t.clientX, t.clientY);
+      break;
+    }
+  }
+});
+
+window.addEventListener('touchcancel', e => {
+  if (!drag || drag.touchId === null) return;
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const t = e.changedTouches[i];
+    if (t.identifier === drag.touchId) {
+      finishDrag(t.clientX, t.clientY);
+      break;
+    }
+  }
+});
+
+// Mouse Move & Up
+window.addEventListener('mousemove', e => {
+  if (!drag || drag.touchId !== null) return;
+  e.preventDefault();
+  updateDragPosition(e.clientX, e.clientY);
+});
+
+window.addEventListener('mouseup', e => {
+  if (!drag || drag.touchId !== null) return;
+  finishDrag(e.clientX, e.clientY);
+});
+
+function finishDrag(clientX, clientY) {
+  if (!drag) return;
+  const p = activeParts.find(q => q.id === drag.id);
+  const { r, s, ox, oy } = fit();
+
+  const cx = VB.x + VB.w / 2;
+  const cy = VB.y + VB.h / 2;
+  const partCx = p.b[0] + p.b[2] / 2 + pos.x;
+  const partCy = p.b[1] + p.b[3] / 2 + pos.y;
+
+  const camSvgX = cx + (partCx - cx) * zoom + panX;
+  const camSvgY = cy + (partCy - cy) * zoom + panY;
+
+  const tx = r.left + ox + (camSvgX - VB.x) * s;
+  const ty = r.top + oy + (camSvgY - VB.y) * s;
+
+  const dist = Math.hypot(clientX - tx, clientY - ty);
+  const maxTolerance = Math.max(65, 85 * s * zoom);
+
+  const isInsideBoard = clientX >= r.left && clientX <= r.right && clientY >= r.top && clientY <= r.bottom;
+
+  if (dist < maxTolerance || (isInsideBoard && dist < maxTolerance * 1.8)) {
+    placed.add(drag.id);
+    playSnapSound();
+    renderVehicle();
+    msg('Fitted: ' + p.n);
+  } else {
+    const slot = tray.querySelector(`[data-id="${drag.id}"]`);
+    if (slot) slot.classList.remove('gone');
+  }
+
+  if (dragEl) {
+    dragEl.remove();
+    dragEl = null;
+  }
+  drag = null;
+}
+
+function renderVehicle() {
+  let h = '';
+  activeParts.forEach(p => {
+    if (placed.has(p.id)) h += p.a;
+  });
+  vehicle.innerHTML = h;
+  $('count').textContent = placed.size + ' / 20';
+  $('hint').style.display = placed.size ? 'none' : 'flex';
+  updateLights();
+}
+
+const msg = t => {
+  const m = $('msg');
+  m.textContent = t;
+  m.style.opacity = 1;
+  clearTimeout(msg.t);
+  msg.t = setTimeout(() => m.style.opacity = 0, 1400);
+};
+
+let theme = 0;
+$('bColor').onclick = () => {
+  theme = (theme + 1) % activeThemes.length;
+  paint(theme);
+  buildTray();
+  msg('🎨 ' + activeThemes[theme].name);
+};
+
+const LIGHTS = ["Lights Off", "Hazard Blinkers", "High Beam Lights", "Neon Underglow", "Night Driving Mode"];
+let light = 0;
+$('bLight').onclick = () => {
+  light = (light + 1) % LIGHTS.length;
+  updateLights();
+  msg('💡 ' + LIGHTS[light]);
+};
+
+function updateLights() {
+  const L = $('lights');
+  board.classList.toggle('night', light === 4);
+  vehicle.style.filter = light === 3 ? 'drop-shadow(0 0 12px #38bdf8)' : '';
+  let h = '';
+  if (currentModel === 'car') {
+    if (light === 1 || light === 4) {
+      h = '<circle class="bl1" cx="214" cy="164" r="8" fill="#facc15"/><circle class="bl2" cx="925" cy="165" r="7" fill="#ef4444"/>';
+    }
+    if (light === 2 || light === 4) {
+      h += '<polygon points="214,164 -80,100 -80,250" fill="url(#beam)"/>';
+    }
+    if (started && speed > 100) {
+      h += '<polygon class="nitro" points="930,184 990,176 1020,184 990,192" fill="url(#flame)"/>';
+    }
+  } else {
+    // 4x4 Jeep Lights
+    if (light === 1 || light === 4) {
+      h = '<circle class="bl1" cx="230" cy="164" r="12" fill="#facc15"/><circle class="bl2" cx="894" cy="164" r="9" fill="#ef4444"/>';
+    }
+    if (light === 2 || light === 4) {
+      h += '<polygon points="230,164 -90,90 -90,260" fill="url(#beam)"/>';
+      h += '<polygon points="450,71 -90,20 -90,140" fill="url(#beam)" opacity=".7"/>';
+    }
+  }
+  L.innerHTML = placed.has(15) ? h : '';
+}
+
+function selectModel(m) {
+  if (currentModel === m) return;
+  currentModel = m;
+  $('btnCar').classList.toggle('active', m === 'car');
+  $('btnJeep').classList.toggle('active', m === 'jeep');
+  $('mainTitle').textContent = m === 'car' ? '🏎️ Supercar Builder' : '🚙 4x4 Jeep Builder';
+  $('btnRun').textContent = m === 'car' ? '🏎️ Run' : '🚙 Run';
+
+  activeParts = m === 'car' ? CAR_PARTS : JEEP_PARTS;
+  activeThemes = m === 'car' ? CAR_THEMES : JEEP_THEMES;
+
+  theme = 0;
+  paint(0);
+  resetVehicle();
+  msg(m === 'car' ? 'Switched to Supercar Mode' : 'Switched to 4x4 Jeep Mode');
+}
+
+let started = false, run = false, face = -1, travelSpeed = 160, speed = 0, wheelAngle = 0;
+const pos = { x: 0, y: 0 };
+const held = new Set();
+const runButton = document.querySelector('[data-k="run"]');
+
+function stopRun() {
+  run = false;
+  held.clear();
+  runButton.classList.remove('act');
+  document.querySelectorAll('.r').forEach(b => b.classList.remove('act'));
+}
+
+function startVehicle() {
+  if (placed.size < 20) {
+    activeParts.forEach(p => placed.add(p.id));
+    renderVehicle();
+    buildTray();
+  }
+  started = true;
+  ensureAudio();
+  if (snd) playRevBlip();
+  $('bStart').classList.add('on');
+  $('bStart').innerHTML = '<b>■</b>Stop';
+  updSound();
+  updateLights();
+  msg(currentModel === 'car' ? 'Twin-Turbo V8 Fired Up!' : '4x4 Turbo Diesel Fired Up!');
+}
+
+function stopVehicle() {
+  started = false;
+  stopRun();
+  $('bStart').classList.remove('on');
+  $('bStart').innerHTML = '<b>▶</b>Start';
+  updSound();
+  updateLights();
+  msg('Engine Stopped');
+}
+
+$('bStart').onclick = () => {
+  if (started) {
+    stopVehicle();
+  } else {
+    startVehicle();
+  }
+};
+
+function adjustedSpeed(current, change) {
+  const minS = currentModel === 'car' ? 80 : 60;
+  const maxS = currentModel === 'car' ? 380 : 260;
+  return Math.max(minS, Math.min(maxS, current + change));
+}
+
+document.querySelectorAll('.r').forEach(b => {
+  const k = b.dataset.k;
+  const ready = () => {
+    if (!started) {
+      startVehicle();
+    }
+    return true;
+  };
+  if (k === 'run') {
+    b.onclick = () => {
+      if (!ready()) return;
+      run = !run;
+      b.classList.toggle('act', run);
+      msg(run ? 'Cruise Drive ON' : 'Cruise Drive OFF');
+    };
+    return;
+  }
+  if (k === 'turn') {
+    b.onclick = () => {
+      if (ready()) {
+        face *= -1;
+        msg('Direction Reversed');
+      }
+    };
+    return;
+  }
+  if (k === 'horn') {
+    b.onclick = () => {
+      ensureAudio();
+      horn();
+    };
+    return;
+  }
+  if (k === 'faster' || k === 'slower') {
+    b.onclick = () => {
+      travelSpeed = adjustedSpeed(travelSpeed, k === 'faster' ? 40 : -40);
+      msg('Speed: ' + travelSpeed + ' km/h');
+    };
+    return;
+  }
+
+  // Pointer hold handlers
+  b.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    if (!ready()) return;
+    face = (k === 'left') ? -1 : 1;
+    held.add(k);
+    b.classList.add('act');
+    b.setPointerCapture(e.pointerId);
+  });
+  const off = () => {
+    held.delete(k);
+    b.classList.remove('act');
+  };
+  b.addEventListener('pointerup', off);
+  b.addEventListener('pointercancel', off);
+});
+
+// Keyboard controls
+const KEY = { ArrowLeft: 'left', ArrowRight: 'right' };
+addEventListener('keydown', e => {
+  if (!started) return;
+  if (KEY[e.key]) {
+    e.preventDefault();
+    held.add(KEY[e.key]);
+    face = (e.key === 'ArrowLeft') ? -1 : 1;
+  }
+  if (e.key === ' ' || e.key === 'h' || e.key === 'H') {
+    e.preventDefault();
+    ensureAudio();
+    horn();
+  }
+  if (e.key === 'ArrowUp') {
+    travelSpeed = adjustedSpeed(travelSpeed, 40);
+    msg('Speed: ' + travelSpeed + ' km/h');
+  }
+  if (e.key === 'ArrowDown') {
+    travelSpeed = adjustedSpeed(travelSpeed, -40);
+    msg('Speed: ' + travelSpeed + ' km/h');
+  }
+});
+addEventListener('keyup', e => {
+  if (KEY[e.key]) held.delete(KEY[e.key]);
+});
+addEventListener('blur', () => {
+  held.clear();
+});
+
+let last = performance.now(), moving = false;
+function loop(t) {
+  const dt = Math.min(.05, (t - last) / 1000);
+  last = t;
+  moving = started && (run || held.size > 0);
+  speed += ((moving ? travelSpeed : 0) - speed) * Math.min(1, dt * 4);
+  pos.x += speed * face * dt;
+  if (pos.x > 1150) pos.x = -1150;
+  if (pos.x < -1150) pos.x = 1150;
+  wheelAngle += speed * face * dt * (currentModel === 'car' ? 2.8 : 2.2);
+
+  vehicle.querySelectorAll('.wheel').forEach(w => {
+    w.setAttribute('transform', `rotate(${wheelAngle} ${w.dataset.c.replace(',', ' ')})`);
+  });
+  $('mover').setAttribute('transform', `translate(${pos.x} 0)`);
+  $('facer').setAttribute('transform', `translate(550 180) scale(${-face} 1) translate(-550 -180)`);
+
+  if (started) updateLights();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+function resetVehicle() {
+  placed = new Set();
+  started = false;
+  stopRun();
+  speed = 0;
+  pos.x = 0;
+  face = -1;
+  wheelAngle = 0;
+  travelSpeed = currentModel === 'car' ? 180 : 130;
+  $('bStart').classList.remove('on');
+  $('bStart').innerHTML = '<b>▶</b>Start';
+  buildTray();
+  renderVehicle();
+  updSound();
+}
+
+$('reset').onclick = () => {
+  resetVehicle();
+  msg('Vehicle Reset');
+};
+
+resetVehicle();
+
+// High-Fidelity Audio Synthesizer (V8 Supercar & 4x4 Turbo Diesel)
+let snd = true, actx = null, J = null;
+
+function ensureAudio() {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    if (!actx) {
+      actx = new AudioCtx();
+      initAudioNodes();
+    }
+    if (actx && actx.state === 'suspended') {
+      actx.resume();
+    }
+  } catch (err) {
+    console.error('Audio init error:', err);
+  }
+}
+
+function initAudioNodes() {
+  if (!actx || J) return;
+  const master = actx.createGain();
+  master.gain.value = 0;
+  master.connect(actx.destination);
+
+  // Primary V8 / Diesel Rumble (Sawtooth with rich harmonics, audible on mobile phone speakers)
+  const engine = actx.createOscillator();
+  engine.type = 'sawtooth';
+  engine.frequency.value = 110;
+
+  // Secondary Cylinder Pulse (Triangle wave for throaty mid rumble)
+  const pulse = actx.createOscillator();
+  pulse.type = 'triangle';
+  pulse.frequency.value = 220;
+
+  // Mid-range harmonic layer
+  const mid = actx.createOscillator();
+  mid.type = 'sawtooth';
+  mid.frequency.value = 330;
+  const midGain = actx.createGain();
+  midGain.gain.value = 0.08;
+  mid.connect(midGain);
+
+  // Turbo whine
+  const turbo = actx.createOscillator();
+  turbo.type = 'sine';
+  turbo.frequency.value = 850;
+  const turboGain = actx.createGain();
+  turboGain.gain.value = 0.015;
+  turbo.connect(turboGain);
+
+  // Low-pass filter to provide realistic vehicle body resonance
+  const filter = actx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = 1200;
+  filter.Q.value = 2;
+
+  const eg = actx.createGain();
+  eg.gain.value = 0.32;
+
+  engine.connect(filter);
+  pulse.connect(filter);
+  midGain.connect(filter);
+  turboGain.connect(filter);
+  filter.connect(eg);
+  eg.connect(master);
+
+  engine.start();
+  pulse.start();
+  mid.start();
+  turbo.start();
+
+  J = { master, engine, pulse, mid, turbo, turboGain, filter, eg };
+}
+
+function playRevBlip() {
+  try {
+    ensureAudio();
+    if (!actx || !snd) return;
+    if (actx.state === 'suspended') actx.resume();
+    const t = actx.currentTime;
+
+    const gain = actx.createGain();
+    gain.connect(actx.destination);
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.42, t + 0.08);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.58);
+
+    const osc1 = actx.createOscillator();
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(140, t);
+    osc1.frequency.exponentialRampToValueAtTime(390, t + 0.18);
+    osc1.frequency.exponentialRampToValueAtTime(160, t + 0.55);
+    osc1.connect(gain);
+    osc1.start(t);
+    osc1.stop(t + 0.6);
+
+    const osc2 = actx.createOscillator();
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(280, t);
+    osc2.frequency.exponentialRampToValueAtTime(780, t + 0.18);
+    osc2.frequency.exponentialRampToValueAtTime(320, t + 0.55);
+    osc2.connect(gain);
+    osc2.start(t);
+    osc2.stop(t + 0.6);
+
+    setTimeout(() => { try { gain.disconnect(); } catch(e){} }, 700);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function playSnapSound() {
+  try {
+    if (!actx || !snd) return;
+    if (actx.state === 'suspended') actx.resume();
+    const t = actx.currentTime;
+    const gain = actx.createGain();
+    gain.connect(actx.destination);
+    gain.gain.setValueAtTime(0.28, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+
+    const osc = actx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, t);
+    osc.frequency.exponentialRampToValueAtTime(1250, t + 0.04);
+    osc.frequency.exponentialRampToValueAtTime(320, t + 0.12);
+    osc.connect(gain);
+    osc.start(t);
+    osc.stop(t + 0.13);
+
+    setTimeout(() => { try { gain.disconnect(); } catch(e){} }, 200);
+  } catch (e) {}
+}
+
+function horn() {
+  try {
+    ensureAudio();
+    if (!actx || !snd) return;
+    if (actx.state === 'suspended') actx.resume();
+    const t = actx.currentTime;
+    const gain = actx.createGain();
+    gain.connect(actx.destination);
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.35, t + 0.03);
+    gain.gain.setValueAtTime(0.35, t + 0.38);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.65);
+
+    const freqs = currentModel === 'car' ? [440, 554] : [330, 415];
+    freqs.forEach(f => {
+      const o = actx.createOscillator();
+      o.type = 'sawtooth';
+      o.frequency.value = f;
+      o.connect(gain);
+      o.start(t);
+      o.stop(t + 0.7);
+    });
+    setTimeout(() => { try { gain.disconnect(); } catch(e){} }, 800);
+  } catch (e) {}
+}
+
+function updSound() {
+  if (!actx || !J) return;
+  const t = actx.currentTime;
+  const shouldPlay = snd && started;
+  J.master.gain.setTargetAtTime(shouldPlay ? 0.42 : 0, t, 0.08);
+
+  const baseFreq = currentModel === 'car' ? 95 : 82;
+  const dynamicFreq = baseFreq + (speed * 0.7);
+  J.engine.frequency.setTargetAtTime(dynamicFreq, t, 0.1);
+  J.pulse.frequency.setTargetAtTime(dynamicFreq * 1.5, t, 0.1);
+  J.mid.frequency.setTargetAtTime(dynamicFreq * 2.5, t, 0.1);
+  J.turbo.frequency.setTargetAtTime(700 + (speed * 6), t, 0.12);
+  J.turboGain.gain.setTargetAtTime(speed > 40 ? 0.04 : 0.008, t, 0.15);
+  J.filter.frequency.setTargetAtTime(1000 + (speed * 8), t, 0.15);
+}
+
+function updateSoundBtn() {
+  const btn = $('bSound');
+  if (!btn) return;
+  if (snd) {
+    btn.classList.remove('muted');
+    btn.innerHTML = '<b>🔊</b>Sound: ON';
+  } else {
+    btn.classList.add('muted');
+    btn.innerHTML = '<b>🔇</b>Sound: OFF';
+  }
+}
+
+$('bSound').onclick = (e) => {
+  e.preventDefault();
+  ensureAudio();
+  snd = !snd;
+  updateSoundBtn();
+  if (snd) {
+    playRevBlip();
+    msg('🔊 Sound ON — Engine Audio Active');
+  } else {
+    msg('🔇 Sound Muted');
+  }
+  updSound();
+};
+
+// Auto-unlock audio on user gesture for mobile browsers
+const unlockAudioOnce = () => {
+  ensureAudio();
+  window.removeEventListener('pointerdown', unlockAudioOnce);
+  window.removeEventListener('touchstart', unlockAudioOnce);
+  window.removeEventListener('click', unlockAudioOnce);
+};
+window.addEventListener('pointerdown', unlockAudioOnce, { passive: true });
+window.addEventListener('touchstart', unlockAudioOnce, { passive: true });
+window.addEventListener('click', unlockAudioOnce, { passive: true });
+
+setInterval(updSound, 45);
+</script>
+</body>
+</html>
