@@ -633,6 +633,24 @@ button{
 </button>
 
 
+<!-- MEDICAL SCIENCE & TECHNOLOGY -->
+
+<button class="lab-card"
+    onclick="openMedicalScreen()">
+
+    <div class="lab-card-icon">
+        🏥
+    </div>
+
+    <div class="lab-card-text">
+        <h3>Medical Science & Technology</h3>
+        <p>Explore medical machines and diagnostic technology.</p>
+    </div>
+
+    <div class="arrow">›</div>
+
+</button>
+
         <!-- Challenges -->
 
         <button class="lab-card">
@@ -1018,6 +1036,107 @@ function openTrainBuilder(){
     </div>
 
 </div>
+    
+<!-- =================================
+     MEDICAL EQUIPMENT SCREEN
+================================= -->
+
+<div id="medicalScreen" class="screen">
+
+    <div class="builder-header">
+
+        <div class="builder-icon">🏥</div>
+
+        <h1 class="builder-title">
+            Medical Equipment Center
+        </h1>
+
+        <p class="builder-subtitle">
+            Explore medical machines and discover
+            how they work!
+        </p>
+
+    </div>
+
+    <div class="builder-container">
+
+        <!-- 1. X-RAY MACHINE -->
+
+        <button class="builder-card">
+
+            <div class="builder-project-icon">🩻</div>
+
+            <div class="builder-project-text">
+                <h3>X-Ray Machine</h3>
+                <p>Explore X-Ray machine parts and technology.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <!-- 2. ULTRASOUND MACHINE -->
+
+        <button class="builder-card">
+
+            <div class="builder-project-icon">🩺</div>
+
+            <div class="builder-project-text">
+                <h3>Ultrasound (USG) Machine</h3>
+                <p>Explore ultrasound machine parts.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <!-- 3. CT SCAN MACHINE -->
+
+        <button class="builder-card">
+
+            <div class="builder-project-icon">🔬</div>
+
+            <div class="builder-project-text">
+                <h3>CT Scan Machine</h3>
+                <p>Discover CT scan equipment and parts.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <!-- 4. EEG MACHINE -->
+
+        <button class="builder-card">
+
+            <div class="builder-project-icon">🧠</div>
+
+            <div class="builder-project-text">
+                <h3>EEG Machine</h3>
+                <p>Explore brain monitoring technology.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <!-- BACK BUTTON -->
+
+        <button class="home-back"
+            onclick="openLabScreen()">
+
+            ← Back to Categories
+
+        </button>
+
+    </div>
+
+</div>
+
 
 <!-- =================================
      JAVASCRIPT
@@ -1088,6 +1207,13 @@ function openCarBuilderScreen(){
 
 function openComputerScienceScreen(){
     showScreen("computerScienceScreen");
+}
+    
+
+// MEDICAL SCIENCE & TECHNOLOGY
+
+function openMedicalScreen(){
+    showScreen("medicalScreen");
 }
 
 
