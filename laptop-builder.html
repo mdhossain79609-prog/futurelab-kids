@@ -1,1 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Build and operate an RGB Gaming Laptop using 20 detailed components with an interactive laptop OS and functioning trackpad.">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>💻 Build & Run RGB Gaming Laptop</title>
+<style>
+:root{
+  --ink:#0f172a;
+  --bg:#080c14;
+  --panel:#131c2e;
+  --accent:#00f2fe;
+  --accent2:#4facfe;
+  --rgb1:#f43f5e;
+  --rgb2:#8b5cf6;
+  --rgb3:#10b981;
+  --border:#22324e;
+  --shadow:#0006;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:#e2e8f0;user-select:none;-webkit-user-select:none;touch-action:none}
+main{display:flex;flex-direction:column;height:100dvh;height:100vh}
+@supports(height:100dvh){main{height:100dvh}}
 
+header{display:flex;align-items:center;gap:8px;padding:6px 12px 4px;background:#0c1322;border-bottom:1px solid var(--border);flex-shrink:0}
+h1{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(1rem,3.8vw,1.5rem);font-weight:800;
+background:linear-gradient(90deg,#00f2fe,#4facfe,#f43f5e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{border-radius:99px;padding:4px 10px;font-size:12px;font-weight:700;border:0}
+#count{background:#172338;color:#00f2fe;border:1px solid var(--border)}
+#reset{background:#1f2e48;color:#fff;cursor:pointer;transition:background 0.2s}
+#reset:hover{background:#2b3e60}
+
+/* Workspace Canvas */
+#boardWrap{flex:0 0 44%;min-height:190px;max-height:380px;padding:4px 8px;position:relative}
+#board{position:absolute;inset:4px 8px;border:2px dashed #00f2fe55;border-radius:12px;overflow:hidden;
+background:radial-gradient(ellipse at 50% 30%,#131d2f 0%,#080c14 85%);transition:all .5s}
+#board.powered{border-color:#00f2fe;box-shadow:0 0 30px #00f2fe2a}
+#board svg{position:absolute;inset:0;width:100%;height:100%}
+#hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:600;color:#64748b;text-align:center;padding:12px;font-size:13px;pointer-events:none}
+
+/* 20 Laptop Parts Tray */
+#tray{display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:repeat(2,1fr);gap:6px;padding:6px 8px;background:#0c1322;box-shadow:0 -4px 12px #0004;border-radius:14px 14px 0 0;flex:1;min-height:0;align-content:stretch;border-top:1px solid var(--border)}
+@media(max-width:768px){
+  #tray{grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);gap:4px;padding:4px 6px}
+}
+.slot{
+  position:relative;
+  height:100%;
+  min-height:clamp(52px,8vh,76px);
+  border-radius:8px;
+  background:linear-gradient(180deg,#18253b 0%,#0c1422 100%);
+  border:1.5px solid #2e4368;
+  box-shadow:inset 0 1px 0 #3d5885,0 3px 8px #0008;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  padding:3px 3px 4px;
+  overflow:hidden;
+  transition:transform .15s,box-shadow .15s,border-color .15s;
+}
+.slot:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 14px #0009,0 0 12px #00f2fe66;
+  border-color:#00f2fe;
+}
+.slot-badge{
+  position:absolute;
+  top:2px;
+  left:3px;
+  font-size:8px;
+  font-weight:800;
+  color:#38bdf8;
+  background:#080e1af5;
+  border-radius:3px;
+  padding:1px 4px;
+  line-height:1.1;
+  border:1px solid #22324e;
+  pointer-events:none;
+}
+.slot svg{
+  width:94%;
+  height:68%;
+  filter:drop-shadow(0 3px 5px #000a);
+  cursor:grab;
+}
+.slot span.slot-name{
+  font-size:clamp(9px,1.9vw,11px);
+  font-weight:800;
+  color:#f1f5f9;
+  white-space:nowrap;
+  overflow:hidden;
+  max-width:100%;
+  text-overflow:ellipsis;
+  padding:0 2px;
+  line-height:1.2;
+}
+.slot.gone>*{visibility:hidden}
+
+/* Bottom Controls & Laptop Interaction Deck */
+#controls{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 10px 8px;background:#080c14;border-top:1px solid var(--border);box-shadow:0 -4px 12px #0004;z-index:20;max-width:100vw;overflow:hidden}
+
+/* Left Section: Laptop Power Button + Actions */
+.ctrl-left{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
+.power-strip{display:flex;align-items:center;gap:6px}
+.pwr-btn{padding:4px 10px;font-size:11px;font-weight:800;border-radius:6px;border:0;background:#1e2d44;color:#e2e8f0;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all 0.2s}
+.pwr-btn.on{background:linear-gradient(135deg,#10b981,#047857);color:#fff;box-shadow:0 0 10px #10b98188}
+.pwr-led{width:8px;height:8px;border-radius:50%;background:#ef4444;box-shadow:0 0 6px #ef4444}
+.pwr-btn.on .pwr-led{background:#10b981;box-shadow:0 0 8px #10b981}
+
+.btns{display:flex;gap:5px}
+.cbtn{width:clamp(38px,8.2vw,48px);height:clamp(34px,7.5vw,44px);border-radius:8px;border:0;color:#fff;font-weight:800;font-size:9.5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;box-shadow:0 2px 0 var(--shadow);line-height:1.1;cursor:pointer}
+.cbtn b{font-size:15px}
+.cbtn:active{transform:translateY(2px)}
+#bRGB{background:linear-gradient(135deg,#f43f5e,#8b5cf6,#00f2fe)}
+#bSound{background:linear-gradient(135deg,#00f2fe,#4facfe)}
+#bFan{background:linear-gradient(135deg,#f59e0b,#ea580c)}
+
+/* Peripheral Interactive Area: Laptop Integrated Keyboard & Touchpad */
+.peripherals-bar{display:flex;align-items:center;gap:8px;flex-shrink:1;min-width:0}
+.laptop-keyboard{display:flex;flex-direction:column;gap:2px;background:#131c2e;padding:4px 6px;border-radius:6px;border:1px solid #22324e}
+.kb-row{display:flex;gap:2px}
+.kkey{width:clamp(16px,3.2vw,22px);height:clamp(15px,3vw,20px);border-radius:3px;border:0;background:#1e2d44;color:#f8fafc;font-size:8px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.1s,transform 0.05s}
+.kkey.wasd{background:#00f2fe;color:#080c14;font-weight:900}
+.kkey.wide{width:clamp(26px,5.2vw,36px)}
+.kkey.space{width:clamp(44px,8.5vw,60px)}
+.kkey:active,.kkey.pressed{background:#f43f5e;color:#fff;transform:scale(0.92)}
+
+/* Laptop Precision Trackpad */
+.laptop-touchpad{display:flex;flex-direction:column;align-items:center;justify-content:space-between;width:clamp(60px,12vw,80px);height:clamp(42px,8.5vw,54px);border-radius:6px;background:#131c2e;border:1.5px solid #00f2fe;cursor:crosshair;padding:3px;flex-shrink:0}
+.tp-sensor{width:100%;flex:1;background:#0d1422;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#64748b;font-size:8px;font-weight:bold}
+.tp-buttons{display:flex;width:100%;gap:3px;height:12px;margin-top:2px}
+.tp-btn{flex:1;border:0;background:#1e2d44;border-radius:2px;color:#94a3b8;font-size:7px;cursor:pointer}
+.tp-btn:active{background:#00f2fe;color:#080c14}
+
+#drag{position:fixed;pointer-events:none;z-index:50;filter:drop-shadow(0 6px 8px #0008)}
+#msg{position:fixed;left:50%;top:50px;transform:translateX(-50%);background:#0c1322;border:1px solid #00f2fe;color:#00f2fe;padding:6px 16px;border-radius:99px;font-size:12px;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none;z-index:60;box-shadow:0 0 12px #00f2fe44}
+
+
+/* Zoom & Pan HUD Overlay */
+.zoom-hud{
+  position:absolute;
+  top:8px;
+  right:10px;
+  display:flex;
+  align-items:center;
+  gap:2px;
+  background:#090f1cf2;
+  border:1px solid #00f2fe66;
+  border-radius:20px;
+  padding:2px 5px;
+  z-index:25;
+  box-shadow:0 4px 14px #0008;
+  backdrop-filter:blur(6px);
+  user-select:none;
+}
+.zh-btn{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  border:0;
+  background:transparent;
+  color:#00f2fe;
+  font-size:15px;
+  font-weight:800;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.15s;
+}
+.zh-btn:hover{background:#00f2fe22;color:#fff}
+.zh-btn:active{transform:scale(0.9)}
+.zh-btn.reset{font-size:13px;color:#94a3b8}
+.zh-btn.reset:hover{color:#f43f5e}
+.zh-label{
+  border:0;
+  background:transparent;
+  color:#e2e8f0;
+  font-size:11px;
+  font-weight:700;
+  font-family:monospace;
+  padding:2px 6px;
+  cursor:pointer;
+}
+.zh-label:hover{color:#00f2fe}
+.zoom-pill-hint{
+  position:absolute;
+  top:10px;
+  left:12px;
+  background:#090f1ce0;
+  border:1px solid #22324e;
+  border-radius:12px;
+  padding:3px 9px;
+  font-size:9.5px;
+  font-weight:600;
+  color:#94a3b8;
+  z-index:24;
+  pointer-events:none;
+  transition:opacity 0.4s;
+}
+
+/* Fan Rotation Animations */
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.fan-spin{animation:spin 0.35s linear infinite;transform-origin:center}
+.fan-boost{animation:spin 0.18s linear infinite;transform-origin:center}
+</style>
+</head>
+<body>
+<main>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+<header>
+  <h1>💻 Build & Run RGB Gaming Laptop</h1>
+  <span id="count" class="pill">0 / 20</span>
+  <button id="reset" class="pill">Reset</button>
+</header>
+
+<div id="boardWrap">
+  <div id="board">
+    <div class="zoom-hud" id="zoomHud">
+      <button class="zh-btn" id="zhOut" title="Zoom Out (Pinch in)">−</button>
+      <button class="zh-label" id="zhVal" title="Click to Reset Zoom">100%</button>
+      <button class="zh-btn" id="zhIn" title="Zoom In (Pinch out)">+</button>
+      <button class="zh-btn reset" id="zhReset" title="Reset Zoom">↺</button>
+    </div>
+    <div class="zoom-pill-hint" id="zoomPillHint">🔍 Pinch with 2 fingers to zoom screen</div>
+    <svg id="scene" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <radialGradient id="screen-glow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#00f2fe" stop-opacity="0.22"/><stop offset="100%" stop-color="#00f2fe" stop-opacity="0"/></radialGradient>
+      </defs>
+      <g id="zoomLayer">
+        <g id="laptop-workspace">
+        <g id="assembled"></g>
+        
+        <!-- Interactive Laptop Operating System Screen -->
+        <g id="laptop-os" style="display:none">
+          <!-- 16-Inch Screen Surface -->
+          <rect x="235" y="42" width="430" height="205" rx="3" fill="#090e17"/>
+          <rect x="235" y="42" width="430" height="205" fill="url(#screen-glow)"/>
+          
+          <!-- OS Header & Status Bar -->
+          <rect x="235" y="42" width="430" height="18" fill="#131c2ee6"/>
+          <circle cx="247" cy="51" r="3.5" fill="#f43f5e"/>
+          <circle cx="258" cy="51" r="3.5" fill="#facc15"/>
+          <circle cx="269" cy="51" r="3.5" fill="#10b981"/>
+          <text x="450" y="55" font-size="9" font-weight="bold" fill="#94a3b8" text-anchor="middle" font-family="monospace">BladeOS v5.0 — ROGUE 16 RGB EDITION</text>
+          
+          <!-- Top Right Battery & Network Badges -->
+          <text x="645" y="55" font-size="8.5" fill="#10b981" font-weight="bold" font-family="monospace">⚡ 99%</text>
+          <text x="618" y="55" font-size="8.5" fill="#00f2fe" font-family="monospace">📶</text>
+
+          <!-- Desktop Gaming Wallpaper Graphic -->
+          <polygon points="320,215 420,105 480,165 580,85 640,215" fill="#00f2fe" opacity="0.08"/>
+          <circle cx="550" cy="115" r="28" fill="#8b5cf6" opacity="0.14"/>
+
+          <!-- Widget: Laptop Hardware Monitors -->
+          <rect x="245" y="68" width="120" height="125" rx="5" fill="#101726f2" stroke="#22324e"/>
+          <text x="254" y="84" font-size="9" font-weight="bold" fill="#00f2fe" font-family="sans-serif">HARDWARE SENSORS</text>
+          <text x="254" y="102" font-size="8.5" fill="#94a3b8" font-family="monospace">CPU: i9-14900HX (44°C)</text>
+          <text x="254" y="117" font-size="8.5" fill="#94a3b8" font-family="monospace">GPU: RTX 4080 (48°C)</text>
+          <text x="254" y="132" font-size="8.5" fill="#94a3b8" font-family="monospace">Fans: 4500 RPM Dual</text>
+          <text x="254" y="147" font-size="8.5" fill="#10b981" font-family="monospace">Vapor Chamber: Active</text>
+          <text x="254" y="162" font-size="8.5" fill="#e2e8f0" font-family="monospace">Display: 240Hz G-Sync</text>
+          <rect x="254" y="170" width="102" height="14" rx="3" fill="#0284c7"/>
+          <text x="305" y="180" font-size="8" font-weight="bold" fill="#fff" text-anchor="middle" font-family="sans-serif">PERFORMANCE: TURBO</text>
+
+          <!-- Widget: Interactive Notepad -->
+          <rect x="375" y="68" width="280" height="125" rx="5" fill="#090e17f2" stroke="#00f2fe"/>
+          <rect x="375" y="68" width="280" height="16" fill="#00f2fe"/>
+          <text x="385" y="80" font-size="8.5" font-weight="bold" fill="#080c14" font-family="sans-serif">📝 Quick Note (Type via Laptop Keyboard)</text>
+          <text id="os-note-text" x="385" y="108" font-size="10.5" font-weight="bold" fill="#00f2fe" font-family="monospace">GAMING LAPTOP ONLINE! TYPE HERE_</text>
+          <text x="385" y="130" font-size="8.5" fill="#64748b" font-family="monospace">Press keys below or physical keyboard.</text>
+          <text x="385" y="148" font-size="8.5" fill="#8b5cf6" font-family="monospace">All 20 laptop components operating in sync.</text>
+          <text id="os-touchpad-stats" x="385" y="172" font-size="8.5" font-weight="bold" fill="#10b981" font-family="monospace">Trackpad Clicks: 0 | Keypresses: 0</text>
+
+          <!-- Desktop Bottom Taskbar -->
+          <rect x="235" y="227" width="430" height="20" fill="#0c1322f2" stroke="#22324e"/>
+          <rect x="240" y="229" width="22" height="16" rx="3" fill="#00f2fe"/>
+          <text x="251" y="241" font-size="9" font-weight="bold" fill="#080c14" text-anchor="middle">⚡</text>
+          <text x="270" y="241" font-size="8" fill="#94a3b8" font-family="sans-serif">Blade Menu</text>
+          <text x="615" y="241" font-size="8" fill="#94a3b8" font-family="monospace">12:30 PM</text>
+          
+          <!-- Virtual Trackpad Cursor on Screen -->
+          <g id="screen-cursor" transform="translate(450,140)">
+            <polygon points="0,0 0,13 3,10 6,15 8,14 5,9 9,9" fill="#00f2fe" stroke="#080c14" stroke-width="1.5"/>
+          </g>
+        </g>
+      </g>
+      </g>
+    </svg>
+    <div id="hint">Drag and drop all 20 components to assemble the RGB Gaming Laptop</div>
+  </div>
+</div>
+
+<section id="tray"></section>
+
+<div id="controls">
+  <!-- Power & Mode Options -->
+  <div class="ctrl-left">
+    <div class="power-strip">
+      <button class="pwr-btn" id="bPower">
+        <span class="pwr-led"></span>
+        <span id="pwr-label">POWER LAPTOP</span>
+      </button>
+    </div>
+    <div class="btns">
+      <button class="cbtn" id="bRGB"><b>🌈</b>RGB</button>
+      <button class="cbtn" id="bSound"><b>🔊</b>Audio</button>
+      <button class="cbtn" id="bFan"><b>❄️</b>Fan</button>
+    </div>
+  </div>
+
+  <!-- Interactive Keyboard and Multi-Touch Trackpad -->
+  <div class="peripherals-bar">
+    <div class="laptop-keyboard" id="laptopKb">
+      <div class="kb-row">
+        <button class="kkey" data-k="Q">Q</button>
+        <button class="kkey wasd" data-k="W">W</button>
+        <button class="kkey" data-k="E">E</button>
+        <button class="kkey" data-k="R">R</button>
+        <button class="kkey" data-k="T">T</button>
+        <button class="kkey" data-k="Y">Y</button>
+        <button class="kkey" data-k="U">U</button>
+        <button class="kkey" data-k="I">I</button>
+        <button class="kkey" data-k="O">O</button>
+        <button class="kkey" data-k="P">P</button>
+      </div>
+      <div class="kb-row">
+        <button class="kkey wasd" data-k="A">A</button>
+        <button class="kkey wasd" data-k="S">S</button>
+        <button class="kkey wasd" data-k="D">D</button>
+        <button class="kkey" data-k="F">F</button>
+        <button class="kkey" data-k="G">G</button>
+        <button class="kkey" data-k="H">H</button>
+        <button class="kkey" data-k="J">J</button>
+        <button class="kkey" data-k="K">K</button>
+        <button class="kkey" data-k="L">L</button>
+        <button class="kkey wide" data-k="ENTER">ENT</button>
+      </div>
+      <div class="kb-row">
+        <button class="kkey wide" data-k="SHIFT">SHF</button>
+        <button class="kkey" data-k="Z">Z</button>
+        <button class="kkey" data-k="X">X</button>
+        <button class="kkey" data-k="C">C</button>
+        <button class="kkey" data-k="V">V</button>
+        <button class="kkey space" data-k="SPACE">SPACE</button>
+        <button class="kkey" data-k="B">B</button>
+        <button class="kkey" data-k="N">N</button>
+        <button class="kkey" data-k="M">M</button>
+        <button class="kkey" data-k="DEL">DEL</button>
+      </div>
+    </div>
+
+    <!-- Precision Trackpad -->
+    <div class="laptop-touchpad" id="trackpad" title="Swipe or Click Trackpad">
+      <div class="tp-sensor" id="tpSensor">TRACKPAD</div>
+      <div class="tp-buttons">
+        <button class="tp-btn" id="tpLBtn">L</button>
+        <button class="tp-btn" id="tpRBtn">R</button>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<div id="msg"></div>
+
+<script>
+// ---------- 20 Laptop Hardware Components Configuration ----------
+const LAPTOP_RULES = { parts: 20 };
+const VB = { x: 50, y: 15, w: 800, h: 365 };
+const S = 'stroke="#080c14" stroke-width="2"';
+const g = c => `url(#g-${c})`;
+const sh = (x,y,w,h) => `<rect x="${x+w*.05}" y="${y+h*.05}" width="${w*.9}" height="${Math.max(2,h*.08)}" rx="2" fill="#fff" opacity=".35"/>`;
+
+const PARTS = [
+  // 1. Bottom Chassis Underbody Base
+  { id: 1, n: "Chassis Underbody", b: [180, 240, 540, 115],
+    thumb: `<polygon points="12,14 6,56 114,56 108,14" fill="${g('dark')}" stroke="#00f2fe" stroke-width="2.5"/>
+            <polygon points="18,18 14,52 106,52 102,18" fill="#080c14" stroke="#1e2d44" stroke-width="1.5"/>
+            <rect x="20" y="52" width="22" height="4" rx="1.5" fill="#64748b"/>
+            <rect x="78" y="52" width="22" height="4" rx="1.5" fill="#64748b"/>
+            <line x1="28" y1="26" x2="92" y2="26" stroke="${g('teal')}" stroke-width="2"/>
+            <line x1="32" y1="34" x2="88" y2="34" stroke="${g('teal')}" stroke-width="2"/>
+            <line x1="36" y1="42" x2="84" y2="42" stroke="${g('teal')}" stroke-width="2"/>`,
+    a: `
+    <polygon points="190,250 160,350 740,350 710,250" fill="${g('dark')}" ${S}/>
+    <polygon points="210,260 185,340 715,340 690,260" fill="#080c14" stroke="#1e2d44" stroke-width="1.5"/>
+    <rect x="220" y="342" width="60" height="5" rx="2" fill="#334155"/>
+    <rect x="620" y="342" width="60" height="5" rx="2" fill="#334155"/>
+  `},
+  // 2. Dual Rear & Side Copper Exhaust Vents
+  { id: 2, n: "Dual Copper Exhausts", b: [170, 240, 560, 25],
+    thumb: `<rect x="8" y="16" width="48" height="38" rx="4" fill="${g('gold')}" stroke="#fff" stroke-width="1.5"/>
+            ${Array.from({length: 6}).map((_,i)=>`<line x1="${14+i*7}" y1="18" x2="${14+i*7}" y2="52" stroke="#080c14" stroke-width="2.5"/>`).join('')}
+            <rect x="64" y="16" width="48" height="38" rx="4" fill="${g('gold')}" stroke="#fff" stroke-width="1.5"/>
+            ${Array.from({length: 6}).map((_,i)=>`<line x1="${70+i*7}" y1="18" x2="${70+i*7}" y2="52" stroke="#080c14" stroke-width="2.5"/>`).join('')}
+            <text x="60" y="12" font-size="8" font-weight="bold" fill="${g('gold')}" text-anchor="middle">COPPER RADIATOR</text>`,
+    a: `
+    <!-- Left Exhaust -->
+    <rect x="185" y="242" width="120" height="15" rx="3" fill="${g('gold')}" ${S}/>
+    ${Array.from({length: 10}).map((_,i)=>`<line x1="${192+i*11}" y1="243" x2="${192+i*11}" y2="256" stroke="#080c14" stroke-width="2"/>`).join('')}
+    <!-- Right Exhaust -->
+    <rect x="595" y="242" width="120" height="15" rx="3" fill="${g('gold')}" ${S}/>
+    ${Array.from({length: 10}).map((_,i)=>`<line x1="${602+i*11}" y1="243" x2="${602+i*11}" y2="256" stroke="#080c14" stroke-width="2"/>`).join('')}
+  `},
+  // 3. 99.9Wh Multi-Cell Lithium Battery Pack
+  { id: 3, n: "High-Capacity Battery", b: [230, 305, 440, 42],
+    thumb: `<rect x="8" y="16" width="104" height="38" rx="5" fill="${g('dark')}" stroke="#10b981" stroke-width="2.5"/>
+            <rect x="14" y="21" width="20" height="28" rx="2" fill="#131c2e" stroke="#22324e"/>
+            <rect x="38" y="21" width="20" height="28" rx="2" fill="#131c2e" stroke="#22324e"/>
+            <rect x="62" y="21" width="20" height="28" rx="2" fill="#131c2e" stroke="#22324e"/>
+            <rect x="86" y="21" width="20" height="28" rx="2" fill="#131c2e" stroke="#22324e"/>
+            <text x="60" y="38" font-size="10" font-weight="bold" fill="#10b981" text-anchor="middle" font-family="monospace">⚡ 99.9 Wh</text>`,
+    a: `
+    <rect x="240" y="308" width="420" height="34" rx="4" fill="${g('dark')}" stroke="#334155" stroke-width="1.5"/>
+    <rect x="250" y="314" width="80" height="22" rx="2" fill="#131c2e"/>
+    <rect x="340" y="314" width="80" height="22" rx="2" fill="#131c2e"/>
+    <rect x="430" y="314" width="80" height="22" rx="2" fill="#131c2e"/>
+    <rect x="520" y="314" width="80" height="22" rx="2" fill="#131c2e"/>
+    <text x="635" y="328" font-size="8" font-weight="bold" fill="${g('teal')}" text-anchor="middle">99.9 Wh</text>
+  `},
+  // 4. Laptop Main Gaming Motherboard
+  { id: 4, n: "Main Motherboard", b: [220, 252, 460, 58],
+    thumb: `<rect x="8" y="10" width="104" height="50" rx="4" fill="${g('steel')}" stroke="#00f2fe" stroke-width="2"/>
+            <rect x="18" y="18" width="30" height="34" rx="2" fill="${g('dark')}" stroke="${g('gold')}" stroke-width="1.5"/>
+            <text x="33" y="38" font-size="8.5" font-weight="bold" fill="${g('gold')}" text-anchor="middle">CPU</text>
+            <rect x="60" y="16" width="36" height="38" rx="2" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="1.5"/>
+            <text x="78" y="38" font-size="8.5" font-weight="bold" fill="${g('teal')}" text-anchor="middle">GPU</text>
+            <line x1="102" y1="18" x2="102" y2="52" stroke="#facc15" stroke-width="2.5"/>
+            <line x1="106" y1="18" x2="106" y2="52" stroke="#facc15" stroke-width="2.5"/>`,
+    a: `
+    <rect x="230" y="254" width="440" height="52" rx="3" fill="${g('steel')}" ${S}/>
+    <rect x="330" y="258" width="42" height="36" fill="${g('dark')}" rx="2" stroke="${g('gold')}"/>
+    <rect x="520" y="258" width="50" height="38" fill="${g('dark')}" rx="2" stroke="${g('teal')}"/>
+    <line x1="390" y1="268" x2="500" y2="268" stroke="#475569" stroke-width="2"/>
+    <line x1="390" y1="278" x2="500" y2="278" stroke="#475569" stroke-width="2"/>
+  `},
+  // 5. Copper Vapor Chamber & Heatpipe Array
+  { id: 5, n: "Copper Vapor Chamber", b: [290, 250, 320, 45],
+    thumb: `<rect x="10" y="16" width="100" height="38" rx="6" fill="${g('gold')}" stroke="#b45309" stroke-width="2.5"/>
+            <line x1="16" y1="35" x2="104" y2="35" stroke="#78350f" stroke-width="4"/>
+            <circle cx="34" cy="35" r="14" fill="${g('silver')}" stroke="#fff" stroke-width="1.5"/>
+            <circle cx="86" cy="35" r="14" fill="${g('silver')}" stroke="#fff" stroke-width="1.5"/>
+            <text x="34" y="39" font-size="8" font-weight="bold" fill="#080c14" text-anchor="middle">CPU</text>
+            <text x="86" y="39" font-size="8" font-weight="bold" fill="#080c14" text-anchor="middle">GPU</text>`,
+    a: `
+    <path d="M305 258 H595 V278 H550 V290 H350 V278 H305 Z" fill="${g('gold')}" ${S}/>
+    <line x1="320" y1="268" x2="580" y2="268" stroke="#b45309" stroke-width="3"/>
+    <circle cx="351" cy="276" r="10" fill="${g('silver')}"/>
+    <circle cx="545" cy="276" r="12" fill="${g('silver')}"/>
+  `},
+  // 6. Dual High-RPM Blower Cooling Fans
+  { id: 6, n: "Dual Blower Fans", b: [195, 252, 510, 54],
+    thumb: `<!-- Left Fan -->
+            <circle cx="32" cy="35" r="24" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="3"/>
+            <circle cx="32" cy="35" r="9" fill="${g('silver')}"/>
+            <line x1="14" y1="35" x2="50" y2="35" stroke="#fff" stroke-width="2.5"/>
+            <line x1="32" y1="17" x2="32" y2="53" stroke="#fff" stroke-width="2.5"/>
+            <line x1="19" y1="22" x2="45" y2="48" stroke="${g('teal')}" stroke-width="2.5"/>
+            <line x1="19" y1="48" x2="45" y2="22" stroke="${g('teal')}" stroke-width="2.5"/>
+            <!-- Right Fan -->
+            <circle cx="88" cy="35" r="24" fill="${g('dark')}" stroke="${g('pink')}" stroke-width="3"/>
+            <circle cx="88" cy="35" r="9" fill="${g('silver')}"/>
+            <line x1="70" y1="35" x2="106" y2="35" stroke="#fff" stroke-width="2.5"/>
+            <line x1="88" y1="17" x2="88" y2="53" stroke="#fff" stroke-width="2.5"/>
+            <line x1="75" y1="22" x2="101" y2="48" stroke="${g('pink')}" stroke-width="2.5"/>
+            <line x1="75" y1="48" x2="101" y2="22" stroke="${g('pink')}" stroke-width="2.5"/>`,
+    a: `
+    <!-- Left Fan -->
+    <circle cx="230" cy="278" r="22" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2"/>
+    <g class="laptop-fan" transform-origin="230 278"><circle cx="230" cy="278" r="8" fill="${g('silver')}"/><line x1="214" y1="278" x2="246" y2="278" stroke="#fff" stroke-width="2"/><line x1="230" y1="262" x2="230" y2="294" stroke="#fff" stroke-width="2"/></g>
+    <!-- Right Fan -->
+    <circle cx="670" cy="278" r="22" fill="${g('dark')}" stroke="${g('pink')}" stroke-width="2"/>
+    <g class="laptop-fan" transform-origin="670 278"><circle cx="670" cy="278" r="8" fill="${g('silver')}"/><line x1="654" y1="278" x2="686" y2="278" stroke="#fff" stroke-width="2"/><line x1="670" y1="262" x2="670" y2="294" stroke="#fff" stroke-width="2"/></g>
+  `},
+  // 7. Magnesium Keyboard Deck & Palm Rest Cover
+  { id: 7, n: "Deck & Palm Rest", b: [180, 245, 540, 110],
+    thumb: `<polygon points="12,12 6,58 114,58 108,12" fill="${g('steel')}" stroke="#00f2fe" stroke-width="2"/>
+            <rect x="22" y="18" width="76" height="22" rx="2" fill="#090e17" stroke="#1e2d44"/>
+            <rect x="42" y="43" width="36" height="13" rx="2" fill="#090e17" stroke="#1e2d44"/>`,
+    a: `
+    <polygon points="190,250 160,350 740,350 710,250" fill="${g('steel')}" ${S}/>
+    ${sh(195, 253, 510, 12)}
+    <rect x="235" y="258" width="430" height="48" rx="4" fill="#090e17" stroke="#1e2d44"/>
+    <rect x="380" y="312" width="140" height="34" rx="4" fill="#090e17" stroke="#1e2d44"/>
+  `},
+  // 8. Per-Key RGB Gaming Keyboard
+  { id: 8, n: "Per-Key RGB Keyboard", b: [230, 256, 440, 52],
+    thumb: `<rect x="8" y="14" width="104" height="42" rx="4" fill="#090e17" stroke="${g('teal')}" stroke-width="2"/>
+            <rect x="16" y="19" width="14" height="9" rx="1.5" fill="${g('silver')}"/>
+            <rect x="33" y="19" width="14" height="9" rx="1.5" fill="${g('teal')}"/>
+            <rect x="50" y="19" width="14" height="9" rx="1.5" fill="${g('silver')}"/>
+            <rect x="67" y="19" width="14" height="9" rx="1.5" fill="${g('pink')}"/>
+            <rect x="84" y="19" width="20" height="9" rx="1.5" fill="${g('purple')}"/>
+            <rect x="16" y="31" width="14" height="9" rx="1.5" fill="${g('teal')}"/>
+            <rect x="33" y="31" width="14" height="9" rx="1.5" fill="${g('teal')}"/>
+            <rect x="50" y="31" width="14" height="9" rx="1.5" fill="${g('teal')}"/>
+            <rect x="35" y="44" width="50" height="8" rx="1.5" fill="${g('teal')}"/>`,
+    a: `
+    <rect x="235" y="258" width="430" height="48" rx="3" fill="#090e17" stroke="${g('teal')}" stroke-width="1.5"/>
+    ${Array.from({length: 14}).map((_,i)=>`<rect x="${242+i*29}" y="262" width="22" height="10" rx="1.5" fill="${i>=2&&i<=4?g('teal'):g('silver')}"/>`).join('')}
+    ${Array.from({length: 13}).map((_,i)=>`<rect x="${246+i*31}" y="275" width="24" height="10" rx="1.5" fill="${i===1||i===2?g('teal'):g('silver')}"/>`).join('')}
+    ${Array.from({length: 11}).map((_,i)=>`<rect x="${250+i*34}" y="288" width="${i===5?70:22}" height="12" rx="1.5" fill="${i===5?g('pink'):g('steel')}"/>`).join('')}
+  `},
+  // 9. Precision Glass Multi-Touch Trackpad
+  { id: 9, n: "Glass Clickpad", b: [375, 310, 150, 38],
+    thumb: `<rect x="14" y="14" width="92" height="42" rx="5" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2.5"/>
+            <line x1="60" y1="42" x2="60" y2="56" stroke="#4facfe" stroke-width="2"/>
+            <rect x="20" y="18" width="80" height="6" rx="2" fill="#fff" opacity="0.3"/>
+            <circle cx="60" cy="30" r="10" fill="none" stroke="${g('teal')}" stroke-width="1.5" stroke-dasharray="3,2"/>`,
+    a: `
+    <rect x="380" y="312" width="140" height="34" rx="4" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2"/>
+    <line x1="450" y1="334" x2="450" y2="344" stroke="#475569" stroke-width="1.5"/>
+    ${sh(385, 315, 130, 6)}
+  `},
+  // 10. Left I/O Ports: DC Power, HDMI 2.1, USB-A, Audio
+  { id: 10, n: "Left Ports Array", b: [160, 260, 35, 75],
+    thumb: `<rect x="8" y="18" width="104" height="34" rx="4" fill="${g('dark')}" stroke="#00f2fe" stroke-width="2"/>
+            <rect x="16" y="24" width="16" height="22" rx="3" fill="${g('gold')}" stroke="#fff" stroke-width="1"/>
+            <circle cx="24" cy="35" r="4" fill="#080c14"/>
+            <rect x="38" y="25" width="24" height="20" rx="2" fill="${g('silver')}" stroke="#fff" stroke-width="1"/>
+            <rect x="42" y="29" width="16" height="12" rx="1" fill="#080c14"/>
+            <rect x="68" y="26" width="20" height="18" rx="2" fill="${g('teal')}" stroke="#fff" stroke-width="1"/>
+            <circle cx="100" cy="35" r="7" fill="#080c14" stroke="${g('silver')}" stroke-width="2"/>
+            <circle cx="100" cy="35" r="3" fill="${g('gold')}"/>`,
+    a: `
+    <rect x="168" y="270" width="8" height="12" rx="2" fill="${g('gold')}"/>
+    <rect x="166" y="288" width="9" height="15" rx="1" fill="${g('silver')}"/>
+    <rect x="165" y="310" width="9" height="12" rx="2" fill="${g('teal')}"/>
+    <circle cx="168" cy="330" r="4" fill="#080c14" stroke="${g('silver')}" stroke-width="1.5"/>
+  `},
+  // 11. Right I/O Ports: Thunderbolt 4, USB-C & Status LEDs
+  { id: 11, n: "Right Ports & LEDs", b: [705, 260, 35, 75],
+    thumb: `<rect x="8" y="18" width="104" height="34" rx="4" fill="${g('dark')}" stroke="#00f2fe" stroke-width="2"/>
+            <rect x="18" y="27" width="22" height="16" rx="4" fill="${g('teal')}" stroke="#fff" stroke-width="1"/>
+            <rect x="23" y="32" width="12" height="6" rx="2" fill="#080c14"/>
+            <rect x="46" y="27" width="22" height="16" rx="4" fill="${g('teal')}" stroke="#fff" stroke-width="1"/>
+            <rect x="51" y="32" width="12" height="6" rx="2" fill="#080c14"/>
+            <rect x="74" y="28" width="18" height="14" rx="1" fill="${g('silver')}" stroke="#fff" stroke-width="1"/>
+            <circle cx="102" cy="28" r="4" fill="#10b981" stroke="#fff" stroke-width="1"/>
+            <circle cx="102" cy="42" r="4" fill="#f59e0b" stroke="#fff" stroke-width="1"/>`,
+    a: `
+    <rect x="724" y="275" width="8" height="10" rx="2" fill="${g('teal')}"/>
+    <rect x="726" y="295" width="7" height="14" rx="1" fill="${g('silver')}"/>
+    <rect x="728" y="315" width="6" height="16" rx="1" fill="${g('gold')}"/>
+    <circle cx="720" cy="265" r="2.5" fill="#10b981"/>
+    <circle cx="720" cy="272" r="2.5" fill="#f59e0b"/>
+  `},
+  // 12. Left & Right Dolby Atmos Stereo Speakers
+  { id: 12, n: "Stereo Speakers", b: [195, 260, 510, 50],
+    thumb: `<!-- Left Speaker -->
+            <circle cx="34" cy="35" r="22" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2.5"/>
+            <circle cx="34" cy="35" r="12" fill="${g('silver')}"/>
+            <circle cx="34" cy="35" r="5" fill="#f43f5e"/>
+            <!-- Right Speaker -->
+            <circle cx="86" cy="35" r="22" fill="${g('dark')}" stroke="${g('pink')}" stroke-width="2.5"/>
+            <circle cx="86" cy="35" r="12" fill="${g('silver')}"/>
+            <circle cx="86" cy="35" r="5" fill="#00f2fe"/>
+            <text x="60" y="64" font-size="8" font-weight="bold" fill="#38bdf8" text-anchor="middle">DOLBY ATMOS</text>`,
+    a: `
+    <!-- Left Grille -->
+    <rect x="202" y="265" width="18" height="45" rx="3" fill="#080c14" stroke="${g('teal')}" stroke-width="1"/>
+    ${Array.from({length: 6}).map((_,i)=>`<line x1="205" y1="${270+i*6}" x2="217" y2="${270+i*6}" stroke="${g('silver')}" stroke-width="1.5"/>`).join('')}
+    <!-- Right Grille -->
+    <rect x="680" y="265" width="18" height="45" rx="3" fill="#080c14" stroke="${g('pink')}" stroke-width="1"/>
+    ${Array.from({length: 6}).map((_,i)=>`<line x1="683" y1="${270+i*6}" x2="695" y2="${270+i*6}" stroke="${g('silver')}" stroke-width="1.5"/>`).join('')}
+  `},
+  // 13. Dual Heavy-Duty Zinc Display Hinges
+  { id: 13, n: "Zinc Display Hinges", b: [240, 238, 420, 16],
+    thumb: `<rect x="12" y="20" width="38" height="30" rx="4" fill="${g('silver')}" stroke="#fff" stroke-width="2"/>
+            <circle cx="31" cy="35" r="7" fill="${g('dark')}" stroke="#475569" stroke-width="2"/>
+            <circle cx="31" cy="35" r="3" fill="#facc15"/>
+            <line x1="50" y1="35" x2="70" y2="35" stroke="#64748b" stroke-width="4"/>
+            <rect x="70" y="20" width="38" height="30" rx="4" fill="${g('silver')}" stroke="#fff" stroke-width="2"/>
+            <circle cx="89" cy="35" r="7" fill="${g('dark')}" stroke="#475569" stroke-width="2"/>
+            <circle cx="89" cy="35" r="3" fill="#facc15"/>
+            <text x="60" y="16" font-size="8" font-weight="bold" fill="${g('silver')}" text-anchor="middle">ZINC HINGES</text>`,
+    a: `
+    <rect x="250" y="240" width="45" height="10" rx="3" fill="${g('silver')}" ${S}/>
+    <rect x="605" y="240" width="45" height="10" rx="3" fill="${g('silver')}" ${S}/>
+  `},
+  // 14. Aluminum Display Lid (A-Panel) & Glowing Logo
+  { id: 14, n: "Aluminum Display Lid", b: [215, 22, 470, 230],
+    thumb: `<rect x="14" y="10" width="92" height="50" rx="6" fill="${g('dark')}" stroke="${g('silver')}" stroke-width="2.5"/>
+            <rect x="18" y="13" width="84" height="4" rx="2" fill="#fff" opacity="0.4"/>
+            <polygon points="60,22 74,44 60,38 46,44" fill="${g('teal')}" stroke="#fff" stroke-width="1.5"/>
+            <text x="60" y="55" font-size="8" font-weight="bold" fill="#00f2fe" text-anchor="middle">A-PANEL LID</text>`,
+    a: `
+    <rect x="220" y="25" width="460" height="220" rx="8" fill="${g('dark')}" stroke="${g('silver')}" stroke-width="3"/>
+    ${sh(225, 28, 450, 10)}
+  `},
+  // 15. Micro-Edge Bezel Display Housing (B-Panel)
+  { id: 15, n: "Slim Screen Bezel", b: [225, 32, 450, 215],
+    thumb: `<rect x="14" y="10" width="92" height="50" rx="4" fill="#0c1322" stroke="#00f2fe" stroke-width="2"/>
+            <rect x="22" y="16" width="76" height="38" rx="2" fill="#080c14" stroke="#1e2d44" stroke-width="1.5"/>
+            <circle cx="60" cy="13" r="2.5" fill="${g('teal')}"/>
+            <text x="60" y="48" font-size="7.5" font-weight="bold" fill="${g('silver')}" text-anchor="middle">SLIM BEZEL</text>`,
+    a: `
+    <rect x="230" y="35" width="440" height="210" rx="4" fill="#0c1322" stroke="#1e2d44" stroke-width="2"/>
+    <circle cx="450" cy="40" r="2.5" fill="${g('teal')}"/>
+    <text x="450" y="242" font-size="7.5" font-weight="bold" fill="${g('silver')}" text-anchor="middle" font-family="sans-serif">BLADE 16 PRO</text>
+  `},
+  // 16. 16-Inch QHD 240Hz Gaming Screen Panel
+  { id: 16, n: "16-Inch 240Hz Screen", b: [235, 42, 430, 195],
+    thumb: `<rect x="12" y="10" width="96" height="50" rx="3" fill="#090e17" stroke="#38bdf8" stroke-width="2.5"/>
+            <polygon points="20,52 45,28 65,42 85,22 100,52" fill="url(#screen-glow)" opacity="0.5"/>
+            <circle cx="85" cy="28" r="8" fill="${g('pink')}" opacity="0.8"/>
+            <text x="60" y="39" font-size="11" font-weight="bold" fill="#00f2fe" text-anchor="middle" font-family="sans-serif">240Hz QHD</text>`,
+    a: `
+    <rect x="235" y="42" width="430" height="195" rx="2" fill="#080c14" stroke="#131c2e"/>
+    <path d="M250 50 L640 220" stroke="#ffffff" stroke-width="2" opacity="0.05"/>
+  `},
+  // 17. 1080p Webcam & Dual Array Microphones
+  { id: 17, n: "Webcam & Microphones", b: [420, 32, 60, 12],
+    thumb: `<rect x="10" y="20" width="100" height="30" rx="6" fill="#080c14" stroke="${g('silver')}" stroke-width="2"/>
+            <circle cx="60" cy="35" r="9" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2.5"/>
+            <circle cx="60" cy="35" r="4" fill="#00f2fe"/>
+            <circle cx="58" cy="33" r="1.5" fill="#fff"/>
+            <circle cx="28" cy="35" r="3.5" fill="#1e293b" stroke="#fff" stroke-width="1"/>
+            <circle cx="28" cy="35" r="1.5" fill="#f43f5e"/>
+            <circle cx="92" cy="35" r="3.5" fill="#1e293b" stroke="#fff" stroke-width="1"/>
+            <circle cx="92" cy="35" r="1.5" fill="#10b981"/>
+            <text x="60" y="16" font-size="8" font-weight="bold" fill="#00f2fe" text-anchor="middle">1080P HDR CAM</text>`,
+    a: `
+    <rect x="432" y="34" width="36" height="8" rx="2" fill="#080c14" stroke="${g('silver')}" stroke-width="1"/>
+    <circle cx="450" cy="38" r="2.5" fill="${g('teal')}"/>
+    <circle cx="438" cy="38" r="1" fill="#fff"/>
+    <circle cx="462" cy="38" r="1" fill="#fff"/>
+  `},
+  // 18. Front Edge RGB Underglow Accent Lightbar
+  { id: 18, n: "Front RGB Lightbar", b: [155, 344, 590, 12],
+    thumb: `<rect x="8" y="24" width="104" height="22" rx="6" fill="#080c14" stroke="#fff" stroke-width="1.5"/>
+            <line x1="16" y1="35" x2="42" y2="35" stroke="#f43f5e" stroke-width="7" stroke-linecap="round"/>
+            <line x1="46" y1="35" x2="74" y2="35" stroke="#8b5cf6" stroke-width="7" stroke-linecap="round"/>
+            <line x1="78" y1="35" x2="104" y2="35" stroke="#00f2fe" stroke-width="7" stroke-linecap="round"/>
+            <rect x="14" y="29" width="92" height="3" rx="1.5" fill="#fff" opacity="0.8"/>
+            <text x="60" y="18" font-size="8" font-weight="bold" fill="#00f2fe" text-anchor="middle">RGB UNDERGLOW</text>`,
+    a: `
+    <rect x="165" y="348" width="570" height="5" rx="2.5" fill="${g('teal')}" stroke="#080c14" stroke-width="1"/>
+    <rect x="175" y="349" width="550" height="2" rx="1" fill="#fff" opacity="0.6"/>
+  `},
+  // 19. Dedicated Deck Power Button with LED Ring
+  { id: 19, n: "Deck Power Button", b: [435, 248, 30, 10],
+    thumb: `<circle cx="60" cy="35" r="22" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="2.5"/>
+            <circle cx="60" cy="35" r="14" fill="#080c14" stroke="#f43f5e" stroke-width="2.5"/>
+            <path d="M60 25 V33" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M54 29 A8 8 0 1 0 66 29" fill="none" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round"/>
+            <text x="60" y="64" font-size="8" font-weight="bold" fill="#f43f5e" text-anchor="middle">POWER BUTTON</text>`,
+    a: `
+    <ellipse cx="450" cy="253" rx="12" ry="4" fill="${g('dark')}" stroke="${g('teal')}" stroke-width="1.5"/>
+    <ellipse cx="450" cy="253" rx="4" ry="2" fill="#ef4444"/>
+  `},
+  // 20. Compact GaN Fast Charger & Braided Cable
+  { id: 20, n: "GaN Fast Charger", b: [80, 255, 95, 65],
+    thumb: `<rect x="16" y="16" width="60" height="38" rx="6" fill="${g('dark')}" stroke="#00f2fe" stroke-width="2.5"/>
+            <text x="46" y="38" font-size="12" font-weight="bold" fill="${g('teal')}" text-anchor="middle" font-family="monospace">280W</text>
+            <text x="46" y="48" font-size="7" font-weight="bold" fill="#94a3b8" text-anchor="middle">GaN FAST</text>
+            <path d="M76 35 Q95 35 106 24" fill="none" stroke="${g('silver')}" stroke-width="5" stroke-linecap="round"/>
+            <rect x="100" y="20" width="10" height="8" rx="2" fill="${g('gold')}"/>`,
+    a: `
+    <rect x="85" y="260" width="50" height="38" rx="5" fill="${g('dark')}" ${S}/>
+    <text x="110" y="278" font-size="7.5" font-weight="bold" fill="${g('teal')}" text-anchor="middle">280W</text>
+    <path d="M135 279 Q155 279 168 274" fill="none" stroke="${g('silver')}" stroke-width="4" stroke-linecap="round"/>
+  `}
+];
+
+// Color Palettes
+const BASE = {
+  red: "#ef4444", blue: "#0284c7", cyan: "#00f2fe", orange: "#f97316",
+  yellow: "#facc15", green: "#10b981", steel: "#1e293b", purple: "#8b5cf6",
+  pink: "#f43f5e", gold: "#d97706", teal: "#00f2fe", dark: "#0f172a",
+  silver: "#94a3b8"
+};
+
+const THEMES = [
+  { name: "Cyberpunk Cyan", map: { teal: "#00f2fe", pink: "#f43f5e", purple: "#8b5cf6" } },
+  { name: "Glacier Aurora", map: { teal: "#38bdf8", pink: "#0284c7", purple: "#6366f1" } },
+  { name: "Toxic Emerald", map: { teal: "#10b981", pink: "#22c55e", purple: "#84cc16" } },
+  { name: "Lava Fire", map: { teal: "#f97316", pink: "#ef4444", purple: "#facc15" } },
+  { name: "Carbon Stealth", map: { teal: "#64748b", pink: "#475569", purple: "#334155" } }
+];
+
+const defs = document.getElementById('defs');
+function paint(themeIdx){
+  const m = { ...BASE, ...THEMES[themeIdx].map };
+  defs.innerHTML = Object.entries(m).map(([k,c]) => `
+    <linearGradient id="g-${k}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="${mix(c,'#ffffff',0.45)}"/>
+      <stop offset="60%" stop-color="${c}"/>
+      <stop offset="100%" stop-color="${mix(c,'#000000',0.4)}"/>
+    </linearGradient>
+  `).join('');
+}
+
+function mix(a,b,t){
+  const p = h => [1,3,5].map(i=>parseInt(h.substr(i,2),16));
+  const A = p(a), B = p(b);
+  return '#' + A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('');
+}
+paint(0);
+
+// Tray order
+const TRAY = [1, 14, 3, 7, 2, 16, 5, 8, 4, 15, 6, 9, 13, 11, 12, 18, 10, 17, 20, 19];
+const $ = id => document.getElementById(id);
+const scene = $('scene'), assembled = $('assembled'), board = $('board'), tray = $('tray');
+scene.setAttribute('viewBox', `${VB.x} ${VB.y} ${VB.w} ${VB.h}`);
+
+let placed = new Set(), drag = null, dragEl = null;
+
+function fit(){
+  const r = board.getBoundingClientRect();
+  const s = Math.min(r.width / VB.w, r.height / VB.h);
+  return { r, s, ox: (r.width - VB.w * s) / 2, oy: (r.height - VB.h * s) / 2 };
+}
+
+function buildTray(){
+  tray.innerHTML = '';
+  TRAY.forEach(id => {
+    const p = PARTS.find(q => q.id === id);
+    const d = document.createElement('div');
+    d.className = 'slot' + (placed.has(id) ? ' gone' : '');
+    d.dataset.id = id;
+    const svgContent = p.thumb 
+      ? `<svg viewBox="0 0 120 70">${p.thumb}</svg>` 
+      : `<svg viewBox="${p.b.join(' ')}">${p.a}</svg>`;
+    d.innerHTML = `<span class="slot-badge">#${p.id}</span>${svgContent}<span class="slot-name">${p.n}</span>`;
+    d.querySelector('svg').addEventListener('pointerdown', e => startDrag(e, id));
+    tray.appendChild(d);
+  });
+}
+
+function renderLaptop(){
+  let h = '';
+  PARTS.forEach(p => { if(placed.has(p.id)) h += p.a; });
+  assembled.innerHTML = h;
+  $('count').textContent = placed.size + ' / 20';
+  $('hint').style.display = placed.size ? 'none' : 'flex';
+  checkPowerState();
+}
+
+function startDrag(e, id){
+  if(drag || placed.has(id)) return;
+  e.preventDefault();
+  const p = PARTS.find(q => q.id === id);
+  const { s } = fit();
+  drag = { id, s, x: e.clientX, y: e.clientY };
+  dragEl = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  dragEl.id = 'drag';
+  dragEl.setAttribute('viewBox', p.b.join(' '));
+  dragEl.setAttribute('width', p.b[2] * s);
+  dragEl.setAttribute('height', p.b[3] * s);
+  dragEl.innerHTML = p.a;
+  document.body.appendChild(dragEl);
+  tray.querySelector(`[data-id="${id}"]`).classList.add('gone');
+  moveDrag(e);
+}
+
+function moveDrag(e){
+  if(!drag) return;
+  const p = PARTS.find(q => q.id === drag.id);
+  dragEl.style.left = (e.clientX - p.b[2] * drag.s / 2) + 'px';
+  dragEl.style.top = (e.clientY - p.b[3] * drag.s / 2) + 'px';
+  drag.x = e.clientX;
+  drag.y = e.clientY;
+}
+
+window.addEventListener('pointermove', e => {
+  if(drag){ e.preventDefault(); moveDrag(e); }
+}, { passive: false });
+
+function endDrag(){
+  if(!drag) return;
+  const { r } = fit();
+  if(drag.x >= r.left && drag.x <= r.right && drag.y >= r.top && drag.y <= r.bottom){
+    placed.add(drag.id);
+    playSnapSound();
+    renderLaptop();
+  } else {
+    tray.querySelector(`[data-id="${drag.id}"]`).classList.remove('gone');
+  }
+  dragEl.remove();
+  dragEl = null;
+  drag = null;
+}
+
+window.addEventListener('pointerup', e => { if(drag) moveDrag(e); endDrag(); });
+window.addEventListener('pointercancel', cancelDrag);
+
+function cancelDrag(){
+  if(!drag) return;
+  dragEl.remove();
+  dragEl = null;
+  drag = null;
+  buildTray();
+}
+
+// ---------- UI Notification Message Toast ----------
+const msg = t => {
+  const m = $('msg');
+  m.textContent = t;
+  m.style.opacity = 1;
+  clearTimeout(msg.t);
+  msg.t = setTimeout(() => m.style.opacity = 0, 1400);
+};
+
+// ---------- Power and OS Simulation ----------
+let isPowered = false;
+let currentTheme = 0;
+let noteText = "GAMING LAPTOP ONLINE! TYPE HERE_";
+let clickCount = 0;
+let keyCount = 0;
+let fanBoost = false;
+
+function checkPowerState(){
+  if(placed.size < LAPTOP_RULES.parts && isPowered){
+    setPower(false);
+  }
+}
+
+function setPower(state){
+  if(state && placed.size < LAPTOP_RULES.parts){
+    msg("Assemble all 20 components first!");
+    return;
+  }
+  isPowered = state;
+  const pwrBtn = $('bPower');
+  pwrBtn.classList.toggle('on', isPowered);
+  $('pwr-label').textContent = isPowered ? "LAPTOP ON" : "POWER LAPTOP";
+  board.classList.toggle('powered', isPowered);
+  $('laptop-os').style.display = isPowered ? 'block' : 'none';
+
+  // Toggle fan animations in SVG
+  updateFanClass();
+
+  if(isPowered){
+    playBootSound();
+    msg("💻 BladeOS Booted: High-Performance Laptop Ready!");
+  } else {
+    playPowerOffSound();
+    msg("Laptop Powered Down");
+  }
+  updateSoundState();
+}
+
+function updateFanClass(){
+  document.querySelectorAll('.laptop-fan').forEach(fan => {
+    fan.classList.toggle('fan-spin', isPowered && !fanBoost);
+    fan.classList.toggle('fan-boost', isPowered && fanBoost);
+  });
+}
+
+$('bPower').onclick = () => setPower(!isPowered);
+
+$('bRGB').onclick = () => {
+  currentTheme = (currentTheme + 1) % THEMES.length;
+  paint(currentTheme);
+  buildTray();
+  renderLaptop();
+  msg("RGB Theme: " + THEMES[currentTheme].name);
+};
+
+$('bFan').onclick = () => {
+  if(!isPowered){ msg("Power ON laptop first!"); return; }
+  fanBoost = !fanBoost;
+  updateFanClass();
+  updateSoundState();
+  msg(fanBoost ? "Fan Mode: 7500 RPM MAXIMUM BOOST" : "Fan Mode: Auto Silent");
+};
+
+// ---------- Interactive Laptop Keyboard Operations ----------
+function typeKey(k){
+  ensureAudio();
+  playKeySound(400);
+  keyCount++;
+  
+  if(!isPowered){
+    msg("Power ON laptop to use keyboard!");
+    return;
+  }
+
+  if(k === "DEL"){
+    if(noteText.length > 0) noteText = noteText.slice(0, -1);
+  } else if(k === "SPACE"){
+    noteText += " ";
+  } else if(k === "ENTER"){
+    noteText += " | ";
+  } else if(k === "SHIFT"){
+    // Shift toggle
+  } else {
+    if(noteText.length > 40) noteText = noteText.slice(1);
+    noteText += k;
+  }
+  
+  $('os-note-text').textContent = noteText + "_";
+  $('os-touchpad-stats').textContent = `Trackpad Clicks: ${clickCount} | Keypresses: ${keyCount}`;
+}
+
+document.querySelectorAll('.kkey').forEach(btn => {
+  btn.onclick = () => {
+    btn.classList.add('pressed');
+    setTimeout(() => btn.classList.remove('pressed'), 120);
+    typeKey(btn.dataset.k);
+  };
+});
+
+window.addEventListener('keydown', e => {
+  const k = e.key.toUpperCase();
+  let mapped = k;
+  if(e.key === "Backspace") mapped = "DEL";
+  else if(e.key === " ") mapped = "SPACE";
+  else if(e.key === "Enter") mapped = "ENTER";
+  else if(e.key === "Shift") mapped = "SHIFT";
+
+  const btn = document.querySelector(`.kkey[data-k="${mapped}"]`);
+  if(btn){
+    btn.classList.add('pressed');
+    setTimeout(() => btn.classList.remove('pressed'), 120);
+  }
+  if(mapped.length === 1 || ["DEL","SPACE","ENTER"].includes(mapped)){
+    typeKey(mapped);
+  }
+});
+
+// ---------- Interactive Multi-Touch Trackpad Operations ----------
+const tpSensor = $('tpSensor'), tpLBtn = $('tpLBtn'), tpRBtn = $('tpRBtn');
+let cursorX = 450, cursorY = 140;
+
+function moveLaptopCursor(dx, dy){
+  cursorX = Math.max(240, Math.min(650, cursorX + dx));
+  cursorY = Math.max(50, Math.min(235, cursorY + dy));
+  $('screen-cursor').setAttribute('transform', `translate(${cursorX},${cursorY})`);
+}
+
+function triggerClick(btnName){
+  ensureAudio();
+  playTrackpadTap();
+  clickCount++;
+  if(isPowered){
+    $('os-touchpad-stats').textContent = `Trackpad Clicks: ${clickCount} | Keypresses: ${keyCount}`;
+    msg(`Trackpad ${btnName} at (${Math.round(cursorX)}, ${Math.round(cursorY)})`);
+  } else {
+    msg("Turn laptop ON to use trackpad!");
+  }
+}
+
+tpLBtn.onclick = () => triggerClick("Left-Click");
+tpRBtn.onclick = () => triggerClick("Right-Click");
+tpSensor.onclick = () => triggerClick("Tap-Click");
+
+let isTpDragging = false, startTPX = 0, startTPY = 0;
+tpSensor.addEventListener('pointerdown', e => {
+  isTpDragging = true;
+  startTPX = e.clientX;
+  startTPY = e.clientY;
+  tpSensor.setPointerCapture(e.pointerId);
+});
+
+window.addEventListener('pointermove', e => {
+  if(!isTpDragging || !isPowered) return;
+  const dx = (e.clientX - startTPX) * 1.6;
+  const dy = (e.clientY - startTPY) * 1.6;
+  startTPX = e.clientX;
+  startTPY = e.clientY;
+  moveLaptopCursor(dx, dy);
+});
+
+window.addEventListener('pointerup', () => { isTpDragging = false; });
+
+// Reset entire setup
+$('reset').onclick = () => {
+  cancelDrag();
+  resetZoom(false);
+  placed = new Set();
+  setPower(false);
+  noteText = "GAMING LAPTOP ONLINE! TYPE HERE_";
+  clickCount = 0;
+  keyCount = 0;
+  fanBoost = false;
+  $('os-note-text').textContent = noteText;
+  $('os-touchpad-stats').textContent = `Trackpad Clicks: 0 | Keypresses: 0`;
+  buildTray();
+  renderLaptop();
+  msg("Laptop reset. Start assembling!");
+};
+
+
+// ---------- Two-Finger Pinch Zoom and Pan Controls ----------
+let currentZoom = 1.0;
+let panX = 0;
+let panY = 0;
+const minZoom = 1.0;
+const maxZoom = 3.5;
+const zoomLayer = $('zoomLayer');
+const zhVal = $('zhVal');
+const zoomHint = $('zoomPillHint');
+const VB_CX = VB.x + VB.w / 2; // 450
+const VB_CY = VB.y + VB.h / 2; // 197.5
+
+function applyZoom(animated = false){
+  if(!zoomLayer) return;
+  zoomLayer.style.transition = animated ? 'transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1)' : 'none';
+  zoomLayer.setAttribute('transform', `translate(${VB_CX + panX} ${VB_CY + panY}) scale(${currentZoom}) translate(${-VB_CX} ${-VB_CY})`);
+  if(zhVal) zhVal.textContent = Math.round(currentZoom * 100) + '%';
+  if(currentZoom > 1.05 && zoomHint){
+    zoomHint.style.opacity = '0';
+  }
+}
+
+function clampPan(){
+  const maxPanX = (VB.w * (currentZoom - 1)) / 1.5;
+  const maxPanY = (VB.h * (currentZoom - 1)) / 1.5;
+  panX = Math.max(-maxPanX, Math.min(maxPanX, panX));
+  panY = Math.max(-maxPanY, Math.min(maxPanY, panY));
+}
+
+function setZoomLevel(target, animated = true){
+  currentZoom = Math.max(minZoom, Math.min(maxZoom, target));
+  if(currentZoom <= 1.02){
+    currentZoom = 1.0;
+    panX = 0;
+    panY = 0;
+  } else {
+    clampPan();
+  }
+  applyZoom(animated);
+}
+
+function resetZoom(animated = true){
+  currentZoom = 1.0;
+  panX = 0;
+  panY = 0;
+  applyZoom(animated);
+}
+
+// Touch Gestures: 2-Finger Pinch to Zoom + Pan
+let pinchDistStart = 0;
+let pinchMidStart = { x: 0, y: 0 };
+let pinchZoomStart = 1.0;
+let pinchPanStart = { x: 0, y: 0 };
+let isPinching = false;
+let singlePanStart = { x: 0, y: 0 };
+let singleTouchStart = { x: 0, y: 0 };
+let isSinglePanning = false;
+let lastTapTime = 0;
+
+board.addEventListener('touchstart', e => {
+  if(e.touches.length === 2){
+    isPinching = true;
+    isSinglePanning = false;
+    if(drag) cancelDrag();
+    pinchDistStart = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    pinchMidStart = {
+      x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+      y: (e.touches[0].clientY + e.touches[1].clientY) / 2
+    };
+    pinchZoomStart = currentZoom;
+    pinchPanStart = { x: panX, y: panY };
+  } else if(e.touches.length === 1){
+    if(currentZoom > 1.05 && !drag){
+      isSinglePanning = true;
+      singleTouchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      singlePanStart = { x: panX, y: panY };
+    }
+  }
+}, { passive: false });
+
+board.addEventListener('touchmove', e => {
+  if(isPinching && e.touches.length === 2){
+    e.preventDefault();
+    const curDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+    const curMid = {
+      x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+      y: (e.touches[0].clientY + e.touches[1].clientY) / 2
+    };
+    const scaleFactor = curDist / Math.max(10, pinchDistStart);
+    currentZoom = Math.max(minZoom, Math.min(maxZoom, pinchZoomStart * scaleFactor));
+
+    const { s } = fit();
+    panX = pinchPanStart.x + (curMid.x - pinchMidStart.x) / (s || 1);
+    panY = pinchPanStart.y + (curMid.y - pinchMidStart.y) / (s || 1);
+
+    if(currentZoom <= 1.02){
+      currentZoom = 1.0;
+      panX = 0;
+      panY = 0;
+    } else {
+      clampPan();
+    }
+    applyZoom(false);
+  } else if(isSinglePanning && e.touches.length === 1 && currentZoom > 1.05){
+    e.preventDefault();
+    const { s } = fit();
+    const dx = (e.touches[0].clientX - singleTouchStart.x) / (s || 1);
+    const dy = (e.touches[0].clientY - singleTouchStart.y) / (s || 1);
+    panX = singlePanStart.x + dx;
+    panY = singlePanStart.y + dy;
+    clampPan();
+    applyZoom(false);
+  }
+}, { passive: false });
+
+function endTouch(e){
+  if(isPinching && e.touches.length < 2){
+    isPinching = false;
+    if(currentZoom < 1.05){
+      resetZoom(true);
+    }
+  }
+  if(e.touches.length === 0){
+    isSinglePanning = false;
+    const now = Date.now();
+    if(now - lastTapTime < 320){
+      e.preventDefault();
+      if(currentZoom > 1.1){
+        resetZoom(true);
+        msg("Zoom Reset (100%)");
+      } else {
+        setZoomLevel(2.0, true);
+        msg("Zoom In (200%)");
+      }
+    }
+    lastTapTime = now;
+  }
+}
+
+board.addEventListener('touchend', endTouch);
+board.addEventListener('touchcancel', endTouch);
+
+// Mouse wheel zoom support on desktop
+board.addEventListener('wheel', e => {
+  e.preventDefault();
+  const step = -Math.sign(e.deltaY) * 0.2;
+  setZoomLevel(currentZoom + step, true);
+}, { passive: false });
+
+// Zoom HUD buttons
+$('zhIn').onclick = () => setZoomLevel(currentZoom + 0.25, true);
+$('zhOut').onclick = () => setZoomLevel(currentZoom - 0.25, true);
+$('zhReset').onclick = () => { resetZoom(true); msg("Zoom Reset (100%)"); };
+$('zhVal').onclick = () => { resetZoom(true); msg("Zoom Reset (100%)"); };
+
+buildTray();
+renderLaptop();
+
+// ---------- Web Audio Synthesis Engine ----------
+let audioEnabled = true;
+let actx = null;
+let fanHumNode = null;
+
+function ensureAudio(){
+  if(actx){
+    if(actx.state === 'suspended') actx.resume();
+    return;
+  }
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  if(!AudioContext) return;
+  actx = new AudioContext();
+
+  const humOsc = actx.createOscillator();
+  humOsc.type = 'sawtooth';
+  humOsc.frequency.value = 65;
+  const humGain = actx.createGain();
+  humGain.gain.value = 0;
+  humOsc.connect(humGain);
+  humGain.connect(actx.destination);
+  humOsc.start();
+  fanHumNode = humGain;
+}
+
+function updateSoundState(){
+  if(!actx || !fanHumNode) return;
+  const t = actx.currentTime;
+  const targetGain = (audioEnabled && isPowered) ? (fanBoost ? 0.12 : 0.05) : 0;
+  fanHumNode.gain.setTargetAtTime(targetGain, t, 0.1);
+}
+
+function playSnapSound(){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(400, t);
+  osc.frequency.exponentialRampToValueAtTime(1000, t + 0.07);
+  gain.gain.setValueAtTime(0.14, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.09);
+  osc.connect(gain);
+  gain.connect(actx.destination);
+  osc.start(t);
+  osc.stop(t + 0.09);
+}
+
+function playKeySound(freq = 400){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(freq, t);
+  gain.gain.setValueAtTime(0.08, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+  osc.connect(gain);
+  gain.connect(actx.destination);
+  osc.start(t);
+  osc.stop(t + 0.035);
+}
+
+function playTrackpadTap(){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(800, t);
+  osc.frequency.exponentialRampToValueAtTime(120, t + 0.03);
+  gain.gain.setValueAtTime(0.1, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+  osc.connect(gain);
+  gain.connect(actx.destination);
+  osc.start(t);
+  osc.stop(t + 0.035);
+}
+
+function playBootSound(){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const notes = [293.66, 369.99, 440.00, 587.33]; // D, F#, A, High D (Blade chime)
+  notes.forEach((f, idx) => {
+    const osc = actx.createOscillator();
+    const gain = actx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(f, t + idx * 0.09);
+    gain.gain.setValueAtTime(0, t + idx * 0.09);
+    gain.gain.linearRampToValueAtTime(0.16, t + idx * 0.09 + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + idx * 0.09 + 0.4);
+    osc.connect(gain);
+    gain.connect(actx.destination);
+    osc.start(t + idx * 0.09);
+    osc.stop(t + idx * 0.09 + 0.45);
+  });
+}
+
+function playPowerOffSound(){
+  if(!audioEnabled) return;
+  ensureAudio();
+  const t = actx.currentTime;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.type = 'sawtooth';
+  osc.frequency.setValueAtTime(380, t);
+  osc.frequency.exponentialRampToValueAtTime(50, t + 0.28);
+  gain.gain.setValueAtTime(0.12, t);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+  osc.connect(gain);
+  gain.connect(actx.destination);
+  osc.start(t);
+  osc.stop(t + 0.32);
+}
+
+$('bSound').onclick = () => {
+  ensureAudio();
+  audioEnabled = !audioEnabled;
+  $('bSound').innerHTML = audioEnabled ? '<b>🔊</b>Audio' : '<b>🔇</b>Mute';
+  updateSoundState();
+  msg(audioEnabled ? "Audio Active" : "Audio Muted");
+};
+</script>
+</body>
+</html>
