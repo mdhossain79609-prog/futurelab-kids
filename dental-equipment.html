@@ -1,1 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Advanced Dental Unit Machine Builder</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+html,body{position:fixed;inset:0;overflow:hidden;overscroll-behavior:none;touch-action:none;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:#08131e;color:#e8f1ff}
+#app{display:flex;flex-direction:column;height:100%}
+header{padding:10px 14px 6px;background:linear-gradient(90deg,#0a3d42,#0f5e66,#0a3d42);box-shadow:0 2px 12px #0008;text-align:center}
+header h1{font-size:18px;letter-spacing:2px;font-weight:800;text-transform:uppercase;background:linear-gradient(90deg,#a5f3fc,#fff,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+header small{font-size:11px;letter-spacing:2px;color:#99f6e4}
+#bar{height:6px;background:#ffffff22;border-radius:4px;margin:6px 0 0;overflow:hidden}
+#bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#06b6d4,#10b981);transition:width .3s}
+#stage{flex:1;position:relative;min-height:0;background:radial-gradient(ellipse at 50% 40%,#132836,#08131e 75%)}
+#stage.light{background:radial-gradient(ellipse at 50% 40%,#f0fdfa,#cbd5e1 80%)}
+#machine{width:100%;height:100%;display:block}
+#tray{height:128px;background:#050c14;border-top:2px solid #06b6d455;display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:8px;touch-action:pan-x}
+.tile{flex:0 0 92px;height:108px;border-radius:12px;background:#0f1d2a;border:2px solid var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;touch-action:none;box-shadow:0 0 10px var(--c) inset;transition:opacity 0.2s}
+.tile.locked{opacity:0.35;filter:grayscale(80%);border-style:dashed}
+.tile svg{width:76px;height:72px;pointer-events:none}
+.tile span{font-size:10px;font-weight:700;color:#fff;margin-top:3px;text-align:center;line-height:1.1;pointer-events:none}
+nav{display:flex;gap:6px;padding:8px;background:#04090e}
+nav button{flex:1;padding:11px 4px;border:0;border-radius:12px;font-weight:800;font-size:13px;color:#fff;background:linear-gradient(180deg,#14474e,#0a272c);box-shadow:0 3px 0 #031013,0 0 0 1px #2dd4ff44 inset;letter-spacing:.5px}
+nav button:active{transform:translateY(2px);box-shadow:0 1px 0 #031013}
+#pwr{background:linear-gradient(180deg,#555,#333)}
+#pwr.ready{background:linear-gradient(180deg,#10b981,#047857);animation:pulse 1.2s infinite}
+#pwr.on{background:linear-gradient(180deg,#ef4444,#b91c1c)}
+@keyframes pulse{50%{box-shadow:0 0 18px #10b981}}
+#drag{position:fixed;left:0;top:0;pointer-events:none;z-index:50;filter:drop-shadow(0 10px 12px #000a) drop-shadow(0 0 6px var(--c));display:none}
+#ring{position:fixed;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 12px #06b6d4;pointer-events:none;z-index:49;display:none}
+#cc{position:fixed;right:10px;bottom:70px;width:260px;background:#0a1926f2;border:1px solid #06b6d466;border-radius:16px;padding:14px;z-index:40;display:none;box-shadow:0 10px 30px #000a}
+#cc h3{font-size:14px;letter-spacing:2px;margin-bottom:10px;color:#38bdf8}
+#cc label{font-size:12px;display:block;margin:8px 0 4px;color:#cbd5e1}
+.sw{display:flex;gap:8px}
+.sw b{width:34px;height:34px;border-radius:50%;border:3px solid #fff3;cursor:pointer}
+.sw b.act{border-color:#38bdf8}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+.row button{flex:1;padding:8px;border:0;border-radius:10px;background:#14293a;color:#fff;font-weight:700;font-size:12px;cursor:pointer}
+.row button.act{background:#0891b2}
+#toast{position:fixed;top:90px;left:50%;transform:translateX(-50%);background:#10b981;padding:10px 18px;border-radius:20px;font-weight:800;display:none;z-index:60;box-shadow:0 4px 16px #0008;text-align:center;max-width:90%}
+#toast.err{background:#ef4444}
+.placed{animation:pop .35s}
+@keyframes pop{0%{opacity:.3}60%{opacity:1;filter:brightness(1.6)}100%{filter:none}}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <h1>Dental Unit Machine Builder</h1>
+  <small>DRAG &amp; ASSEMBLE · STRICT SECURITY BUILD</small>
+  <div id="bar"><i></i></div>
+</header>
+<div id="stage"><svg id="machine" viewBox="20 10 360 580" preserveAspectRatio="xMidYMid meet"></svg></div>
+<div id="tray"></div>
+<nav>
+<button id="bReset">↺ Reset</button>
+<button id="bHint">◎ Hint</button>
+<button id="bCC">⚙ Control</button>
+<button id="pwr">⏻ Power</button>
+</nav>
+</div>
 
+<div id="drag"></div><div id="ring"></div><div id="toast"></div>
+
+<div id="cc">
+<h3>CONTROL CENTER</h3>
+<label>Chair Upholstery Color</label>
+<div class="sw" id="colors"></div>
+<label>Background</label>
+<div class="row"><button data-bg="dark" class="act">Dark</button><button data-bg="light">Light</button></div>
+<label>Placement Guide</label>
+<div class="row"><button data-g="1" class="act">On</button><button data-g="0">Off</button></div>
+<label>Assembly Control</label>
+<div class="row"><button id="auto">Auto Build</button><button id="shuf">Shuffle</button></div>
+<label>Operation Mode (ON)</label>
+<div class="row"><button data-m="light" class="act">Exam Light</button><button data-m="water">Spittoon Water</button></div>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const COLORS={
+  Cyan:["#06b6d4","#0891b2","#164e63"],
+  Blue:["#3b82f6","#2563eb","#1e3a8a"],
+  Green:["#10b981","#059669","#064e3b"],
+  Orange:["#f97316","#ea580c","#7c2d12"]
+};
+
+const DEFS=`<defs>
+<linearGradient id="cBody" x1="0" x2="1"><stop offset="0" stop-color="var(--b1)"/><stop offset=".5" stop-color="var(--b2)"/><stop offset="1" stop-color="var(--b3)"/></linearGradient>
+<linearGradient id="metal" x1="0" x2="1"><stop offset="0" stop-color="#94a3b8"/><stop offset=".5" stop-color="#f1f5f9"/><stop offset="1" stop-color="#64748b"/></linearGradient>
+<linearGradient id="darkMetal" y1="0" y2="1"><stop offset="0" stop-color="#475569"/><stop offset="1" stop-color="#0f172a"/></linearGradient>
+<radialGradient id="lampGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset=".4" stop-color="#fef08a" stop-opacity=".8"/><stop offset="1" stop-color="#fef08a" stop-opacity="0"/></radialGradient>
+</defs>`;
+
+// PARTS with strict dependencies (req = required parent part ID)
+const PARTS=[
+  {id:"base", n:"Heavy Steel Base", req:null, c:"#64748b", s:`<path d="M100 530 L280 530 L300 550 L80 550 Z" fill="url(#darkMetal)" stroke="#334155" stroke-width="2"/><ellipse cx="190" cy="530" rx="90" ry="12" fill="url(#metal)"/>`},
+  {id:"pedal", n:"Foot Control Pedal", req:"base", c:"#f59e0b", s:`<path d="M70 545 L110 545 L105 558 L65 558 Z" fill="#334155" stroke="#f59e0b" stroke-width="1.5"/><circle cx="87" cy="551" r="5" fill="#f59e0b"/>`},
+  {id:"column", n:"Hydraulic Lift Column", req:"base", c:"#94a3b8", s:`<rect x="175" y="410" width="30" height="120" rx="4" fill="url(#metal)" stroke="#475569"/><rect x="180" y="420" width="20" height="100" fill="#cbd5e1"/>`},
+  {id:"chairBase", n:"Chair Junction Frame", req:"column", c:"#0284c7", s:`<path d="M150 410 L230 410 L240 430 L140 430 Z" fill="#1e293b" stroke="#0284c7" stroke-width="2"/>`},
+  {id:"seat", n:"Patient Seat Cushion", req:"chairBase", c:"#06b6d4", s:`<path d="M130 380 Q190 370 260 390 Q270 410 250 415 Q170 410 125 400 Z" fill="url(#cBody)" stroke="#fff" stroke-width="1.5"/>`},
+  {id:"backrest", n:"Ergonomic Backrest", req:"seat", c:"#06b6d4", s:`<path d="M100 270 Q130 260 145 320 Q150 380 135 385 Q110 380 95 320 Z" fill="url(#cBody)" stroke="#fff" stroke-width="1.5"/>`},
+  {id:"headrest", n:"Adjustable Headrest", req:"backrest", c:"#06b6d4", s:`<rect x="92" y="220" width="36" height="45" rx="10" fill="url(#cBody)" stroke="#fff"/><path d="M106 265 L114 265 L114 275 L106 275 Z" fill="url(#metal)"/>`},
+  {id:"armrest", n:"Side Armrest", req:"seat", c:"#38bdf8", s:`<path d="M140 350 C180 345 220 365 210 375 C180 360 140 360 135 360 Z" fill="url(#metal)"/>`},
+  {id:"unitTower", n:"Water Unit Tower", req:"base", c:"#64748b", s:`<rect x="250" y="280" width="45" height="250" rx="8" fill="url(#metal)" stroke="#334155"/><rect x="255" y="290" width="35" height="230" rx="4" fill="#f8fafc"/>`},
+  {id:"spittoon", n:"Ceramic Spittoon Basin", req:"unitTower", c:"#e2e8f0", s:`<ellipse cx="272" cy="275" rx="28" ry="12" fill="#fff" stroke="#cbd5e1" stroke-width="2"/><ellipse cx="272" cy="275" rx="18" ry="7" fill="#94a3b8"/>`},
+  {id:"tumbler", n:"Water Cup Filler", req:"spittoon", c:"#38bdf8", s:`<path d="M288 245 L288 268 L280 268" stroke="url(#metal)" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="278" y="258" width="8" height="12" fill="#7dd3fc" opacity=".7"/>`},
+  {id:"lightPole", n:"Operating Light Pole", req:"unitTower", c:"#475569", s:`<path d="M272 280 L272 120 L220 100" stroke="url(#metal)" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`},
+  {id:"lightHead", n:"LED Operating Lamp", req:"lightPole", c:"#facc15", s:`<rect x="175" y="80" width="50" height="35" rx="8" fill="#e2e8f0" stroke="#475569" stroke-width="2"/><ellipse cx="200" cy="97" rx="18" ry="10" fill="#fef08a" stroke="#eab308"/>`},
+  {id:"lightHandle", n:"Lamp Handles", req:"lightHead", c:"#94a3b8", s:`<path d="M170 97 L175 97 M225 97 L230 97" stroke="#334155" stroke-width="5" stroke-linecap="round"/>`},
+  {id:"armDelivery", n:"Articulated Instrument Arm", req:"unitTower", c:"#475569", s:`<path d="M272 330 L320 310 L280 280" fill="none" stroke="url(#metal)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>`},
+  {id:"trayMain", n:"Dentist Control Tray", req:"armDelivery", c:"#0284c7", s:`<rect x="270" y="270" width="80" height="18" rx="4" fill="#e2e8f0" stroke="#0284c7" stroke-width="2"/><rect x="275" y="273" width="70" height="12" rx="2" fill="#0f172a"/>`},
+  {id:"tubing", n:"Hose & Tubing Bundle", req:"trayMain", c:"#94a3b8", s:`<path d="M285 288 Q280 340 295 360 M305 288 Q300 340 315 360 M325 288 Q320 340 335 360" stroke="#cbd5e1" stroke-width="3" fill="none"/>`},
+  {id:"scaler", n:"Ultrasonic Scaler", req:"trayMain", c:"#10b981", s:`<rect x="290" y="355" width="8" height="28" rx="2" fill="#fff" stroke="#10b981"/><path d="M294 383 L294 390" stroke="#94a3b8" stroke-width="1.5"/>`},
+  {id:"micromotor", n:"Air Turbine Handpiece", req:"trayMain", c:"#ef4444", s:`<rect x="310" y="355" width="8" height="30" rx="2" fill="#fff" stroke="#ef4444"/><path d="M314 385 L318 392" stroke="#94a3b8" stroke-width="2"/>`},
+  {id:"syringe", n:"3-Way Air/Water Syringe", req:"trayMain", c:"#06b6d4", s:`<rect x="330" y="355" width="8" height="26" rx="2" fill="#fff" stroke="#06b6d4"/><path d="M334 381 L334 388" stroke="#cbd5e1" stroke-width="2"/>`}
+];
+
+const svg=document.getElementById("machine"),tray=document.getElementById("tray"),drag=document.getElementById("drag"),ring=document.getElementById("ring");
+let placed={},guide=true,powered=false,mode="light";
+
+svg.innerHTML=DEFS+`<g id="ghost" opacity=".25"></g><g id="parts"></g><g id="fx" style="display:none"></g>`;
+const ghost=svg.querySelector("#ghost"),pg=svg.querySelector("#parts"),fx=svg.querySelector("#fx");
+
+PARTS.forEach(p=>{
+  const g=document.createElementNS(NS,"g");g.innerHTML=p.s;
+  g.querySelectorAll("*").forEach(e=>{e.setAttribute("fill","none");e.setAttribute("stroke","#38bdf8");e.setAttribute("stroke-dasharray","4 3");e.setAttribute("stroke-width","1.2")});
+  ghost.appendChild(g);
+
+  const slot=document.createElementNS(NS,"g");slot.id="p_"+p.id;slot.innerHTML=p.s;slot.style.display="none";pg.appendChild(slot);
+  slot.style.display="";p.bb=slot.getBBox();slot.style.display="none";
+});
+
+function setColor(k){
+  const [a,b,c]=COLORS[k];
+  document.documentElement.style.setProperty("--b1",a);
+  document.documentElement.style.setProperty("--b2",b);
+  document.documentElement.style.setProperty("--b3",c);
+  document.querySelectorAll("#colors b").forEach(e=>e.classList.toggle("act",e.dataset.k==k))
+}
+Object.keys(COLORS).forEach(k=>{
+  const b=document.createElement("b");b.dataset.k=k;b.style.background=COLORS[k][0];
+  b.onclick=()=>setColor(k);document.getElementById("colors").appendChild(b)
+});
+setColor("Cyan");
+
+function thumb(p){
+  const pad=6,b=p.bb;
+  return `<svg viewBox="${b.x-pad} ${b.y-pad} ${b.width+pad*2} ${b.height+pad*2}">${DEFS}${p.s}</svg>`;
+}
+
+function isLocked(p){
+  return p.req && !placed[p.req];
+}
+
+function buildTray(order){
+  tray.innerHTML="";
+  order.forEach(p=>{
+    if(placed[p.id])return;
+    const t=document.createElement("div");
+    const locked=isLocked(p);
+    t.className="tile"+(locked?" locked":"");
+    t.style.setProperty("--c",p.c);
+    t.innerHTML=thumb(p)+`<span>${p.n}</span>`;
+    t.dataset.id=p.id;
+    t.addEventListener("pointerdown",e=>start(e,p,t));
+    tray.appendChild(t)
+  });
+}
+
+function shuffled(){return PARTS.slice().sort(()=>Math.random()-.5)}
+
+let cur=null;
+function scale(){return svg.getScreenCTM().a}
+
+function start(e,p,tile){
+  e.preventDefault();
+  // SECURITY CHECK
+  if(isLocked(p)){
+    const parentPart=PARTS.find(x=>x.id===p.req);
+    toast(`Security Alert: Install '${parentPart.n}' first!`, true);
+    return;
+  }
+
+  const s=scale();cur={p,tile,w:p.bb.width*s,h:p.bb.height*s};
+  drag.style.setProperty("--c",p.c);
+  drag.innerHTML=`<svg width="${cur.w}" height="${cur.h}" viewBox="${p.bb.x} ${p.bb.y} ${p.bb.width} ${p.bb.height}" style="overflow:visible">${DEFS}${p.s}</svg>`;
+  drag.style.display="block";ring.style.display="block";tile.style.opacity=".25";move(e);
+  window.addEventListener("pointermove",move);
+  window.addEventListener("pointerup",end);
+  window.addEventListener("pointercancel",end);
+}
+
+function move(e){
+  if(!cur)return;e.preventDefault();cur.x=e.clientX;cur.y=e.clientY;
+  drag.style.transform=`translate(${cur.x-cur.w/2}px,${cur.y-cur.h/2}px) scale(1.05)`;
+  ring.style.left=cur.x+"px";ring.style.top=cur.y+"px";
+}
+
+function end(){
+  window.removeEventListener("pointermove",move);
+  window.removeEventListener("pointerup",end);
+  window.removeEventListener("pointercancel",end);
+  if(!cur)return;
+  const {p,tile}=cur;const m=svg.getScreenCTM();
+  const tx=m.a*(p.bb.x+p.bb.width/2)+m.e,ty=m.d*(p.bb.y+p.bb.height/2)+m.f;
+  const d=Math.hypot(cur.x-tx,cur.y-ty),tol=Math.max(45,Math.min(cur.w,cur.h)*.5);
+  drag.style.display="none";ring.style.display="none";
+  
+  if(d<tol){
+    place(p.id);
+    tile.remove();
+  }else{
+    tile.style.opacity="1";
+    toast("Incorrect position!", true);
+  }
+  cur=null;
+}
+
+function place(id){
+  placed[id]=1;
+  const el=document.getElementById("p_"+id);
+  el.style.display="";
+  el.classList.remove("placed");
+  void el.getBBox();
+  el.classList.add("placed");
+  buildTray(PARTS); // Refresh tray locks
+  update();
+}
+
+function update(){
+  const n=Object.keys(placed).length;
+  document.querySelector("#bar i").style.width=(n/PARTS.length*100)+"%";
+  ghost.style.display=guide&&n<PARTS.length?"":"none";
+  const pw=document.getElementById("pwr");
+  pw.classList.toggle("ready",n==PARTS.length&&!powered);
+  if(n==PARTS.length&&!powered)toast("Dental Chair Fully Assembled! Press Power");
+}
+
+function toast(t, err=false){
+  const e=document.getElementById("toast");
+  e.textContent=t;
+  e.className=err?"err":"";
+  e.style.display="block";
+  clearTimeout(e._t);
+  e._t=setTimeout(()=>e.style.display="none",2200);
+}
+
+let raf;
+function drawFX(t){
+  let h="";
+  if(mode==="light"){
+    h+=`<path d="M200 97 L100 380 L300 400 Z" fill="url(#lampGlow)" opacity=".6"/>`;
+  }else if(mode==="water"){
+    const streamY=250+(t/5)%20;
+    h+=`<circle cx="284" cy="${streamY}" r="2" fill="#38bdf8"/>`;
+    h+=`<path d="M284 245 L284 270" stroke="#7dd3fc" stroke-width="2" stroke-dasharray="4 2" fill="none"/>`;
+  }
+  fx.innerHTML=h;
+  raf=requestAnimationFrame(drawFX);
+}
+
+document.getElementById("pwr").onclick=()=>{
+  if(Object.keys(placed).length<PARTS.length){
+    toast("Strict Security: Complete base to top assembly first!", true);
+    return;
+  }
+  powered=!powered;
+  const b=document.getElementById("pwr");
+  b.classList.toggle("on",powered);
+  b.classList.remove("ready");
+  if(powered){
+    fx.style.display="";
+    raf=requestAnimationFrame(drawFX);
+  }else{
+    cancelAnimationFrame(raf);
+    fx.style.display="none";
+  }
+};
+
+function reset(){
+  placed={};powered=false;
+  cancelAnimationFrame(raf);
+  fx.style.display="none";
+  document.getElementById("pwr").className="";
+  PARTS.forEach(p=>document.getElementById("p_"+p.id).style.display="none");
+  buildTray(shuffled());
+  update();
+}
+
+document.getElementById("bReset").onclick=reset;
+document.getElementById("bHint").onclick=()=>{
+  const nextP=PARTS.find(p=>!placed[p.id]&&!isLocked(p));
+  if(!nextP)return;
+  const g=ghost.children[PARTS.indexOf(nextP)];
+  ghost.style.display="";
+  g.setAttribute("opacity","1");
+  g.querySelectorAll("*").forEach(e=>e.setAttribute("stroke","#facc15"));
+  const t=tray.querySelector(`[data-id="${nextP.id}"]`);
+  if(t)t.scrollIntoView({behavior:"smooth",inline:"center"});
+  setTimeout(()=>{
+    g.removeAttribute("opacity");
+    g.querySelectorAll("*").forEach(e=>e.setAttribute("stroke","#38bdf8"));
+    update();
+  },1500);
+};
+
+const cc=document.getElementById("cc");
+document.getElementById("bCC").onclick=()=>cc.style.display=cc.style.display=="block"?"none":"block";
+cc.querySelectorAll("[data-bg]").forEach(b=>b.onclick=()=>{
+  cc.querySelectorAll("[data-bg]").forEach(x=>x.classList.toggle("act",x==b));
+  document.getElementById("stage").classList.toggle("light",b.dataset.bg=="light");
+});
+cc.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{
+  cc.querySelectorAll("[data-g]").forEach(x=>x.classList.toggle("act",x==b));
+  guide=b.dataset.g=="1";update();
+});
+cc.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{
+  cc.querySelectorAll("[data-m]").forEach(x=>x.classList.toggle("act",x==b));
+  mode=b.dataset.m;
+});
+
+document.getElementById("auto").onclick=()=>{
+  let i=0;
+  const iv=setInterval(()=>{
+    const avail=PARTS.filter(p=>!placed[p.id]&&!isLocked(p));
+    if(avail.length===0){clearInterval(iv);return}
+    place(avail[0].id);
+  },150);
+};
+
+document.getElementById("shuf").onclick=()=>buildTray(shuffled());
+document.addEventListener("touchmove",e=>{if(!e.target.closest("#tray"))e.preventDefault()},{passive:false});
+
+buildTray(shuffled());
+update();
+</script>
+</body>
+</html>
