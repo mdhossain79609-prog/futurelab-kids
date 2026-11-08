@@ -1,1 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">
+<title>🛩️ Fighter Jet Builder</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; media-src 'none'; connect-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{position:fixed;width:100%;height:100%;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0b0f19;color:#f8fafc;user-select:none;-webkit-user-select:none;touch-action:none}
+main{display:flex;flex-direction:column;width:100%;height:100%;max-width:1400px;margin:0 auto;position:relative}
+header{display:flex;align-items:center;gap:8px;padding:8px 12px 6px;background:#1e293b;border-bottom:1px solid #334155;flex-shrink:0;z-index:20}
+h1{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(1rem,4.2vw,1.5rem);font-weight:900;
+background:linear-gradient(90deg,#38bdf8,#818cf8,#f43f5e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{border-radius:999px;padding:5px 12px;font-size:12px;font-weight:800;border:0;cursor:pointer;transition:transform .15s}
+.pill:active{transform:scale(.95)}
+#count{background:#334155;color:#38bdf8;border:1px solid #475569}
+#reset{background:#ef4444;color:#fff;box-shadow:0 2px 8px #ef444455}
 
+#boardWrap{flex:0 0 38%;min-height:0;padding:4px 8px;position:relative;z-index:1}
+#board{position:absolute;inset:4px 8px;border:2px dashed #38bdf8;border-radius:18px;overflow:hidden;
+background:radial-gradient(circle at 50% 30%,#1e293b 0%,#090d16 100%);transition:background .5s;box-shadow:inset 0 0 40px #00000088;touch-action:none}
+#board.night{background:radial-gradient(circle at 50% 30%,#060814 0%,#020408 100%)}
+#board svg#scene{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(13px,3vw,16px);color:#64748b;text-align:center;padding:16px;pointer-events:none}
+
+#zoomHud{position:absolute;right:8px;top:8px;display:flex;align-items:center;gap:3px;background:#0f172ae6;border:1px solid #334155;border-radius:999px;padding:3px 8px;z-index:40;box-shadow:0 4px 12px #0008;touch-action:auto}
+.zbtn{width:24px;height:24px;border-radius:50%;border:0;background:#334155;color:#fff;font-weight:900;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.zbtn:active{background:#38bdf8;color:#0f172a}
+#zoomVal{font-size:11px;font-weight:800;color:#38bdf8;min-width:34px;text-align:center}
+
+#tray{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;padding:8px 8px;background:#131d2e;border-top:2px solid #334155;flex:1;min-height:0;align-content:center;z-index:10;touch-action:none}
+@media(max-width:768px){
+  #tray{grid-template-columns:repeat(5,1fr);gap:5px;padding:6px;align-content:start;overflow-y:auto}
+}
+.slot{height:clamp(50px,9vh,70px);border-radius:10px;background:#0f172a;border:1px solid #334155;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative;cursor:grab;touch-action:none;-webkit-touch-callout:none;transition:border-color .15s}
+.slot:active{border-color:#38bdf8}
+.slot svg{width:100%;height:65%;filter:drop-shadow(0 2px 4px #000a);pointer-events:none}
+.slot span{font-size:10px;font-weight:700;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:94%;margin-top:2px;pointer-events:none}
+.slot.gone{opacity:.15;pointer-events:none;border-color:#1e293b}
+
+#controls{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 10px 8px;background:#0b0f19;border-top:1px solid #1e293b;flex-shrink:0;z-index:20;touch-action:none}
+.btns{display:flex;gap:5px;flex-shrink:1;min-width:0}
+.cbtn{width:clamp(46px,13.5vw,66px);height:clamp(46px,13.5vw,66px);border-radius:14px;border:0;color:#fff;font-weight:800;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 4px 0 #0008;cursor:pointer;line-height:1.1;touch-action:none}
+.cbtn b{font-size:18px}
+.cbtn:active{transform:translateY(3px);box-shadow:0 1px 0 #0008}
+#bColor{background:linear-gradient(135deg,#f43f5e,#f59e0b,#10b981,#3b82f6)}
+#bLight{background:linear-gradient(135deg,#eab308,#f97316)}
+#bSound{background:linear-gradient(135deg,#0ea5e9,#6366f1)}
+#bStart{background:linear-gradient(135deg,#22c55e,#15803d)}
+#bStart.on{background:linear-gradient(135deg,#ef4444,#991b1b)}
+
+#remote{display:grid;grid-template-columns:repeat(4,clamp(30px,8.5vw,40px));grid-template-rows:repeat(2,clamp(30px,8.5vw,40px));gap:4px;padding:5px;flex-shrink:0;border-radius:16px;background:#1e293b;border:1px solid #334155;box-shadow:0 4px 0 #0008;touch-action:none}
+.r{border:0;border-radius:9px;background:#334155;color:#f8fafc;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:none}
+.r:active,.r.act{background:#38bdf8;color:#0f172a}
+.r.run{background:#16a34a;color:#fff}.r.run.act{background:#facc15;color:#0f172a}
+.cbtn:disabled,.r:disabled{opacity:.35;cursor:not-allowed}
+
+#drag{position:fixed;pointer-events:none;z-index:9999;filter:drop-shadow(0 10px 20px #000c)}
+#msg{position:fixed;left:50%;top:65px;transform:translateX(-50%);background:#0284c7;color:#fff;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.3px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:10000;box-shadow:0 8px 24px #0008}
+
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.15}}
+@keyframes blink2{0%,49%{opacity:.15}50%,100%{opacity:1}}
+.bl1{animation:blink .8s infinite}.bl2{animation:blink2 .8s infinite}
+</style>
+</head>
+<body>
+<main>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+<header>
+  <h1>🛩️ Fighter Jet Builder</h1>
+  <span id="count" class="pill">0 / 20</span>
+  <button id="reset" class="pill">Reset</button>
+</header>
+<div id="boardWrap">
+  <div id="board">
+    <div id="zoomHud">
+      <button class="zbtn" id="zOut" title="Zoom Out">−</button>
+      <span id="zoomVal">100%</span>
+      <button class="zbtn" id="zIn" title="Zoom In">+</button>
+      <button class="zbtn" id="zReset" title="Reset Zoom">↺</button>
+    </div>
+    <svg id="scene" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <radialGradient id="beam" cx="1" cy="0.5" r="1">
+          <stop offset="0" stop-color="#fff7b0" stop-opacity=".9"/>
+          <stop offset="1" stop-color="#fff7b0" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="6" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g id="camera">
+        <g id="mover">
+          <g id="facer">
+            <g id="tilter">
+              <g id="plane"></g>
+              <g id="lights"></g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </svg>
+    <div id="hint">Drag parts here to build the fighter jet</div>
+  </div>
+</div>
+<section id="tray"></section>
+<div id="controls">
+  <div class="btns">
+    <button class="cbtn" id="bColor"><b>🎨</b>1 Color</button>
+    <button class="cbtn" id="bLight"><b>💡</b>2 Light</button>
+    <button class="cbtn" id="bSound"><b>🔊</b>Sound</button>
+    <button class="cbtn" id="bStart"><b>▶</b>3 Start</button>
+  </div>
+  <div id="remote" title="Remote Flight Controls">
+    <button class="r" data-k="up" title="Pitch Up">▲</button>
+    <button class="r" data-k="left" title="Fly Left">◀</button>
+    <button class="r" data-k="right" title="Fly Right">▶</button>
+    <button class="r" data-k="spin" title="Barrel Roll">⟳</button>
+    <button class="r" data-k="down" title="Pitch Down">▼</button>
+    <button class="r" data-k="turn" title="Reverse Direction">⇄</button>
+    <button class="r run" data-k="run" style="grid-column:span 2;font-size:12px;font-weight:900" title="Cruise Flight Mode">✈ FLY</button>
+  </div>
+</div>
+</main>
+<div id="msg"></div>
+
+<script>
+// Prevent mobile browser page zoom/pinch on the entire document
+document.addEventListener('gesturestart', e => e.preventDefault(), {passive:false});
+document.addEventListener('gesturechange', e => e.preventDefault(), {passive:false});
+document.addEventListener('gestureend', e => e.preventDefault(), {passive:false});
+document.addEventListener('touchmove', e => {
+  // Allow touchmove inside board for zoom/pan or dragging
+  if (e.target.closest('#board') || drag) {
+    e.preventDefault();
+  }
+}, {passive:false});
+
+let lastTap = 0;
+document.addEventListener('touchend', e => {
+  const now = Date.now();
+  if (now - lastTap < 280) e.preventDefault();
+  lastTap = now;
+}, {passive:false});
+
+const VB={x:105,y:75,w:475,h:215};
+const S='stroke="#0f172a" stroke-width="2.5" stroke-linejoin="round"';
+const g=c=>`url(#g-${c})`;
+const sh=(x,y,w,h)=>`<rect x="${x+w*.1}" y="${y+h*.1}" width="${w*.8}" height="${Math.max(2,h*.25)}" rx="${Math.min(w,h)*.12}" fill="#fff" opacity=".45"/>`;
+const fan=(cx,cy,r)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${g('dark')}" ${S}/>`+
+ `<g class="fan" data-c="${cx},${cy}"><rect x="${cx-r*.22}" y="${cy-r*.85}" width="${r*.44}" height="${r*1.7}" rx="${r*.2}" fill="#fff" opacity=".95"/>`+
+ `<rect x="${cx-r*.85}" y="${cy-r*.22}" width="${r*1.7}" height="${r*.44}" rx="${r*.2}" fill="#fff" opacity=".95"/></g>`+
+ `<circle cx="${cx}" cy="${cy}" r="${r*.22}" fill="#f8fafc"/>`;
+
+const PARTS=[
+ {id:8,n:"Far Wing",b:[296,118,160,52],a:`<polygon points="300,168 400,168 452,122 372,122" fill="${g('teal')}" ${S}/><polygon points="316,162 394,162 436,128 376,128" fill="#fff" opacity=".25"/>`},
+ {id:1,n:"Fuselage Body",b:[110,150,420,72],a:`<path d="M112,190 L170,172 Q200,156 250,154 L470,156 Q510,160 526,172 L526,204 Q500,214 470,216 L250,218 Q190,216 170,206 Z" fill="${g('steel')}" ${S}/><path d="M170,176 Q210,162 260,160 L470,162 Q500,165 515,172 L170,182 Z" fill="#fff" opacity=".3"/><path d="M180,206 L470,210" stroke="#0f172a" stroke-width="1.2" opacity=".5"/>`},
+ {id:2,n:"Bubble Canopy",b:[176,136,92,32],a:`<path d="M180,164 Q196,140 232,138 Q258,140 266,162 Z" fill="${g('blue')}" ${S}/><path d="M192,158 Q204,146 226,144 L212,158 Z" fill="#fff" opacity=".7"/>`},
+ {id:4,n:"Canopy Frame",b:[226,136,12,30],a:`<rect x="228" y="138" width="7" height="26" rx="3" fill="${g('gold')}" ${S}/>`},
+ {id:3,n:"Air Intake",b:[240,174,80,40],a:`<path d="M244,178 L312,178 L316,210 L250,210 Z" fill="${g('dark')}" ${S}/><path d="M250,182 L306,182 L304,190 L252,190 Z" fill="#fff" opacity=".18"/>`},
+ {id:14,n:"Turbine Fan",b:[260,180,32,32],cls:"fan",a:fan(276,196,12)},
+ {id:9,n:"Vertical Tail Fin",b:[420,86,100,74],a:`<polygon points="424,158 476,90 504,90 516,158" fill="${g('green')}" ${S}/><polygon points="436,152 478,98 486,98 452,152" fill="#fff" opacity=".35"/>`},
+ {id:10,n:"Fin Tip Light",b:[474,80,34,16],a:`<rect x="476" y="82" width="30" height="12" rx="6" fill="${g('purple')}" ${S}/>${sh(476,82,30,12)}`},
+ {id:11,n:"Tail Stabilizer",b:[440,190,110,40],a:`<polygon points="444,196 512,196 548,226 470,226" fill="${g('pink')}" ${S}/><polygon points="456,200 508,200 532,220 474,220" fill="#fff" opacity=".3"/>`},
+ {id:12,n:"Exhaust Nozzle",b:[512,166,40,44],a:`<path d="M514,170 L548,174 L548,202 L514,206 Z" fill="${g('indigo')}" ${S}/><rect x="540" y="176" width="6" height="24" fill="#0f172a"/>`},
+ {id:13,n:"Afterburner",b:[544,172,36,32],a:`<path d="M548,176 Q568,180 578,188 Q568,196 548,200 Z" fill="${g('orange')}" ${S}/><path d="M548,182 Q560,185 566,188 Q560,191 548,194 Z" fill="${g('yellow')}"/>`},
+ {id:5,n:"Delta Main Wing",b:[256,196,220,62],a:`<polygon points="260,200 400,200 472,254 320,254" fill="${g('yellow')}" ${S}/><polygon points="276,206 394,206 450,248 326,248" fill="#fff" opacity=".25"/>`},
+ {id:6,n:"Wing Flap",b:[316,250,160,16],a:`<polygon points="322,254 472,254 478,264 316,264" fill="${g('coral')}" ${S}/>${sh(316,254,160,10)}`},
+ {id:7,n:"Wingtip Rail",b:[456,244,30,24],a:`<rect x="458" y="246" width="26" height="20" rx="6" fill="${g('lime')}" ${S}/>`},
+ {id:15,n:"Missile",b:[296,236,110,20],a:`<rect x="310" y="240" width="86" height="12" rx="6" fill="${g('silver')}" ${S}/><path d="M310,240 Q296,246 310,252 Z" fill="${g('red')}" ${S}/><polygon points="384,240 400,234 400,240" fill="${g('red')}"/><polygon points="384,252 400,258 400,252" fill="${g('red')}"/>`},
+ {id:16,n:"Nose Gear Strut",b:[176,206,14,64],a:`<rect x="178" y="208" width="10" height="60" rx="4" fill="${g('silver')}" ${S}/>`},
+ {id:17,n:"Nose Wheel",b:[170,264,26,26],a:`<circle cx="183" cy="277" r="11" fill="${g('dark')}" ${S}/><circle cx="183" cy="277" r="4" fill="${g('silver')}"/>`},
+ {id:18,n:"Main Gear Strut",b:[408,212,16,52],a:`<rect x="410" y="214" width="12" height="48" rx="4" fill="${g('silver')}" ${S}/>`},
+ {id:19,n:"Main Wheel",b:[397,254,38,38],a:`<circle cx="416" cy="273" r="17" fill="${g('dark')}" ${S}/><circle cx="416" cy="273" r="6" fill="${g('silver')}"/>`},
+ {id:20,n:"Pitot Probe",b:[104,184,20,12],a:`<rect x="106" y="188" width="14" height="4" rx="2" fill="${g('gold')}" ${S}/>`},
+];
+
+const BASE={red:"#ef4444",blue:"#38bdf8",cyan:"#22d3ee",orange:"#f97316",yellow:"#facc15",green:"#22c55e",steel:"#64748b",purple:"#a855f7",pink:"#ec4899",gold:"#f59e0b",teal:"#14b8a6",lime:"#84cc16",indigo:"#6366f1",dark:"#1e293b",silver:"#94a3b8",coral:"#fb7185"};
+
+const THEMES=[
+ {name:"Rainbow Aero",map:{}},
+ {name:"Sky Patrol Blue",map:{red:"#1d4ed8",yellow:"#1e40af",orange:"#f8fafc",teal:"#0f172a",lime:"#0f172a",green:"#2563eb",coral:"#ef4444"}},
+ {name:"Stealth Camo",map:{red:"#4d7c0f",yellow:"#3f6212",orange:"#365314",teal:"#1c1917",lime:"#1c1917",green:"#57534e",coral:"#a16207",indigo:"#44403c"}},
+ {name:"Golden Royalty",map:{red:"#d97706",yellow:"#fbbf24",orange:"#b45309",teal:"#78350f",lime:"#78350f",green:"#f59e0b",indigo:"#92400e"}},
+ {name:"Cyber Neon Pink",map:{red:"#ec4899",yellow:"#f9a8d4",orange:"#db2777",teal:"#a855f7",lime:"#a855f7",green:"#f472b6",indigo:"#c026d3"}},
+ {name:"Rescue White",map:{red:"#f8fafc",yellow:"#e2e8f0",orange:"#dc2626",teal:"#dc2626",lime:"#dc2626",green:"#ef4444",coral:"#dc2626",indigo:"#cbd5e1"}},
+];
+
+const defs=document.getElementById('defs');
+function paint(t){
+  const m={...BASE,...THEMES[t].map};
+  defs.innerHTML=Object.entries(m).map(([k,c])=>`<linearGradient id="g-${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${mix(c,'#ffffff',.55)}"/><stop offset=".5" stop-color="${c}"/><stop offset="1" stop-color="${mix(c,'#000000',.35)}"/></linearGradient>`).join('');
+}
+function mix(a,b,t){const p=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));const A=p(a),B=p(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')}
+paint(0);
+
+const TRAY=[10,17,3,8,12,15,1,9,20,4,13,16,11,6,19,7,2,14,5,18];
+const $=id=>document.getElementById(id);
+const scene=$('scene'),plane=$('plane'),board=$('board'),tray=$('tray');
+scene.setAttribute('viewBox',`${VB.x} ${VB.y} ${VB.w} ${VB.h}`);
+
+// Zoom & Pan System strictly scoped inside #board only
+let zoom=1,panX=0,panY=0;
+function updateCamera(){
+  zoom = Math.max(0.8, Math.min(3.5, zoom));
+  const cx = VB.x + VB.w/2;
+  const cy = VB.y + VB.h/2;
+  $('camera').setAttribute('transform',`translate(${panX} ${panY}) translate(${cx} ${cy}) scale(${zoom}) translate(${-cx} ${-cy})`);
+  $('zoomVal').textContent=Math.round(zoom*100)+'%';
+}
+$('zIn').onclick=()=>{zoom=Math.min(3.5,zoom+0.25);updateCamera();msg('Zoom: '+Math.round(zoom*100)+'%')};
+$('zOut').onclick=()=>{zoom=Math.max(0.8,zoom-0.25);updateCamera();msg('Zoom: '+Math.round(zoom*100)+'%')};
+$('zReset').onclick=()=>{zoom=1;panX=0;panY=0;updateCamera();msg('Zoom Reset')};
+
+// Mouse wheel zoom over board only
+board.addEventListener('wheel', e => {
+  e.preventDefault();
+  const delta = e.deltaY < 0 ? 0.15 : -0.15;
+  zoom = Math.max(0.8, Math.min(3.5, zoom + delta));
+  updateCamera();
+}, {passive: false});
+
+// Two-finger Touch Pinch Zoom & Pan strictly on board
+let boardTouches = new Map(), initialDist = null, initialZoom = 1;
+board.addEventListener('touchstart', e => {
+  if (drag) return;
+  for(let i=0; i<e.changedTouches.length; i++){
+    const t = e.changedTouches[i];
+    boardTouches.set(t.identifier, {x: t.clientX, y: t.clientY});
+  }
+  if(boardTouches.size === 2){
+    const pts = Array.from(boardTouches.values());
+    initialDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    initialZoom = zoom;
+  }
+}, {passive: true});
+
+board.addEventListener('touchmove', e => {
+  if (drag) return;
+  for(let i=0; i<e.changedTouches.length; i++){
+    const t = e.changedTouches[i];
+    boardTouches.set(t.identifier, {x: t.clientX, y: t.clientY});
+  }
+  if(boardTouches.size === 2 && initialDist){
+    e.preventDefault();
+    const pts = Array.from(boardTouches.values());
+    const currentDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    const scaleFactor = currentDist / initialDist;
+    zoom = Math.max(0.8, Math.min(3.5, initialZoom * scaleFactor));
+    updateCamera();
+  }
+}, {passive: false});
+
+const clearBoardTouch = e => {
+  for(let i=0; i<e.changedTouches.length; i++){
+    boardTouches.delete(e.changedTouches[i].identifier);
+  }
+  if(boardTouches.size < 2){
+    initialDist = null;
+  }
+};
+board.addEventListener('touchend', clearBoardTouch);
+board.addEventListener('touchcancel', clearBoardTouch);
+
+// Board Dimensions
+function fit(){
+  const r=board.getBoundingClientRect();
+  const s=Math.min(r.width/VB.w,r.height/VB.h);
+  return{r,s,ox:(r.width-VB.w*s)/2,oy:(r.height-VB.h*s)/2};
+}
+
+let placed=new Set();
+let drag=null; // { id, s, x, y, touchId }
+let dragEl=null;
+
+function buildTray(){
+  tray.innerHTML='';
+  TRAY.forEach(id=>{
+    const p=PARTS.find(q=>q.id===id);
+    const d=document.createElement('div');
+    d.className='slot'+(placed.has(id)?' gone':'');
+    d.dataset.id=id;
+    d.innerHTML=`<svg viewBox="${p.b.join(' ')}">${p.a}</svg><span>${p.n}</span>`;
+
+    // Direct Touch Support (Mobile/Tablet)
+    d.addEventListener('touchstart', e => {
+      if (placed.has(id) || drag) return;
+      e.preventDefault();
+      const t = e.changedTouches[0];
+      initDrag(id, t.clientX, t.clientY, t.identifier);
+    }, {passive: false});
+
+    // Pointer Support (Mouse on Desktop)
+    d.addEventListener('mousedown', e => {
+      if (e.button !== 0 || placed.has(id) || drag) return;
+      e.preventDefault();
+      initDrag(id, e.clientX, e.clientY, null);
+    });
+
+    tray.appendChild(d);
+  });
+}
+
+function initDrag(id, clientX, clientY, touchId){
+  const p=PARTS.find(q=>q.id===id);
+  const {s}=fit();
+  drag = { id, s, x: clientX, y: clientY, touchId };
+
+  dragEl = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  dragEl.id='drag';
+  dragEl.setAttribute('viewBox', p.b.join(' '));
+  dragEl.setAttribute('width', Math.max(48, p.b[2]*s*1.2));
+  dragEl.setAttribute('height', Math.max(48, p.b[3]*s*1.2));
+  dragEl.innerHTML = p.a;
+  document.body.appendChild(dragEl);
+
+  const slot = tray.querySelector(`[data-id="${id}"]`);
+  if (slot) slot.classList.add('gone');
+
+  updateDragPosition(clientX, clientY);
+}
+
+function updateDragPosition(x, y){
+  if (!drag || !dragEl) return;
+  drag.x = x;
+  drag.y = y;
+  const w = parseFloat(dragEl.getAttribute('width'));
+  const h = parseFloat(dragEl.getAttribute('height'));
+  dragEl.style.left = (x - w/2) + 'px';
+  dragEl.style.top = (y - h/2) + 'px';
+}
+
+// Global Touch Move & End (bulletproof drag across whole screen)
+window.addEventListener('touchmove', e => {
+  if (!drag || drag.touchId === null) return;
+  for(let i=0; i<e.changedTouches.length; i++){
+    const t = e.changedTouches[i];
+    if (t.identifier === drag.touchId){
+      e.preventDefault();
+      updateDragPosition(t.clientX, t.clientY);
+      break;
+    }
+  }
+}, {passive: false});
+
+window.addEventListener('touchend', e => {
+  if (!drag || drag.touchId === null) return;
+  for(let i=0; i<e.changedTouches.length; i++){
+    const t = e.changedTouches[i];
+    if (t.identifier === drag.touchId){
+      finishDrag(t.clientX, t.clientY);
+      break;
+    }
+  }
+});
+
+window.addEventListener('touchcancel', e => {
+  if (!drag || drag.touchId === null) return;
+  for(let i=0; i<e.changedTouches.length; i++){
+    const t = e.changedTouches[i];
+    if (t.identifier === drag.touchId){
+      finishDrag(t.clientX, t.clientY);
+      break;
+    }
+  }
+});
+
+// Mouse Move & Up (for desktop)
+window.addEventListener('mousemove', e => {
+  if (!drag || drag.touchId !== null) return;
+  e.preventDefault();
+  updateDragPosition(e.clientX, e.clientY);
+});
+
+window.addEventListener('mouseup', e => {
+  if (!drag || drag.touchId !== null) return;
+  finishDrag(e.clientX, e.clientY);
+});
+
+function finishDrag(clientX, clientY){
+  if (!drag) return;
+  const p = PARTS.find(q=>q.id===drag.id);
+  const {r, s, ox, oy} = fit();
+
+  // Coordinates of part center on screen
+  const cx = VB.x + VB.w/2;
+  const cy = VB.y + VB.h/2;
+  const partCx = p.b[0] + p.b[2]/2 + pos.x;
+  const partCy = p.b[1] + p.b[3]/2 + pos.y;
+
+  // With camera scale/zoom
+  const camSvgX = cx + (partCx - cx)*zoom + panX;
+  const camSvgY = cy + (partCy - cy)*zoom + panY;
+
+  const tx = r.left + ox + (camSvgX - VB.x)*s;
+  const ty = r.top + oy + (camSvgY - VB.y)*s;
+
+  const dist = Math.hypot(clientX - tx, clientY - ty);
+  const maxTolerance = Math.max(60, 80*s*zoom);
+
+  // If dropped inside board area or near its target position
+  const isInsideBoard = clientX >= r.left && clientX <= r.right && clientY >= r.top && clientY <= r.bottom;
+
+  if (dist < maxTolerance || (isInsideBoard && dist < maxTolerance * 1.6)) {
+    placed.add(drag.id);
+    renderPlane();
+    msg('Fitted: ' + p.n);
+  } else {
+    const slot = tray.querySelector(`[data-id="${drag.id}"]`);
+    if (slot) slot.classList.remove('gone');
+  }
+
+  if (dragEl) {
+    dragEl.remove();
+    dragEl = null;
+  }
+  drag = null;
+}
+
+function renderPlane(){
+  let h='';
+  PARTS.forEach(p=>{if(placed.has(p.id))h+=p.a;});
+  plane.innerHTML=h;
+  $('count').textContent=placed.size+' / 20';
+  $('hint').style.display=placed.size?'none':'flex';
+  updateLights();
+}
+
+const msg=t=>{
+  const m=$('msg');m.textContent=t;m.style.opacity=1;
+  clearTimeout(msg.t);msg.t=setTimeout(()=>m.style.opacity=0,1400);
+};
+
+let theme=0;
+$('bColor').onclick=()=>{
+  theme=(theme+1)%THEMES.length;
+  paint(theme);
+  buildTray();
+  msg('Theme: '+THEMES[theme].name);
+};
+
+const LIGHTS=["Lights Off","Strobe Beacons","Nose Headlight","Neon Aura","Night Flight"];
+let light=0;
+$('bLight').onclick=()=>{
+  light=(light+1)%LIGHTS.length;
+  updateLights();
+  msg('Lighting: '+LIGHTS[light]);
+};
+
+function updateLights(){
+  const L=$('lights');let h='';
+  board.classList.toggle('night',light===4);
+  plane.setAttribute('filter',light===3?'url(#glow)':'');
+  plane.style.filter=light===3?'drop-shadow(0 0 10px hsl('+(Date.now()/10%360)+',100%,60%))':'';
+  if(light===1||light===4){
+    h+=`<circle class="bl1" cx="471" cy="256" r="6" fill="#ef4444"/><circle class="bl2" cx="546" cy="224" r="6" fill="#22c55e"/><circle class="bl1" cx="491" cy="86" r="5" fill="#fff"/>`;
+  }
+  if(light===2||light===4){
+    h+=`<polygon points="128,196 -40,142 -40,268" fill="url(#beam)"/>`;
+  }
+  L.innerHTML=placed.size?h:'';
+}
+setInterval(()=>{if(light===3)updateLights()},60);
+
+let started=false;
+$('bStart').onclick=()=>{
+  if(placed.size<20){msg('Assemble all 20 parts first!');return}
+  started=!started;
+  $('bStart').classList.toggle('on',started);
+  $('bStart').innerHTML=started?'<b>■</b>3 Stop':'<b>▶</b>3 Start';
+  if(!started){run=false;$$run.classList.remove('act')}
+  msg(started?'🔥 Afterburner Ignited!':'Engines Shutdown');
+};
+
+const pos={x:0,y:0};
+let face=-1,tilt=0,spin=0,rot=0,trot=0,speed=0,run=false;
+const held=new Set();
+const $$run=document.querySelector('[data-k="run"]');
+
+document.querySelectorAll('.r').forEach(b=>{
+  const k=b.dataset.k;
+  if(k==='run'){
+    b.onclick=()=>{
+      if(!started){msg('Start engine first!');return}
+      run=!run;b.classList.toggle('act',run);
+      msg(run?'Cruise Mode: Active':'Cruise Mode: Off');
+    };
+    return;
+  }
+  if(k==='turn'){
+    b.onclick=()=>{if(!started){msg('Start engine first!');return}face*=-1};
+    return;
+  }
+  if(k==='spin'){
+    b.onclick=()=>{
+      if(!started){msg('Start engine first!');return}
+      if(pos.y>-5){msg('Climb higher first!');return}
+      spin+=360;
+    };
+    return;
+  }
+  const on=e=>{
+    e.preventDefault();
+    if(!started){msg('Start engine first!');return}
+    held.add(k);
+    b.classList.add('act');
+  };
+  const off=()=>{held.delete(k);b.classList.remove('act')};
+  b.addEventListener('pointerdown',on);
+  b.addEventListener('pointerup',off);
+  b.addEventListener('pointerleave',off);
+  b.addEventListener('pointercancel',off);
+});
+
+const KEY={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',KeyW:'up',KeyS:'down',KeyA:'left',KeyD:'right'};
+addEventListener('keydown',e=>{if(KEY[e.code]&&started)held.add(KEY[e.code])});
+addEventListener('keyup',e=>{if(KEY[e.code])held.delete(KEY[e.code])});
+
+let spinNow=0,last=performance.now();
+function loop(t){
+  const dt=Math.min(.05,(t-last)/1000);
+  last=t;
+  speed+=((started?1:0)-speed)*dt*1.5;
+  rot+=speed*dt*14;
+  trot+=speed*dt*900;
+  plane.querySelectorAll('.fan').forEach(f=>{
+    const c=f.dataset.c.split(',');
+    f.setAttribute('transform',`rotate(${trot} ${c[0]} ${c[1]})`);
+  });
+
+  let vx=0,vy=0;
+  const air=pos.y<-2;
+  if(held.has('up'))vy=-120;
+  if(held.has('down'))vy=120;
+  if(air&&held.has('left')){vx=-160;face=-1}
+  if(air&&held.has('right')){vx=160;face=1}
+  if(run&&air)vx=230*face;
+  if(started&&!air&&run)vy=-80;
+  if(!started&&air)vy=90;
+
+  pos.x+=vx*dt;
+  pos.y+=vy*dt;
+  pos.y=Math.max(-120,Math.min(0,pos.y));
+
+  if(pos.x>520)pos.x=-520;
+  if(pos.x<-520)pos.x=520;
+  if(!run)pos.x=Math.max(-130,Math.min(130,pos.x));
+
+  const tTilt=vx?(vx>0?8:-8):0;
+  tilt+=(tTilt-tilt)*dt*5;
+  spinNow+=(spin-spinNow)*dt*3;
+  const bob=air?Math.sin(t/300)*2.5:0;
+
+  $('mover').setAttribute('transform',`translate(${pos.x} ${pos.y+bob})`);
+  $('facer').setAttribute('transform',`translate(328 190) scale(${-face*Math.cos(spinNow*Math.PI/180)||-face*0.01} 1) translate(-328 -190)`);
+  $('tilter').setAttribute('transform',`rotate(${face>0?-Math.abs(tilt)*Math.sign(vx||0)*-1:tilt} 328 190)`);
+
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+$('reset').onclick=()=>{
+  placed=new Set();started=false;run=false;pos.x=pos.y=0;face=-1;spin=spinNow=0;
+  $('bStart').classList.remove('on');
+  $('bStart').innerHTML='<b>▶</b>3 Start';
+  $$run.classList.remove('act');
+  buildTray();
+  renderPlane();
+  msg('Workspace Reset');
+};
+
+buildTray();
+renderPlane();
+
+let snd=true,actx=null,J=null;
+function ensureAudio(){
+  if(actx)return;
+  actx=new (window.AudioContext||window.webkitAudioContext)();
+  const master=actx.createGain();master.gain.value=0;master.connect(actx.destination);
+
+  const buf=actx.createBuffer(1,actx.sampleRate*2,actx.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
+  const src=actx.createBufferSource();src.buffer=buf;src.loop=true;
+  const hp=actx.createBiquadFilter();hp.type='highpass';hp.frequency.value=70;
+  const lp=actx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=600;lp.Q.value=.8;
+  const roar=actx.createGain();roar.gain.value=.9;
+  src.connect(hp);hp.connect(lp);lp.connect(roar);roar.connect(master);
+
+  const sub=actx.createOscillator();sub.type='sawtooth';sub.frequency.value=44;
+  const sg=actx.createGain();sg.gain.value=.28;sub.connect(sg);sg.connect(master);
+
+  const wh=actx.createOscillator();wh.type='triangle';wh.frequency.value=650;
+  const wg=actx.createGain();wg.gain.value=.1;wh.connect(wg);wh.connect(master);
+
+  const hs=actx.createOscillator();hs.type='sine';hs.frequency.value=5200;
+  const hg=actx.createGain();hg.gain.value=.025;hs.connect(hg);hs.connect(master);
+
+  src.start();sub.start();wh.start();hs.start();
+  J={master,lp,sub,wh};
+}
+
+function updSound(){
+  if(!actx||!J)return;
+  actx.resume();
+  const t=actx.currentTime,v=(snd&&started)?.55:0;
+  J.master.gain.setTargetAtTime(v,t,.35);
+  J.sub.frequency.setTargetAtTime(38+speed*26,t,.4);
+  J.wh.frequency.setTargetAtTime(650+speed*2400,t,.5);
+  J.lp.frequency.setTargetAtTime(420+speed*1500,t,.5);
+}
+
+$('bSound').onclick=()=>{
+  ensureAudio();
+  snd=!snd;
+  $('bSound').innerHTML=snd?'<b>🔊</b>Sound':'<b>🔇</b>Muted';
+  updSound();
+  msg(snd?'Sound Enabled':'Sound Muted');
+};
+
+document.addEventListener('click',()=>{if(started)ensureAudio();updSound()},true);
+setInterval(updSound,120);
+</script>
+<script>
+// Screen security: block framing, right-click, copy, save, view-source & devtools shortcuts
+(function(){
+ if(window.top!==window.self){try{window.top.location=window.self.location}catch(e){document.documentElement.innerHTML='';}}
+ ['contextmenu','copy','cut','paste','selectstart','dragstart'].forEach(ev=>document.addEventListener(ev,e=>{if(!e.target.closest||!e.target.closest('.slot'))e.preventDefault()},{capture:true}));
+ document.addEventListener('keydown',e=>{const k=(e.key||'').toLowerCase();
+  if(k==='f12'||((e.ctrlKey||e.metaKey)&&['u','s','p','c','a'].includes(k))||((e.ctrlKey||e.metaKey)&&e.shiftKey&&['i','j','c','k'].includes(k))){e.preventDefault();e.stopPropagation();}
+ },{capture:true});
+
+})();
+</script>
+</body>
+</html>
