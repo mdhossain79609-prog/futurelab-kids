@@ -703,8 +703,6 @@ button{
 
 </button>
 
-
-  
         <!-- Home Button -->
 
         <button
@@ -1145,6 +1143,185 @@ function openTrainBuilder(){
 
 </div>
 
+<!-- =================================
+     SPACE & SCIENCE SCREEN
+================================= -->
+
+<div id="spaceScienceScreen" class="screen">
+
+    <div class="builder-header">
+
+        <div class="builder-icon">🚀</div>
+
+        <h1 class="builder-title">
+            Space & Science
+        </h1>
+
+        <p class="builder-subtitle">
+            Explore Space and Build Amazing Machines!
+        </p>
+
+    </div>
+
+    <div class="builder-container">
+
+        <!-- ROCKET BUILDER -->
+
+        <button class="builder-card"
+            onclick="window.location.href='rocket-builder.html'">
+
+            <div class="builder-project-icon">🚀</div>
+
+            <div class="builder-project-text">
+                <h3>Rocket Builder</h3>
+                <p>Build and launch your own space rocket.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+        <button class="home-back"
+            onclick="openLabScreen()">
+            ← Back to Categories
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =================================
+     AGRICULTURE WORLD SCREEN
+================================= -->
+
+<div id="agricultureScreen" class="screen">
+
+    <div class="builder-header">
+
+        <div class="builder-icon">🌾</div>
+
+        <h1 class="builder-title">
+            Agriculture World
+        </h1>
+
+        <p class="builder-subtitle">
+            Explore Farming Machines and Technology!
+        </p>
+
+    </div>
+
+    <div class="builder-container">
+
+        <!-- MINI TRACTOR -->
+
+        <button class="builder-card"
+            onclick="window.location.href='mini-tractor.html'">
+
+            <div class="builder-project-icon">🚜</div>
+
+            <div class="builder-project-text">
+                <h3>Mini Tractor Builder</h3>
+                <p>Build your own small agricultural tractor.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <!-- POWER TILLER -->
+
+        <button class="builder-card"
+            onclick="window.location.href='power-tiller.html'">
+
+            <div class="builder-project-icon">⚙️</div>
+
+            <div class="builder-project-text">
+                <h3>Power Tiller Builder</h3>
+                <p>Build a powerful agricultural tiller machine.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <button class="home-back"
+            onclick="openLabScreen()">
+            ← Back to Categories
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =================================
+     SPORTS WORLD SCREEN
+================================= -->
+
+<div id="sportsScreen" class="screen">
+
+    <div class="builder-header">
+
+        <div class="builder-icon">🏆</div>
+
+        <h1 class="builder-title">
+            Sports World
+        </h1>
+
+        <p class="builder-subtitle">
+            Explore Gym, Fitness and Exercise Machines!
+        </p>
+
+    </div>
+
+    <div class="builder-container">
+
+        <!-- TREADMILL -->
+
+        <button class="builder-card"
+            onclick="window.location.href='treadmill.html'">
+
+            <div class="builder-project-icon">🏃</div>
+
+            <div class="builder-project-text">
+                <h3>Treadmill Builder</h3>
+                <p>Build your own gym treadmill machine.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <!-- FIVE STATION MULTI GYM -->
+
+        <button class="builder-card"
+            onclick="window.location.href='five-station-gym.html'">
+
+            <div class="builder-project-icon">🏋️</div>
+
+            <div class="builder-project-text">
+                <h3>Five Station Multi Gym</h3>
+                <p>Build a complete five station fitness machine.</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </button>
+
+
+        <button class="home-back"
+            onclick="openLabScreen()">
+            ← Back to Categories
+        </button>
+
+    </div>
+
+</div>
+
 
 <!-- =================================
      JAVASCRIPT
@@ -1222,6 +1399,26 @@ function openComputerScienceScreen(){
 
 function openMedicalScreen(){
     showScreen("medicalScreen");
+}
+
+// SPACE & SCIENCE SCREEN
+
+function openSpaceScienceScreen(){
+    showScreen("spaceScienceScreen");
+}
+
+
+// AGRICULTURE WORLD SCREEN
+
+function openAgricultureScreen(){
+    showScreen("agricultureScreen");
+}
+
+
+// SPORTS WORLD SCREEN
+
+function openSportsScreen(){
+    showScreen("sportsScreen");
 }
 
 
