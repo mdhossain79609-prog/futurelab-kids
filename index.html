@@ -533,6 +533,120 @@ body.no-animations *::after{
     .welcome-card p{font-size:11px}
     .start-btn{font-size:15px}
 }
+
+/* ===== FINAL HOME SCREEN POSITION & SCROLL FIX ===== */
+
+html,
+body {
+    margin:0 !important;
+    padding:0 !important;
+    width:100%;
+    max-width:100%;
+}
+
+body.home-mode {
+    position:fixed !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100vh !important;
+    height:100dvh !important;
+    overflow:hidden !important;
+    overscroll-behavior:none;
+}
+
+body.home-mode #homeScreen {
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100vh !important;
+    height:100dvh !important;
+    min-height:0 !important;
+    overflow:hidden !important;
+    padding:0 !important;
+}
+
+body.home-mode .top-bar {
+    height:60px !important;
+    flex-shrink:0;
+}
+
+body.home-mode .home {
+    height:calc(100vh - 60px) !important;
+    height:calc(100dvh - 60px) !important;
+    min-height:0 !important;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start !important;
+    align-items:center;
+
+    overflow:hidden !important;
+
+    padding:35px 16px 5px !important;
+}
+
+/* Move logo and all home content upward */
+
+body.home-mode .logo {
+    margin:0 !important;
+    font-size:65px;
+    line-height:1.1;
+}
+
+body.home-mode .app-name {
+    margin:5px 0 2px !important;
+}
+
+body.home-mode .slogan {
+    margin:5px 0 15px !important;
+}
+
+body.home-mode .welcome-card {
+    margin-top:0 !important;
+}
+
+body.home-mode .start-btn {
+    margin-top:15px !important;
+}
+
+body.home-mode .bottom-buttons {
+    margin-top:15px !important;
+}
+
+body.home-mode .footer-text {
+    margin-top:15px !important;
+}
+
+/* Short mobile screens */
+
+@media(max-height:750px) {
+
+    body.home-mode .home {
+        padding-top:15px !important;
+    }
+
+    body.home-mode .logo {
+        font-size:52px;
+    }
+
+    body.home-mode .welcome-card {
+        padding:12px !important;
+    }
+
+    body.home-mode .start-btn {
+        margin-top:11px !important;
+        padding:13px !important;
+    }
+
+    body.home-mode .bottom-buttons {
+        margin-top:11px !important;
+    }
+
+    body.home-mode .footer-text {
+        margin-top:10px !important;
+    }
+}
+    
 </style>
 </head>
 
