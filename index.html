@@ -1,1339 +1,1297 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>FutureLab Kids</title>
 
 <style>
-
 *{
     box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
-body{
+html,body{
     margin:0;
+    width:100%;
+    min-height:100%;
+    overflow-x:hidden;
     font-family:Arial, sans-serif;
-    min-height:100vh;
-    background:linear-gradient(#dff6ff,#f5fbff);
     color:#24324a;
-}
-   html,
-    
-body{
-    width:100%;
-    max-width:100%;
-    overflow-x:hidden;
-}
-
-.screen{
-    width:100%;
-    max-width:100%;
-    overflow-x:hidden;
+    background:linear-gradient(135deg,#dff6ff,#f5fbff);
 }
 
 button{
-    max-width:100%;
-} 
-
-/* =========================
-   COMMON
-========================= */
+    font-family:inherit;
+    cursor:pointer;
+    border:0;
+}
 
 .screen{
     display:none;
     min-height:100vh;
+    width:100%;
+    padding:12px 15px 25px;
+    overflow-x:hidden;
 }
 
-/* Only Home Screen visible at start */
 #homeScreen{
     display:block;
+    height:100vh;
+    min-height:100vh;
+    overflow:hidden;
+    padding:0;
 }
 
-button{
-    cursor:pointer;
-}
-
-/* =========================
-   TOP BAR
-========================= */
+/* TOP BAR */
 
 .top-bar{
+    height:65px;
     display:flex;
-    justify-content:space-between;
     align-items:center;
-    padding:16px 18px;
+    justify-content:space-between;
+    padding:8px 18px;
 }
 
 .icon-btn{
-    width:46px;
-    height:46px;
-    border:none;
+    width:44px;
+    height:44px;
     border-radius:50%;
     background:white;
-    font-size:22px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.12);
+    font-size:21px;
+    box-shadow:0 4px 12px #00000012;
+    transition:transform .2s;
 }
 
-/* =========================
-   HOME SCREEN
-========================= */
+.icon-btn:active{
+    transform:scale(.9);
+}
+
+/* HOME */
 
 .home{
+    height:calc(100vh - 65px);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
     text-align:center;
-    padding:10px 20px 35px;
+    padding:0 16px 12px;
 }
-
-/* Logo */
 
 .logo{
-    font-size:82px;
-    margin-top:5px;
-    margin-bottom:4px;
+    font-size:clamp(55px,12vw,76px);
+    line-height:1.1;
+    filter:drop-shadow(0 5px 5px #00000015);
 }
 
-/* App Name */
-
 .app-name{
-    margin:0;
-    font-size:36px;
-    font-weight:800;
+    margin:5px 0 3px;
+    font-size:clamp(29px,7vw,38px);
+    font-weight:900;
     color:#2457c5;
+    letter-spacing:-1px;
 }
 
 .app-name span{
-    color:#ff7a00;
+    color:#ff7900;
 }
 
 .slogan{
-    margin-top:8px;
-    font-size:17px;
+    color:#65748b;
+    font-size:11px;
     font-weight:bold;
-    color:#59677d;
+    letter-spacing:3px;
+    margin:5px 0 16px;
 }
 
-/* Welcome Card */
-
 .welcome-card{
-    max-width:420px;
-    margin:25px auto 20px;
+    width:min(100%,410px);
     background:white;
-    padding:22px 18px;
     border-radius:24px;
-    box-shadow:0 7px 20px rgba(0,0,0,0.10);
+    padding:17px 16px;
+    box-shadow:0 8px 25px #3274aa18;
+    border:2px solid #ffffff;
 }
 
 .welcome-card h2{
-    margin:0 0 8px;
-    color:#6339b6;
+    margin:0 0 9px;
+    font-size:21px;
+    color:#2457c5;
 }
 
 .welcome-card p{
     margin:0;
-    line-height:1.5;
-    color:#58677a;
+    color:#65748b;
+    font-size:13px;
+    line-height:1.6;
 }
-
-/* Start Button */
 
 .start-btn{
-    width:min(90%,380px);
-    border:none;
+    width:min(100%,380px);
+    margin-top:17px;
+    padding:16px 12px;
     border-radius:18px;
-    padding:17px 20px;
-    margin-top:8px;
-    background:linear-gradient(90deg,#ff8a00,#ffb000);
     color:white;
-    font-size:20px;
-    font-weight:bold;
-    box-shadow:0 7px 16px rgba(255,138,0,0.30);
+    background:linear-gradient(135deg,#ff9b24,#ff6500);
+    font-size:18px;
+    font-weight:900;
+    box-shadow:0 6px 0 #dc5600,0 10px 20px #ff790033;
+    transition:transform .2s;
 }
 
-/* Small Buttons */
+.start-btn:active{
+    transform:translateY(4px);
+    box-shadow:0 2px 0 #dc5600;
+}
 
 .bottom-buttons{
-    max-width:390px;
-    margin:22px auto 0;
+    width:min(100%,390px);
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:12px;
+    margin-top:17px;
 }
 
 .small-btn{
-    border:none;
     background:white;
-    border-radius:18px;
-    padding:16px 8px;
-    font-size:15px;
+    padding:13px 5px;
+    border-radius:15px;
+    font-size:13px;
     font-weight:bold;
-    color:#34445d;
-    box-shadow:0 5px 14px rgba(0,0,0,0.10);
+    color:#34517c;
+    box-shadow:0 4px 12px #00000010;
+}
+
+.small-btn:active{
+    transform:scale(.96);
 }
 
 .footer-text{
-    margin-top:30px;
-    font-size:14px;
-    color:#74839a;
+    margin-top:17px;
+    color:#8192a8;
+    font-size:11px;
+    letter-spacing:2px;
+    font-weight:bold;
 }
 
+/* SCREEN HEADER */
 
-/* =========================
-   EXPLORE LAB SCREEN
-========================= */
-
-#labScreen{
-    display:none;
-    padding-bottom:30px;
-}
-
-/* Lab Header */
-
-.lab-header{
+.page-header{
     text-align:center;
-    padding:22px 18px 10px;
+    padding:12px 8px 18px;
 }
 
-.lab-icon{
-    font-size:64px;
+.page-icon{
+    font-size:48px;
     margin-bottom:5px;
 }
 
-.lab-title{
+.page-title{
     margin:0;
-    font-size:30px;
-    font-weight:800;
     color:#2457c5;
+    font-size:27px;
+    font-weight:900;
 }
 
-.lab-subtitle{
-    margin:8px 0 0;
-    font-size:15px;
-    color:#637187;
+.page-subtitle{
+    color:#75849a;
+    font-size:13px;
+    line-height:1.5;
+    margin:8px auto 0;
+    max-width:340px;
 }
 
-/* Lab Cards */
+/* CATEGORY CARDS */
 
-.lab-container{
-    max-width:440px;
-    margin:20px auto;
-    padding:0 18px;
+.card-list{
+    width:min(100%,470px);
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
 }
 
 .lab-card{
-    width:100%;
     display:flex;
     align-items:center;
-    text-align:left;
-    border:none;
+    gap:14px;
+    width:100%;
+    min-height:82px;
+    padding:13px 15px;
+    border-radius:19px;
     background:white;
-    border-radius:22px;
-    padding:18px;
-    margin-bottom:14px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.10);
-    transition:transform 0.15s;
+    text-align:left;
+    box-shadow:0 5px 16px #0000000d;
+    border:1px solid #eaf1fb;
+    transition:transform .18s;
 }
 
 .lab-card:active{
-    transform:scale(0.97);
+    transform:scale(.98);
 }
 
-.lab-card-icon{
-    width:58px;
-    height:58px;
-    border-radius:18px;
-    background:#eef5ff;
+.card-icon{
+    width:52px;
+    height:52px;
+    flex-shrink:0;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:30px;
-    margin-right:15px;
+    border-radius:16px;
+    background:#edf5ff;
+    font-size:29px;
 }
 
-.lab-card-text{
+.card-info{
     flex:1;
+    min-width:0;
 }
 
-.lab-card-text h3{
+.card-info h3{
     margin:0;
-    font-size:19px;
-    color:#293f69;
+    color:#2e4770;
+    font-size:16px;
+    font-weight:900;
 }
 
-.lab-card-text p{
+.card-info p{
     margin:5px 0 0;
-    font-size:13px;
-    color:#77849a;
+    color:#8996a9;
+    font-size:11px;
     line-height:1.4;
 }
 
-.arrow{
-    font-size:24px;
-    color:#8a63d2;
-}
-
-/* Home Button */
-
-.home-back{
-    display:block;
-    width:min(90%,380px);
-    margin:20px auto 0;
-    padding:16px;
-    border:none;
-    border-radius:18px;
-    background:#6339b6;
-    color:white;
-    font-size:17px;
+.card-arrow{
+    font-size:25px;
+    color:#8da5c8;
     font-weight:bold;
-    box-shadow:0 6px 15px rgba(99,57,182,0.25);
 }
 
-.lab-footer{
-    text-align:center;
-    margin-top:20px;
-    color:#8491a5;
-    font-size:13px;
-}
-    
-/* =========================
-   CAREER WORLD SCREEN
-========================= */
-
-#careerScreen{
-    display:none;
-    padding-bottom:30px;
-}
-
-.career-header{
-    text-align:center;
-    padding:25px 18px 12px;
-}
-
-.career-icon{
-    font-size:65px;
-}
-
-.career-title{
-    margin:5px 0 0;
-    font-size:30px;
-    font-weight:800;
-    color:#2457c5;
-}
-
-.career-subtitle{
-    margin-top:8px;
-    color:#637187;
-    font-size:15px;
-}
-
-.career-container{
-    max-width:440px;
-    margin:18px auto;
-    padding:0 18px;
-}
-
-.career-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:14px;
-}
-
-.career-card{
-    border:none;
-    background:white;
-    border-radius:22px;
-    padding:22px 10px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.10);
-}
-
-.career-card:active{
-    transform:scale(0.97);
-}
-
-.career-card .career-emoji{
-    display:block;
-    font-size:45px;
-    margin-bottom:10px;
-}
-
-.career-card h3{
-    margin:0;
-    color:#293f69;
-    font-size:18px;
-}
-
-.career-card p{
-    margin:6px 0 0;
-    color:#77849a;
-    font-size:12px;
-}
-
-    /* =========================
-   JUNIOR BUILDER SCREEN
-========================= */
-#builderScreen{
-    display:none;
-    padding-bottom:30px;
-}
-
-.builder-header{
-    text-align:center;
-    padding:25px 18px 12px;
-}
-
-.builder-icon{
-    font-size:65px;
-}
-
-.builder-title{
-    margin:5px 0 0;
-    font-size:30px;
-    font-weight:800;
-    color:#2457c5;
-}
-
-.builder-subtitle{
-    margin:8px auto 0;
-    max-width:360px;
-    font-size:15px;
-    line-height:1.5;
-    color:#637187;
-}
-
-.builder-container{
-    max-width:440px;
-    margin:18px auto;
-    padding:0 18px;
-}
+/* PROJECT CARDS */
 
 .builder-card{
-    width:100%;
     display:flex;
     align-items:center;
-    text-align:left;
-    border:none;
+    gap:13px;
+    min-height:76px;
+    padding:12px 14px;
+    width:100%;
     background:white;
-    border-radius:22px;
-    padding:18px;
-    margin-bottom:14px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.10);
+    border-radius:18px;
+    box-shadow:0 5px 16px #0000000d;
+    text-decoration:none;
+    color:#2e4770;
+    border:1px solid #eaf1fb;
+    transition:transform .18s;
 }
 
 .builder-card:active{
-    transform:scale(0.97);
+    transform:scale(.98);
 }
 
 .builder-project-icon{
-    width:62px;
-    height:62px;
-    flex-shrink:0;
-    border-radius:18px;
-    background:#eef5ff;
+    width:50px;
+    height:50px;
+    border-radius:15px;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size:34px;
-    margin-right:15px;
+    background:#eef5ff;
+    font-size:29px;
+    flex-shrink:0;
 }
 
-.builder-project-text h3{
+.builder-project-text{
+    flex:1;
+    font-size:15px;
+    font-weight:900;
+}
+
+.builder-arrow{
+    font-size:23px;
+    color:#8da5c8;
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+    display:block;
+    width:min(100%,300px);
+    margin:24px auto 5px;
+    padding:14px;
+    border-radius:15px;
+    background:linear-gradient(135deg,#6c63e9,#5147c9);
+    color:white;
+    font-size:14px;
+    font-weight:bold;
+    box-shadow:0 5px 12px #5147c933;
+}
+
+/* POPUP / MODAL */
+
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    background:#15233bbd;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+}
+
+.modal-overlay.show{
+    display:flex;
+}
+
+.modal{
+    width:min(100%,420px);
+    max-height:85vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:25px;
+    padding:22px 18px;
+    box-shadow:0 15px 45px #00000035;
+    animation:popIn .22s ease;
+}
+
+@keyframes popIn{
+    from{transform:scale(.92);opacity:0}
+    to{transform:scale(1);opacity:1}
+}
+
+.modal-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+}
+
+.modal-header h2{
     margin:0;
-    font-size:19px;
-    color:#293f69;
+    color:#2457c5;
+    font-size:22px;
 }
 
-.builder-project-text p{
-    margin:5px 0 0;
+.close-btn{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#edf3ff;
+    color:#34517c;
+    font-size:20px;
+}
+
+.setting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    padding:15px 5px;
+    border-bottom:1px solid #edf1f7;
+}
+
+.setting-name{
+    font-size:15px;
+    font-weight:bold;
+    color:#344b70;
+}
+
+.setting-description{
+    font-size:11px;
+    color:#8794a7;
+    margin-top:4px;
+}
+
+.toggle-btn{
+    min-width:65px;
+    padding:9px 12px;
+    border-radius:20px;
+    background:#dfe6ef;
+    color:#607086;
+    font-weight:bold;
+    font-size:12px;
+}
+
+.toggle-btn.active{
+    background:#20bd79;
+    color:white;
+}
+
+.progress-card{
+    background:#f1f7ff;
+    border-radius:17px;
+    padding:14px;
+    margin:10px 0;
+}
+
+.progress-card strong{
+    display:block;
+    color:#2457c5;
+    font-size:25px;
+    margin-bottom:4px;
+}
+
+.progress-card span{
+    color:#728198;
+    font-size:12px;
+}
+
+.progress-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.achievement{
+    background:#f5f8ff;
+    border:1px solid #e8eef9;
+    border-radius:16px;
+    padding:14px 8px;
+    text-align:center;
+}
+
+.achievement .medal{
+    font-size:31px;
+    filter:grayscale(1);
+    opacity:.35;
+}
+
+.achievement.unlocked .medal{
+    filter:none;
+    opacity:1;
+}
+
+.achievement h3{
+    margin:7px 0 4px;
+    color:#34517c;
     font-size:13px;
-    line-height:1.4;
-    color:#77849a;
-}
-    
-
-/* HOME SCREEN FIT FIX */
-
-#homeScreen {
-    height: 100vh !important;
-    min-height: 100vh !important;
-    overflow: hidden !important;
-    padding: 0;
 }
 
-#homeScreen .home {
-    height: calc(100vh - 78px);
-    overflow: hidden;
-    padding: 5px 16px 10px;
+.achievement p{
+    margin:0;
+    color:#8a97a9;
+    font-size:10px;
 }
 
-#homeScreen .logo {
-    font-size: 65px;
-    margin: 0;
+.help-item{
+    padding:13px 5px;
+    border-bottom:1px solid #edf1f7;
 }
 
-#homeScreen .welcome-card {
-    margin: 15px auto;
-    padding: 16px;
+.help-item h3{
+    color:#2457c5;
+    margin:0 0 6px;
+    font-size:15px;
 }
 
-#homeScreen .footer-text {
-    margin-top: 15px;
+.help-item p{
+    color:#718096;
+    font-size:12px;
+    line-height:1.6;
+    margin:0;
 }
 
+.modal-note{
+    text-align:center;
+    color:#8b98aa;
+    font-size:11px;
+    margin-top:15px;
+}
+
+/* ANIMATION SETTING */
+
+body.no-animations *,
+body.no-animations *::before,
+body.no-animations *::after{
+    animation:none!important;
+    transition:none!important;
+}
+
+/* SMALL MOBILE */
+
+@media(max-height:700px){
+    .top-bar{height:52px}
+    .home{height:calc(100vh - 52px)}
+    .logo{font-size:53px}
+    .app-name{font-size:29px}
+    .slogan{margin:3px 0 10px;font-size:9px}
+    .welcome-card{padding:12px}
+    .welcome-card h2{font-size:18px}
+    .welcome-card p{font-size:11px}
+    .start-btn{margin-top:12px;padding:13px;font-size:16px}
+    .bottom-buttons{margin-top:12px}
+    .small-btn{padding:10px 4px;font-size:12px}
+    .footer-text{margin-top:11px;font-size:9px}
+}
+
+@media(max-width:350px){
+    .app-name{font-size:27px}
+    .welcome-card h2{font-size:17px}
+    .welcome-card p{font-size:11px}
+    .start-btn{font-size:15px}
+}
 </style>
 </head>
 
 <body>
 
-<!-- =================================
+<!-- =========================
      HOME SCREEN
-================================= -->
+========================= -->
 
 <div id="homeScreen" class="screen">
 
     <div class="top-bar">
-
-        <button class="icon-btn">
-            ⚙️
-        </button>
-
-        <button class="icon-btn">
-            ⭐
-        </button>
-
+        <button class="icon-btn" onclick="openSettings()" aria-label="Settings">⚙️</button>
+        <button class="icon-btn" onclick="openAchievements()" aria-label="Achievements">⭐</button>
     </div>
-
 
     <main class="home">
 
-        <div class="logo">
-            🚀
-        </div>
+        <div class="logo">🚀</div>
 
-        <h1 class="app-name">
-            FutureLab <span>Kids</span>
-        </h1>
+        <h1 class="app-name">FutureLab <span>Kids</span></h1>
 
-        <div class="slogan">
-            BUILD • DISCOVER • INVENT
-        </div>
-
+        <div class="slogan">BUILD • DISCOVER • INVENT</div>
 
         <div class="welcome-card">
-
-            <h2>
-                🌟 Your Future Starts Here!
-            </h2>
-
+            <h2>🌟 Your Future Starts Here!</h2>
             <p>
                 Build amazing things, solve fun challenges,
                 explore technology and discover your future.
             </p>
-
         </div>
 
-        <!-- START ADVENTURE -->
-
-        <button
-            class="start-btn"
-            onclick="openLabScreen()">
-
+        <button class="start-btn" onclick="startAdventure()">
             🚀 START ADVENTURE
-
         </button>
 
-
         <div class="bottom-buttons">
-
-            <button class="small-btn">
+            <button class="small-btn" onclick="openProgress()">
                 🏆 My Progress
             </button>
 
-            <button class="small-btn">
+            <button class="small-btn" onclick="openHelp()">
                 💡 Help Center
             </button>
-
         </div>
-
 
         <div class="footer-text">
             Learn • Build • Test • Create
         </div>
 
     </main>
-
 </div>
 
-<!-- =================================
-     SECOND SCREEN
-================================= -->
+
+<!-- =========================
+     CATEGORY SCREEN
+========================= -->
 
 <div id="labScreen" class="screen">
 
-    <div class="lab-header">
-
-        <div class="lab-icon">
-            🔬
-        </div>
-
-        <h1 class="lab-title">
-            Explore Your Lab
-        </h1>
-
-        <p class="lab-subtitle">
-            Choose an adventure and start discovering!
+    <div class="page-header">
+        <div class="page-icon">🌍</div>
+        <h1 class="page-title">Explore Your World</h1>
+        <p class="page-subtitle">
+            Choose your favorite world and start creating!
         </p>
-
     </div>
 
+    <div class="card-list">
 
-    <div class="lab-container">
-
-
-<!-- ENGINEERING WORLD -->
-<button class="lab-card" onclick="openBuilderScreen()">
-    <div class="lab-card-icon">👷</div>
-    <div class="lab-card-text">
-        <h3>Engineering World</h3>
-        <p>Explore machines, vehicles and engineering projects.</p>
-    </div>
-    <div class="arrow">›</div>
-</button>
-
-<!-- AVIATION & PILOT -->
-<button class="lab-card" onclick="openAviationScreen()">
-    <div class="lab-card-icon">✈️</div>
-    <div class="lab-card-text">
-        <h3>Aviation & Pilot</h3>
-        <p>Explore helicopters, airplanes and aviation technology.</p>
-    </div>
-    <div class="arrow">›</div>
-</button>
-        
-<!-- COMPUTER SCIENCE & TECHNOLOGY -->
-
-<button class="lab-card"
-    onclick="openComputerScienceScreen()">
-
-    <div class="lab-card-icon">
-        💻
-    </div>
-
-    <div class="lab-card-text">
-
-        <h3>Computer Science & Technology</h3>
-
-        <p>
-            Explore computers, laptops and digital technology.
-        </p>
-
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-<!-- MEDICAL SCIENCE & TECHNOLOGY -->
-
-<button class="lab-card"
-    onclick="openMedicalScreen()">
-
-    <div class="lab-card-icon">
-        🏥
-    </div>
-
-    <div class="lab-card-text">
-        <h3>Medical Science & Technology</h3>
-        <p>Explore medical machines and diagnostic technology.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-        
-<!-- SPACE & SCIENCE -->
-
-<button class="lab-card"
-    onclick="openSpaceScienceScreen()">
-
-    <div class="lab-card-icon">🚀</div>
-
-    <div class="lab-card-text">
-        <h3>Space & Science</h3>
-        <p>Explore rockets, planets and space technology.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-<!-- AGRICULTURE WORLD -->
-
-<button class="lab-card"
-    onclick="openAgricultureScreen()">
-
-    <div class="lab-card-icon">🌾</div>
-
-    <div class="lab-card-text">
-        <h3>Agriculture World</h3>
-        <p>Explore farming machines and agriculture technology.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-<!-- SPORTS WORLD -->
-
-<button class="lab-card"
-    onclick="openSportsScreen()">
-
-    <div class="lab-card-icon">🏆</div>
-
-    <div class="lab-card-text">
-        <h3>Sports World</h3>
-        <p>Explore sports, gym and fitness machines.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-        <!-- Home Button -->
-
-        <button
-            class="home-back"
-            onclick="openHomeScreen()">
-
-            🏠 Back to Home
-
+        <button class="lab-card" onclick="openBuilderScreen()">
+            <div class="card-icon">👷</div>
+            <div class="card-info">
+                <h3>Engineering World</h3>
+                <p>Build vehicles and amazing machines</p>
+            </div>
+            <div class="card-arrow">›</div>
         </button>
 
+        <button class="lab-card" onclick="openAviationScreen()">
+            <div class="card-icon">✈️</div>
+            <div class="card-info">
+                <h3>Aviation & Pilot</h3>
+                <p>Explore aircraft and flying machines</p>
+            </div>
+            <div class="card-arrow">›</div>
+        </button>
 
-        <div class="lab-footer">
-            Learn • Build • Test • Create
-        </div>
+        <button class="lab-card" onclick="openComputerScienceScreen()">
+            <div class="card-icon">💻</div>
+            <div class="card-info">
+                <h3>Computer Science & Technology</h3>
+                <p>Discover computers and technology</p>
+            </div>
+            <div class="card-arrow">›</div>
+        </button>
+
+        <button class="lab-card" onclick="openMedicalScreen()">
+            <div class="card-icon">🏥</div>
+            <div class="card-info">
+                <h3>Medical Science & Technology</h3>
+                <p>Explore medical machines and equipment</p>
+            </div>
+            <div class="card-arrow">›</div>
+        </button>
+
+        <button class="lab-card" onclick="openSpaceScienceScreen()">
+            <div class="card-icon">🚀</div>
+            <div class="card-info">
+                <h3>Space & Science</h3>
+                <p>Discover rockets and the universe</p>
+            </div>
+            <div class="card-arrow">›</div>
+        </button>
+
+        <button class="lab-card" onclick="openAgricultureScreen()">
+            <div class="card-icon">🌾</div>
+            <div class="card-info">
+                <h3>Agriculture World</h3>
+                <p>Explore farming machines</p>
+            </div>
+            <div class="card-arrow">›</div>
+        </button>
+
+        <button class="lab-card" onclick="openSportsScreen()">
+            <div class="card-icon">🏆</div>
+            <div class="card-info">
+                <h3>Sports World</h3>
+                <p>Discover sports and fitness equipment</p>
+            </div>
+            <div class="card-arrow">›</div>
+        </button>
 
     </div>
 
+    <button class="back-btn" onclick="openHomeScreen()">
+        🏠 Back to Home
+    </button>
+
 </div>
-<div id="careerScreen" class="screen" style="display:none;"></div>
 
-    <!-- =================================
-     AVIATION WORLD SCREEN
-================================= -->
 
-<div id="aviationScreen" class="screen"
-     style="display:none; padding-bottom:30px;">
+<!-- =========================
+     AVIATION SCREEN
+========================= -->
 
-    <div class="career-header">
+<div id="aviationScreen" class="screen">
 
-        <div class="career-icon">✈️</div>
-
-        <h1 class="career-title">
-            Aviation World
-        </h1>
-
-        <p class="career-subtitle">
-            Explore aircraft and become a young pilot!
+    <div class="page-header">
+        <div class="page-icon">✈️</div>
+        <h1 class="page-title">Aviation World</h1>
+        <p class="page-subtitle">
+            Explore the amazing world of aircraft!
         </p>
+    </div>
+
+    <div class="card-list">
+
+        <a class="builder-card project-link" href="helicopter-builder.html">
+            <div class="builder-project-icon">🚁</div>
+            <div class="builder-project-text">Helicopter Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="airplane-builder.html">
+            <div class="builder-project-icon">✈️</div>
+            <div class="builder-project-text">Airplane Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="bomber-builder.html">
+            <div class="builder-project-icon">🛩️</div>
+            <div class="builder-project-text">Bomber Aircraft</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="fighter-jet.html">
+            <div class="builder-project-icon">🛫</div>
+            <div class="builder-project-text">Fighter Jet</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
     </div>
 
-    <div class="builder-container">
-
-        <!-- HELICOPTER BUILDER -->
-
-<button class="builder-card"
-    onclick="window.location.href='helicopter-builder.html'">
-
-    <div class="builder-project-icon">
-        🚁
-    </div>
-
-    <div class="builder-project-text">
-        <h3>Helicopter Builder</h3>
-        <p>Build and explore your own helicopter.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-        <!-- AIRPLANE BUILDER -->
-
-<button class="builder-card"
-    onclick="window.location.href='airplane-builder.html'">
-
-    <div class="builder-project-icon">
-        ✈️
-    </div>
-
-    <div class="builder-project-text">
-        <h3>Airplane Builder</h3>
-        <p>Build and explore your own airplane.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-<!-- BOMBER AIRCRAFT BUILDER -->
-<button class="builder-card"
-onclick="window.location.href='bomber-builder.html'">
-
-    <div class="builder-project-icon">💣</div>
-
-    <div class="builder-project-text">
-        <h3>Bomber Aircraft Builder</h3>
-        <p>Build and explore a bomber aircraft.</p>
-    </div>
-
-    <div class="arrow">➜</div>
-
-</button>
-
-
-<!-- FIGHTER JET BUILDER -->
-<button class="builder-card"
-onclick="window.location.href='fighter-jet.html'">
-
-    <div class="builder-project-icon">✈️</div>
-
-    <div class="builder-project-text">
-        <h3>Fighter Jet Builder</h3>
-        <p>Build and explore a fighter jet.</p>
-    </div>
-
-    <div class="arrow">➜</div>
-
-</button>
-
-
-
-        <!-- BACK BUTTON -->
-
-<button class="home-back"
-    onclick="openLabScreen()">
-
-    ← Back to Categories
-
-</button>
-    </div>
+    <button class="back-btn" onclick="openLabScreen()">
+        ← Back to Categories
+    </button>
 
 </div>
 
-<!-- =================================
+
+<!-- =========================
      JUNIOR BUILDER SCREEN
-================================= -->
+========================= -->
 
 <div id="builderScreen" class="screen">
 
-    <div class="builder-header">
-
-        <div class="builder-icon">👷</div>
-
-        <h1 class="builder-title">
-            Junior Builder
-        </h1>
-
-        <p class="builder-subtitle">
-            Build amazing machines, test your creations
-            and become a young engineer!
+    <div class="page-header">
+        <div class="page-icon">👷</div>
+        <h1 class="page-title">Junior Builder</h1>
+        <p class="page-subtitle">
+            Build amazing machines and become a young engineer!
         </p>
+    </div>
+
+    <div class="card-list">
+
+        <a class="builder-card project-link" href="sports-car-builder.html">
+            <div class="builder-project-icon">🏎️</div>
+            <div class="builder-project-text">Sports Car Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="jeep.html">
+            <div class="builder-project-icon">🚙</div>
+            <div class="builder-project-text">Jeep Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="mega-bus.html">
+            <div class="builder-project-icon">🚌</div>
+            <div class="builder-project-text">Volvo AC Bus</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="train-builder.html">
+            <div class="builder-project-icon">🚆</div>
+            <div class="builder-project-text">Train Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
     </div>
-<div class="builder-container">
 
-<!-- SPORTS CAR -->
-<button class="builder-card"
-    onclick="window.location.href='sports-car-builder.html'">
-        <div class="builder-project-icon">
-            🏎️
-        </div>
-
-        <div class="builder-project-text">
-            <h3>Sports Car Builder</h3>
-            <p>Build, design and customize your sports car.</p>
-        </div>
-
-        <div class="arrow">›</div>
-
+    <button class="back-btn" onclick="openLabScreen()">
+        ← Back to Categories
     </button>
 
-
-<!-- JEEP BUILDER -->
-
-<button class="builder-card"
-    onclick="window.location.href='jeep.html'">
-
-    <div class="builder-project-icon">
-        🚙
-    </div>
-
-    <div class="builder-project-text">
-        <h3>Jeep Builder</h3>
-        <p>Build, design and customize your own Jeep.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-<!-- VOLVO AC BUS -->
-<button class="builder-card"
-    onclick="window.location.href='mega-bus.html'">
-
-    <div class="builder-project-icon">
-        🚌
-    </div>
-
-    <div class="builder-project-text">
-        <h3>Volvo AC Bus</h3>
-        <p>Build Your Own Luxury Volvo Bus!</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-    <!-- TRAIN BUILDER -->
-<button class="builder-card"
-    onclick="window.location.href='train-builder.html'">
-
-    <div class="builder-project-icon">
-        🚆
-    </div>
-
-    <div class="builder-project-text">
-        <h3>Train Builder</h3>
-        <p>Build, design and customize your own train.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-<script>
-function openTrainBuilder(){
-    window.location.href = "train-builder.html";
-}
-</script>
-    <!-- BACK BUTTON -->
-    <button class="home-back"
-        onclick="openLabScreen()">
-
-        ← Back to Categories
-
-</button>
-
-</div>
-
 </div>
 
 
-<!-- =================================
+<!-- =========================
      COMPUTER SCIENCE SCREEN
-================================= -->
+========================= -->
 
 <div id="computerScienceScreen" class="screen">
 
-    <div class="builder-header">
-
-        <div class="builder-icon">💻</div>
-
-        <h1 class="builder-title">
-            Computer Science & Technology
-        </h1>
-
-        <p class="builder-subtitle">
-            Build Your Own Computer!
+    <div class="page-header">
+        <div class="page-icon">💻</div>
+        <h1 class="page-title">Computer Technology</h1>
+        <p class="page-subtitle">
+            Build and explore computer systems!
         </p>
-
     </div>
 
-    <div class="builder-container">
+    <div class="card-list">
 
-        <!-- LAPTOP BUILDER -->
-
-        <button class="builder-card"
-            onclick="window.location.href='laptop-builder.html'">
-
+        <a class="builder-card project-link" href="laptop-builder.html">
             <div class="builder-project-icon">💻</div>
+            <div class="builder-project-text">Laptop Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
-            <div class="builder-project-text">
-                <h3>Laptop Builder</h3>
-                <p>Build Your Own Laptop</p>
-            </div>
-
-            <div class="arrow">›</div>
-
-        </button>
-
-        <!-- DESKTOP PC BUILDER -->
-
-        <button class="builder-card"
-            onclick="window.location.href='desktop-pc-builder.html'">
-
+        <a class="builder-card project-link" href="desktop-pc-builder.html">
             <div class="builder-project-icon">🖥️</div>
-
-            <div class="builder-project-text">
-                <h3>Desktop PC Builder</h3>
-                <p>Build Your Own Desktop Computer</p>
-            </div>
-
-            <div class="arrow">›</div>
-
-        </button>
-
-        <!-- BACK BUTTON -->
-
-        <button class="home-back"
-            onclick="openLabScreen()">
-
-            ← Back to Categories
-
-        </button>
+            <div class="builder-project-text">Desktop PC Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
     </div>
+
+    <button class="back-btn" onclick="openLabScreen()">
+        ← Back to Categories
+    </button>
 
 </div>
-    
-<!-- =================================
-     MEDICAL EQUIPMENT SCREEN
-================================= -->
+
+
+<!-- =========================
+     MEDICAL SCREEN
+========================= -->
 
 <div id="medicalScreen" class="screen">
 
-    <div class="builder-header">
-
-        <div class="builder-icon">🏥</div>
-
-        <h1 class="builder-title">
-            Medical Equipment Center
-        </h1>
-
-        <p class="builder-subtitle">
-            Explore medical machines and discover
-            how they work!
+    <div class="page-header">
+        <div class="page-icon">🏥</div>
+        <h1 class="page-title">Medical Science</h1>
+        <p class="page-subtitle">
+            Discover machines used in modern healthcare!
         </p>
+    </div>
+
+    <div class="card-list">
+
+        <a class="builder-card project-link" href="xray-machine.html">
+            <div class="builder-project-icon">🩻</div>
+            <div class="builder-project-text">X-Ray Machine</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="ultrasound-machine.html">
+            <div class="builder-project-icon">🖥️</div>
+            <div class="builder-project-text">Ultrasound Machine</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="ct-scan-machine.html">
+            <div class="builder-project-icon">🏥</div>
+            <div class="builder-project-text">CT Scan Machine</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="eeg-machine.html">
+            <div class="builder-project-icon">🧠</div>
+            <div class="builder-project-text">EEG Machine</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="dental-equipment.html">
+            <div class="builder-project-icon">🦷</div>
+            <div class="builder-project-text">Dental Equipment</div>
+            <div class="builder-arrow">›</div>
+        </a>
+
+        <a class="builder-card project-link" href="ophthalmology-equipment.html">
+            <div class="builder-project-icon">👁️</div>
+            <div class="builder-project-text">Eye Examination Equipment</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
     </div>
 
-    <div class="builder-container">
-
-
-<!-- 1. X-RAY MACHINE -->
-
-<button class="builder-card"
-    onclick="window.location.href='xray-machine.html'">
-
-    <div class="builder-project-icon">🩻</div>
-
-    <div class="builder-project-text">
-        <h3>X-Ray Machine</h3>
-        <p>Explore X-Ray machine parts and technology.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-<!-- 2. ULTRASOUND MACHINE -->
-
-<button class="builder-card"
-    onclick="window.location.href='ultrasound-machine.html'">
-
-    <div class="builder-project-icon">🩺</div>
-
-    <div class="builder-project-text">
-        <h3>Ultrasound (USG) Machine</h3>
-        <p>Explore ultrasound machine parts.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-<!-- 3. CT SCAN MACHINE -->
-
-<button class="builder-card"
-    onclick="window.location.href='ct-scan-machine.html'">
-
-    <div class="builder-project-icon">🔬</div>
-
-    <div class="builder-project-text">
-        <h3>CT Scan Machine</h3>
-        <p>Discover CT scan equipment and parts.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-<!-- 4. EEG MACHINE -->
-
-<button class="builder-card"
-    onclick="window.location.href='eeg-machine.html'">
-
-    <div class="builder-project-icon">🧠</div>
-
-    <div class="builder-project-text">
-        <h3>EEG Machine</h3>
-        <p>Explore brain monitoring technology.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-<!-- 5. DENTAL EQUIPMENT -->
-
-<button class="builder-card"
-    onclick="window.location.href='dental-equipment.html'">
-
-    <div class="builder-project-icon">🦷</div>
-
-    <div class="builder-project-text">
-        <h3>Dental Equipment</h3>
-        <p>Explore dental machines, tools and technology.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-
-<!-- 6. OPHTHALMOLOGY EQUIPMENT -->
-
-<button class="builder-card"
-    onclick="window.location.href='ophthalmology-equipment.html'">
-
-    <div class="builder-project-icon">👁️</div>
-
-    <div class="builder-project-text">
-        <h3>Ophthalmology Equipment</h3>
-        <p>Explore eye examination machines and equipment.</p>
-    </div>
-
-    <div class="arrow">›</div>
-
-</button>
-
-        <!-- BACK BUTTON -->
-
-        <button class="home-back"
-            onclick="openLabScreen()">
-
-            ← Back to Categories
-
-        </button>
-
-    </div>
+    <button class="back-btn" onclick="openLabScreen()">
+        ← Back to Categories
+    </button>
 
 </div>
 
-<!-- =================================
-     SPACE & SCIENCE SCREEN
-================================= -->
+
+<!-- =========================
+     SPACE SCIENCE SCREEN
+========================= -->
 
 <div id="spaceScienceScreen" class="screen">
 
-    <div class="builder-header">
-
-        <div class="builder-icon">🚀</div>
-
-        <h1 class="builder-title">
-            Space & Science
-        </h1>
-
-        <p class="builder-subtitle">
-            Explore Space and Build Amazing Machines!
+    <div class="page-header">
+        <div class="page-icon">🌌</div>
+        <h1 class="page-title">Space & Science</h1>
+        <p class="page-subtitle">
+            Explore space, rockets and the universe!
         </p>
-
     </div>
 
-    <div class="builder-container">
+    <div class="card-list">
 
-        <!-- ROCKET BUILDER -->
-
-        <button class="builder-card"
-            onclick="window.location.href='rocket-builder.html'">
-
+        <a class="builder-card project-link" href="rocket-builder.html">
             <div class="builder-project-icon">🚀</div>
-
-            <div class="builder-project-text">
-                <h3>Rocket Builder</h3>
-                <p>Build and launch your own space rocket.</p>
-            </div>
-
-            <div class="arrow">›</div>
-
-        </button>
-
-        <button class="home-back"
-            onclick="openLabScreen()">
-            ← Back to Categories
-        </button>
+            <div class="builder-project-text">Rocket Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
     </div>
+
+    <button class="back-btn" onclick="openLabScreen()">
+        ← Back to Categories
+    </button>
 
 </div>
 
 
-<!-- =================================
-     AGRICULTURE WORLD SCREEN
-================================= -->
+<!-- =========================
+     AGRICULTURE SCREEN
+========================= -->
 
 <div id="agricultureScreen" class="screen">
 
-    <div class="builder-header">
-
-        <div class="builder-icon">🌾</div>
-
-        <h1 class="builder-title">
-            Agriculture World
-        </h1>
-
-        <p class="builder-subtitle">
-            Explore Farming Machines and Technology!
+    <div class="page-header">
+        <div class="page-icon">🌾</div>
+        <h1 class="page-title">Agriculture World</h1>
+        <p class="page-subtitle">
+            Discover powerful farming machines!
         </p>
-
     </div>
 
-    <div class="builder-container">
+    <div class="card-list">
 
-        <!-- MINI TRACTOR -->
-
-        <button class="builder-card"
-            onclick="window.location.href='mini-tractor.html'">
-
+        <a class="builder-card project-link" href="mini-tractor.html">
             <div class="builder-project-icon">🚜</div>
+            <div class="builder-project-text">Mini Tractor Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
-            <div class="builder-project-text">
-                <h3>Mini Tractor Builder</h3>
-                <p>Build your own small agricultural tractor.</p>
-            </div>
-
-            <div class="arrow">›</div>
-
-        </button>
-
-
-        <!-- POWER TILLER -->
-
-        <button class="builder-card"
-            onclick="window.location.href='power-tiller.html'">
-
-            <div class="builder-project-icon">⚙️</div>
-
-            <div class="builder-project-text">
-                <h3>Power Tiller Builder</h3>
-                <p>Build a powerful agricultural tiller machine.</p>
-            </div>
-
-            <div class="arrow">›</div>
-
-        </button>
-
-
-        <button class="home-back"
-            onclick="openLabScreen()">
-            ← Back to Categories
-        </button>
+        <a class="builder-card project-link" href="power-tiller.html">
+            <div class="builder-project-icon">🌱</div>
+            <div class="builder-project-text">Power Tiller Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
     </div>
+
+    <button class="back-btn" onclick="openLabScreen()">
+        ← Back to Categories
+    </button>
 
 </div>
 
 
-<!-- =================================
-     SPORTS WORLD SCREEN
-================================= -->
+<!-- =========================
+     SPORTS SCREEN
+========================= -->
 
 <div id="sportsScreen" class="screen">
 
-    <div class="builder-header">
-
-        <div class="builder-icon">🏆</div>
-
-        <h1 class="builder-title">
-            Sports World
-        </h1>
-
-        <p class="builder-subtitle">
-            Explore Gym, Fitness and Exercise Machines!
+    <div class="page-header">
+        <div class="page-icon">🏆</div>
+        <h1 class="page-title">Sports World</h1>
+        <p class="page-subtitle">
+            Explore sports and fitness equipment!
         </p>
-
     </div>
 
-    <div class="builder-container">
+    <div class="card-list">
 
-        <!-- TREADMILL -->
-
-        <button class="builder-card"
-            onclick="window.location.href='treadmill.html'">
-
+        <a class="builder-card project-link" href="treadmill.html">
             <div class="builder-project-icon">🏃</div>
+            <div class="builder-project-text">Treadmill Builder</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
-            <div class="builder-project-text">
-                <h3>Treadmill Builder</h3>
-                <p>Build your own gym treadmill machine.</p>
-            </div>
-
-            <div class="arrow">›</div>
-
-        </button>
-
-
-        <!-- FIVE STATION MULTI GYM -->
-
-        <button class="builder-card"
-            onclick="window.location.href='five-station-gym.html'">
-
+        <a class="builder-card project-link" href="five-station-gym.html">
             <div class="builder-project-icon">🏋️</div>
-
-            <div class="builder-project-text">
-                <h3>Five Station Multi Gym</h3>
-                <p>Build a complete five station fitness machine.</p>
-            </div>
-
-            <div class="arrow">›</div>
-
-        </button>
-
-
-        <button class="home-back"
-            onclick="openLabScreen()">
-            ← Back to Categories
-        </button>
+            <div class="builder-project-text">Five Station Gym</div>
+            <div class="builder-arrow">›</div>
+        </a>
 
     </div>
+
+    <button class="back-btn" onclick="openLabScreen()">
+        ← Back to Categories
+    </button>
 
 </div>
 
 
-<!-- =================================
-     JAVASCRIPT
-================================= -->
+<!-- =========================
+     SETTINGS MODAL
+========================= -->
+
+<div class="modal-overlay" id="settingsModal" onclick="closeOutside(event,'settingsModal')">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2>⚙️ Settings</h2>
+            <button class="close-btn" onclick="closeModal('settingsModal')">×</button>
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-name">🔊 Sound Effects</div>
+                <div class="setting-description">Play a sound when buttons are pressed</div>
+            </div>
+            <button class="toggle-btn" id="soundToggle" onclick="toggleSetting('sound')">OFF</button>
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <div class="setting-name">✨ Animations</div>
+                <div class="setting-description">Enable interface animations</div>
+            </div>
+            <button class="toggle-btn active" id="animationToggle" onclick="toggleSetting('animations')">ON</button>
+        </div>
+
+        <p class="modal-note">Your settings are saved on this device.</p>
+
+    </div>
+</div>
+
+
+<!-- =========================
+     PROGRESS MODAL
+========================= -->
+
+<div class="modal-overlay" id="progressModal" onclick="closeOutside(event,'progressModal')">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2>🏆 My Progress</h2>
+            <button class="close-btn" onclick="closeModal('progressModal')">×</button>
+        </div>
+
+        <div class="progress-grid">
+
+            <div class="progress-card">
+                <strong id="adventureCount">0</strong>
+                <span>Adventures Started</span>
+            </div>
+
+            <div class="progress-card">
+                <strong id="categoryCount">0</strong>
+                <span>Worlds Explored</span>
+            </div>
+
+            <div class="progress-card">
+                <strong id="projectCount">0</strong>
+                <span>Projects Opened</span>
+            </div>
+
+            <div class="progress-card">
+                <strong id="achievementCount">0</strong>
+                <span>Achievements</span>
+            </div>
+
+        </div>
+
+        <p class="modal-note">Keep exploring and unlock new achievements!</p>
+
+        <button class="back-btn" onclick="openAchievementsFromProgress()">
+            🏅 View Achievements
+        </button>
+
+    </div>
+</div>
+
+
+<!-- =========================
+     ACHIEVEMENTS MODAL
+========================= -->
+
+<div class="modal-overlay" id="achievementsModal" onclick="closeOutside(event,'achievementsModal')">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2>🏅 Achievements</h2>
+            <button class="close-btn" onclick="closeModal('achievementsModal')">×</button>
+        </div>
+
+        <div class="progress-grid">
+
+            <div class="achievement" id="badgeAdventure">
+                <div class="medal">🚀</div>
+                <h3>First Adventure</h3>
+                <p>Start your first adventure</p>
+            </div>
+
+            <div class="achievement" id="badgeExplorer">
+                <div class="medal">🌍</div>
+                <h3>Explorer</h3>
+                <p>Explore 3 different worlds</p>
+            </div>
+
+            <div class="achievement" id="badgeSuper">
+                <div class="medal">⭐</div>
+                <h3>Super Explorer</h3>
+                <p>Explore 5 different worlds</p>
+            </div>
+
+            <div class="achievement" id="badgeEngineer">
+                <div class="medal">👷</div>
+                <h3>Junior Engineer</h3>
+                <p>Open your first project</p>
+            </div>
+
+        </div>
+
+        <p class="modal-note">Unlocked achievements will light up!</p>
+
+    </div>
+</div>
+
+
+<!-- =========================
+     HELP CENTER MODAL
+========================= -->
+
+<div class="modal-overlay" id="helpModal" onclick="closeOutside(event,'helpModal')">
+
+    <div class="modal">
+
+        <div class="modal-header">
+            <h2>💡 Help Center</h2>
+            <button class="close-btn" onclick="closeModal('helpModal')">×</button>
+        </div>
+
+        <div class="help-item">
+            <h3>🚀 How to Start?</h3>
+            <p>Tap START ADVENTURE to enter the world selection screen.</p>
+        </div>
+
+        <div class="help-item">
+            <h3>🌍 Explore Worlds</h3>
+            <p>Choose a category such as Engineering, Aviation, Medical Science or Space.</p>
+        </div>
+
+        <div class="help-item">
+            <h3>🔧 Open Projects</h3>
+            <p>Tap any project card to open its builder page and explore the machine.</p>
+        </div>
+
+        <div class="help-item">
+            <h3>🏆 Track Progress</h3>
+            <p>Visit My Progress to see your explored worlds, opened projects and achievements.</p>
+        </div>
+
+        <div class="help-item">
+            <h3>⚙️ Settings</h3>
+            <p>Use Settings to turn sound effects and animations on or off.</p>
+        </div>
+
+        <p class="modal-note">FutureLab Kids — Learn • Build • Test • Create</p>
+
+    </div>
+</div>
+
 
 <script>
 
-// COMMON SCREEN CONTROL
+/* =========================
+   LOCAL DATA
+========================= */
+
+const STORAGE_KEY = "futurelabKidsProgressV1";
+
+function getData(){
+
+    try{
+        const saved = localStorage.getItem(STORAGE_KEY);
+
+        if(saved){
+            const data = JSON.parse(saved);
+
+            return {
+                adventures: Number(data.adventures) || 0,
+                categories: Array.isArray(data.categories) ? data.categories : [],
+                projects: Number(data.projects) || 0,
+                sound: data.sound === true,
+                animations: data.animations !== false
+            };
+        }
+
+    }catch(error){
+        console.log("Progress data could not be loaded.");
+    }
+
+    return {
+        adventures:0,
+        categories:[],
+        projects:0,
+        sound:false,
+        animations:true
+    };
+}
+
+let appData = getData();
+
+function saveData(){
+    try{
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(appData));
+    }catch(error){
+        console.log("Progress could not be saved.");
+    }
+}
+
+
+/* =========================
+   SOUND EFFECT
+========================= */
+
+let audioContext = null;
+
+function playClickSound(){
+
+    if(!appData.sound) return;
+
+    try{
+        const AudioContextClass =
+            window.AudioContext || window.webkitAudioContext;
+
+        if(!AudioContextClass) return;
+
+        if(!audioContext){
+            audioContext = new AudioContextClass();
+        }
+
+        if(audioContext.state === "suspended"){
+            audioContext.resume();
+        }
+
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.value = 620;
+
+        gain.gain.setValueAtTime(0.07,audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            audioContext.currentTime + 0.09
+        );
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.09);
+
+    }catch(error){
+        console.log("Sound unavailable.");
+    }
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+function updateSettingsUI(){
+
+    const soundButton = document.getElementById("soundToggle");
+    const animationButton = document.getElementById("animationToggle");
+
+    soundButton.textContent = appData.sound ? "ON" : "OFF";
+    soundButton.classList.toggle("active",appData.sound);
+
+    animationButton.textContent = appData.animations ? "ON" : "OFF";
+    animationButton.classList.toggle("active",appData.animations);
+
+    document.body.classList.toggle("no-animations",!appData.animations);
+}
+
+function toggleSetting(setting){
+
+    if(setting === "sound"){
+        appData.sound = !appData.sound;
+    }
+
+    if(setting === "animations"){
+        appData.animations = !appData.animations;
+    }
+
+    saveData();
+    updateSettingsUI();
+    playClickSound();
+}
+
+function openSettings(){
+    updateSettingsUI();
+    openModal("settingsModal");
+}
+
+
+/* =========================
+   SCREEN NAVIGATION
+========================= */
 
 function showScreen(screenId){
 
-    document.querySelectorAll(".screen").forEach(function(screen){
+    document.querySelectorAll(".screen").forEach(screen=>{
         screen.style.display = "none";
     });
 
@@ -1344,358 +1302,218 @@ function showScreen(screenId){
     }
 
     window.scrollTo(0,0);
+    playClickSound();
 }
-
-
-// HOME SCREEN
 
 function openHomeScreen(){
     showScreen("homeScreen");
 }
 
+function startAdventure(){
 
-// CATEGORY SCREEN
+    appData.adventures++;
+    saveData();
+
+    showScreen("labScreen");
+}
 
 function openLabScreen(){
     showScreen("labScreen");
 }
 
 
-// CAREER SCREEN
+/* =========================
+   CATEGORY TRACKING
+========================= */
 
-function openCareerScreen(){
-    showScreen("careerScreen");
+const categoryMap = {
+    builderScreen:"Engineering World",
+    aviationScreen:"Aviation & Pilot",
+    computerScienceScreen:"Computer Science & Technology",
+    medicalScreen:"Medical Science & Technology",
+    spaceScienceScreen:"Space & Science",
+    agricultureScreen:"Agriculture World",
+    sportsScreen:"Sports World"
+};
+
+function openCategory(screenId){
+
+    const category = categoryMap[screenId];
+
+    if(category && !appData.categories.includes(category)){
+        appData.categories.push(category);
+        saveData();
+    }
+
+    showScreen(screenId);
 }
-
-
-// AVIATION WORLD
-
-function openAviationScreen(){
-    showScreen("aviationScreen");
-}
-
-
-// JUNIOR BUILDER
 
 function openBuilderScreen(){
-    showScreen("builderScreen");
+    openCategory("builderScreen");
 }
 
-
-// CAR BUILDER
-
-function openCarBuilderScreen(){
-    showScreen("carBuilderScreen");
+function openAviationScreen(){
+    openCategory("aviationScreen");
 }
-
-// COMPUTER SCIENCE SCREEN
 
 function openComputerScienceScreen(){
-    showScreen("computerScienceScreen");
+    openCategory("computerScienceScreen");
 }
-    
-
-// MEDICAL SCIENCE & TECHNOLOGY
 
 function openMedicalScreen(){
-    showScreen("medicalScreen");
+    openCategory("medicalScreen");
 }
-
-// SPACE & SCIENCE SCREEN
 
 function openSpaceScienceScreen(){
-    showScreen("spaceScienceScreen");
+    openCategory("spaceScienceScreen");
 }
-
-
-// AGRICULTURE WORLD SCREEN
 
 function openAgricultureScreen(){
-    showScreen("agricultureScreen");
+    openCategory("agricultureScreen");
 }
-
-
-// SPORTS WORLD SCREEN
 
 function openSportsScreen(){
-    showScreen("sportsScreen");
+    openCategory("sportsScreen");
 }
 
 
-function openCareerScreen(){
+/* =========================
+   PROJECT TRACKING
+========================= */
 
-    document.getElementById("homeScreen").style.display = "none";
-    document.getElementById("labScreen").style.display = "none";
-    document.getElementById("careerScreen").style.display = "block";
-    document.getElementById("builderScreen").style.display = "none";
-    document.getElementById("carBuilderScreen").style.display = "none";
-    document.getElementById("aviationScreen").style.display = "none";
+document.querySelectorAll(".project-link").forEach(link=>{
 
-    window.scrollTo(0,0);
+    link.addEventListener("click",function(){
 
-}
+        appData.projects++;
+        saveData();
 
-function openAviationScreen(){
+    });
 
-    document.getElementById("homeScreen").style.display = "none";
-    document.getElementById("labScreen").style.display = "none";
-    document.getElementById("careerScreen").style.display = "none";
-    document.getElementById("builderScreen").style.display = "none";
-
-    document.getElementById("aviationScreen").style.display = "block";
-
-    window.scrollTo(0,0);
-
-}
-
-function openBuilderScreen(){
-
-    document.getElementById("homeScreen").style.display = "none";
-    document.getElementById("labScreen").style.display = "none";
-    document.getElementById("careerScreen").style.display = "none";
-    document.getElementById("aviationScreen").style.display = "none";
-    document.getElementById("builderScreen").style.display = "block";
-    document.getElementById("carBuilderScreen").style.display = "none";
-
-    window.scrollTo(0,0);
-
-}
-
-function openCarBuilderScreen(){
-
-    document.getElementById("homeScreen").style.display = "none";
-    document.getElementById("labScreen").style.display = "none";
-    document.getElementById("careerScreen").style.display = "none";
-    document.getElementById("aviationScreen").style.display = "none";
-    document.getElementById("builderScreen").style.display = "none";
-    document.getElementById("carBuilderScreen").style.display = "block";
-
-    window.scrollTo(0,0);
-
-}
-
-
-   let chassisAngle = 0;
-
-function rotateCarRight(){
-
-    chassisAngle += 45;
-
-    document.getElementById("carChassis").style.transform =
-        "rotateY(" + chassisAngle + "deg)";
-}
-
-function rotateCarLeft(){
-
-    chassisAngle -= 45;
-
-    document.getElementById("carChassis").style.transform =
-        "rotateY(" + chassisAngle + "deg)";
-} 
-
-    let dragStartX = 0;
-let isRotatingCar = false;
-
-const carChassis = document.getElementById("carChassis");
-
-carChassis.addEventListener("pointerdown", function(event){
-
-    dragStartX = event.clientX;
-    isRotatingCar = true;
-
-    carChassis.setPointerCapture(event.pointerId);
 });
 
-carChassis.addEventListener("pointermove", function(event){
 
-    if(!isRotatingCar) return;
+/* =========================
+   ACHIEVEMENTS
+========================= */
 
-    let moveX = event.clientX - dragStartX;
+function getAchievementCount(){
 
-    chassisAngle += moveX * 0.5;
+    let count = 0;
 
-    carChassis.style.transform =
-        "rotateY(" + chassisAngle + "deg)";
+    if(appData.adventures >= 1) count++;
+    if(appData.categories.length >= 3) count++;
+    if(appData.categories.length >= 5) count++;
+    if(appData.projects >= 1) count++;
 
-    dragStartX = event.clientX;
-});
-
-carChassis.addEventListener("pointerup", function(){
-
-    isRotatingCar = false;
-});
-
-carChassis.addEventListener("pointercancel", function(){
-
-    isRotatingCar = false;
-});
-    
-function selectWheels(type, button){
-
-    const wheels = document.querySelectorAll(".wheel-mount");
-
-    wheels.forEach(function(wheel){
-
-        wheel.innerHTML = "●";
-
-        if(type === "standard"){
-            wheel.style.background = "#263238";
-            wheel.style.border = "4px solid #455a64";
-            wheel.style.color = "#90a4ae";
-        }
-
-        if(type === "sport"){
-            wheel.style.background = "#111827";
-            wheel.style.border = "5px solid #374151";
-            wheel.style.color = "#cbd5e1";
-        }
-
-        if(type === "offroad"){
-            wheel.style.background = "#1f2937";
-            wheel.style.border = "6px dashed #111827";
-            wheel.style.color = "#9ca3af";
-        }
-
-    });
-
-
-    /* Remove old selection */
-
-    const wheelButtons =
-        button.parentElement.querySelectorAll(".part-card");
-
-    wheelButtons.forEach(function(btn){
-        btn.style.borderColor = "#dbe7f5";
-        btn.style.background = "#f8fbff";
-    });
-
-
-    /* Show selected wheel */
-
-    button.style.borderColor = "#6339b6";
-    button.style.background = "#f3efff";
-
-}
-    
-    function selectEngine(type, button){
-
-    const engineMount = document.querySelector(".engine-mount");
-
-    if(type === "standard"){
-        engineMount.innerHTML =
-            "<span>⚙️</span><small>Standard</small>";
-    }
-
-    if(type === "electric"){
-        engineMount.innerHTML =
-            "<span>⚡</span><small>Electric</small>";
-    }
-
-    if(type === "turbo"){
-        engineMount.innerHTML =
-            "<span>🔥</span><small>Turbo</small>";
-    }
-
-
-    /* Engine is now installed */
-
-    engineMount.style.border = "3px solid #6339b6";
-    engineMount.style.background = "#ede9fe";
-
-
-    /* Remove previous engine selection */
-
-    const engineButtons =
-        button.parentElement.querySelectorAll(".part-card");
-
-    engineButtons.forEach(function(btn){
-        btn.style.borderColor = "#dbe7f5";
-        btn.style.background = "#f8fbff";
-    });
-
-
-    /* Highlight selected engine */
-
-    button.style.borderColor = "#6339b6";
-    button.style.background = "#f3efff";
-
+    return count;
 }
 
-    function selectSteering(type, button){
+function updateAchievements(){
 
-    const steeringMount =
-        document.querySelector(".steering-mount");
+    document.getElementById("badgeAdventure")
+        .classList.toggle("unlocked",appData.adventures >= 1);
 
-    if(type === "standard"){
-        steeringMount.innerHTML =
-            "<span>◉</span><small>Standard</small>";
-    }
+    document.getElementById("badgeExplorer")
+        .classList.toggle("unlocked",appData.categories.length >= 3);
 
-    if(type === "sport"){
-        steeringMount.innerHTML =
-            "<span>⭕</span><small>Sport</small>";
-    }
+    document.getElementById("badgeSuper")
+        .classList.toggle("unlocked",appData.categories.length >= 5);
 
-    if(type === "smart"){
-        steeringMount.innerHTML =
-            "<span>🎮</span><small>Smart</small>";
-    }
-
-    steeringMount.style.border =
-        "3px solid #6339b6";
-
-    steeringMount.style.background =
-        "#ede9fe";
-
-    steeringMount.style.zIndex = "4";
-
-
-    /* Remove previous selection */
-
-    const steeringButtons =
-        button.parentElement.querySelectorAll(".part-card");
-
-    steeringButtons.forEach(function(btn){
-        btn.style.borderColor = "#dbe7f5";
-        btn.style.background = "#f8fbff";
-    });
-
-
-    /* Highlight selected steering */
-
-    button.style.borderColor = "#6339b6";
-    button.style.background = "#f3efff";
-
+    document.getElementById("badgeEngineer")
+        .classList.toggle("unlocked",appData.projects >= 1);
 }
 
-    function selectBody(type, button){
 
-    const body =
-        document.getElementById("installedBody");
+/* =========================
+   PROGRESS
+========================= */
 
-    body.style.display = "block";
+function updateProgress(){
 
-    body.className =
-        "installed-body " + type;
+    document.getElementById("adventureCount").textContent =
+        appData.adventures;
 
+    document.getElementById("categoryCount").textContent =
+        appData.categories.length;
 
-    /* Remove previous selection */
+    document.getElementById("projectCount").textContent =
+        appData.projects;
 
-    const bodyButtons =
-        button.parentElement.querySelectorAll(".part-card");
+    document.getElementById("achievementCount").textContent =
+        getAchievementCount();
 
-    bodyButtons.forEach(function(btn){
-        btn.style.borderColor = "#dbe7f5";
-        btn.style.background = "#f8fbff";
-    });
-
-
-    /* Highlight selected body */
-
-    button.style.borderColor = "#6339b6";
-    button.style.background = "#f3efff";
-
+    updateAchievements();
 }
+
+function openProgress(){
+
+    updateProgress();
+    openModal("progressModal");
+}
+
+function openAchievements(){
+
+    updateProgress();
+    openModal("achievementsModal");
+}
+
+function openAchievementsFromProgress(){
+
+    closeModal("progressModal");
+    openAchievements();
+}
+
+
+/* =========================
+   HELP CENTER
+========================= */
+
+function openHelp(){
+    openModal("helpModal");
+}
+
+
+/* =========================
+   MODAL FUNCTIONS
+========================= */
+
+function openModal(id){
+
+    const modal = document.getElementById(id);
+
+    if(modal){
+        modal.classList.add("show");
+    }
+
+    playClickSound();
+}
+
+function closeModal(id){
+
+    const modal = document.getElementById(id);
+
+    if(modal){
+        modal.classList.remove("show");
+    }
+}
+
+function closeOutside(event,id){
+
+    if(event.target.id === id){
+        closeModal(id);
+    }
+}
+
+
+/* =========================
+   INITIALIZE APP
+========================= */
+
+updateSettingsUI();
+updateProgress();
+
 </script>
 
 </body>
+</html>
