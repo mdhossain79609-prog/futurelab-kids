@@ -1,1 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">
+<meta name="description" content="Build a 3D five-station home gym from 30 colorful parts, then train on every station.">
+<title>5-Station Gym Builder</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{position:fixed;width:100%;height:100%;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0b0f19;color:#f8fafc;user-select:none;-webkit-user-select:none;touch-action:none}
+main{display:flex;flex-direction:column;width:100%;height:100%;height:100dvh;max-width:1400px;margin:0 auto;position:relative}
+header{display:flex;align-items:center;gap:8px;padding:8px 12px 6px;background:#1e293b;border-bottom:1px solid #334155;flex-shrink:0;z-index:20}
+h1{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(1rem,4.2vw,1.5rem);font-weight:900;
+background:linear-gradient(90deg,#f43f5e,#f97316,#facc15);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{border-radius:999px;padding:5px 12px;font-size:12px;font-weight:800;border:0;cursor:pointer;transition:transform .15s}
+.pill:active{transform:scale(.95)}
+#count{background:#334155;color:#facc15;border:1px solid #475569}
+#reset{background:#ef4444;color:#fff;box-shadow:0 2px 8px #ef444455}
 
+#boardWrap{flex:0 0 40%;min-height:0;padding:4px 8px;position:relative;z-index:1}
+#board{position:absolute;inset:4px 8px;border:2px dashed #f97316;border-radius:18px;overflow:hidden;
+background:radial-gradient(circle at 50% 25%,#2a2f45 0%,#11131f 70%,#08090f 100%);transition:background .5s;box-shadow:inset 0 0 40px #00000088;touch-action:none}
+#board.night{background:radial-gradient(circle at 50% 30%,#060814 0%,#020408 100%)}
+#board svg#scene{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(13px,3vw,16px);color:#64748b;text-align:center;padding:16px;pointer-events:none}
+#ghost{opacity:.09}
+[data-st].sel{filter:drop-shadow(0 0 5px #facc15) drop-shadow(0 0 2px #facc15)}
+
+#zoomHud{position:absolute;right:8px;top:8px;display:flex;align-items:center;gap:3px;background:#0f172ae6;border:1px solid #334155;border-radius:999px;padding:3px 8px;z-index:40;box-shadow:0 4px 12px #0008;touch-action:auto}
+.zbtn{width:24px;height:24px;border-radius:50%;border:0;background:#334155;color:#fff;font-weight:900;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.zbtn:active{background:#f97316;color:#0f172a}
+#zoomVal{font-size:11px;font-weight:800;color:#facc15;min-width:34px;text-align:center}
+#stats{position:absolute;left:8px;bottom:8px;display:flex;flex-wrap:wrap;gap:4px;z-index:40;pointer-events:none;max-width:calc(100% - 16px)}
+#stats b{background:#0f172ae6;border:1px solid #334155;border-radius:999px;padding:3px 8px;font-size:10.5px;font-weight:800;color:#e2e8f0;white-space:nowrap}
+#stats b i{font-style:normal;color:#facc15}
+
+/* Parts area scrolls on its own (only this area), so the last row never hides behind the buttons */
+#trayWrap{flex:1 1 0;min-height:0;position:relative;z-index:10;border-top:2px solid #334155;background:linear-gradient(180deg,#131d2e,#0d1424)}
+#tray{position:absolute;inset:0;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));grid-auto-rows:minmax(64px,78px);gap:5px;padding:6px 12px 14px 8px;align-content:start;touch-action:none;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#f97316 #1e293b}
+#tray::-webkit-scrollbar{width:6px}
+#tray::-webkit-scrollbar-track{background:#1e293b;border-radius:6px}
+#tray::-webkit-scrollbar-thumb{background:#f97316;border-radius:6px}
+@media(max-width:768px){
+  #tray{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:minmax(62px,72px);gap:4px;padding:5px 10px 14px 6px}
+}
+.more{position:absolute;left:50%;transform:translateX(-50%);z-index:12;pointer-events:none;background:#f97316;color:#0f172a;font-size:10px;font-weight:900;border-radius:999px;padding:2px 10px;box-shadow:0 2px 8px #0009;opacity:0;transition:opacity .2s;white-space:nowrap}
+#moreDown{bottom:4px}
+#moreUp{top:4px}
+.more.show{opacity:.95;animation:bob 1s ease-in-out infinite alternate}
+@keyframes bob{from{margin-top:0;margin-bottom:0}to{margin-top:2px;margin-bottom:-2px}}
+.slot.hold{border-color:#facc15;box-shadow:0 0 0 2px #facc1588}
+.slot{min-height:0;height:100%;border-radius:10px;background:radial-gradient(circle at 50% 35%,#2a2747,#0f172a 75%);border:1px solid #334155;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;position:relative;cursor:grab;touch-action:none;-webkit-touch-callout:none;transition:border-color .15s,transform .15s;box-shadow:inset 0 1px 0 #ffffff14,0 2px 0 #0007}
+.slot:active{border-color:#f97316;transform:scale(.96)}
+.slot svg{width:100%;flex:1 1 0;min-height:0;filter:drop-shadow(0 2px 3px #000a);pointer-events:none}
+.slot span{flex-shrink:0;font-size:clamp(7.5px,2.3vw,9.5px);font-weight:700;color:#cbd5e1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:94%;padding-bottom:2px;pointer-events:none;line-height:1.15}
+.slot .num{position:absolute;left:3px;top:2px;font-size:8px;font-weight:900;color:#facc15;pointer-events:none;line-height:1}
+.slot.gone{opacity:.15;pointer-events:none;border-color:#1e293b}
+#target{animation:pulse .8s ease-in-out infinite alternate;pointer-events:none}
+@keyframes pulse{from{opacity:.18}to{opacity:.75}}
+#plane g.pop{animation:pop .5s ease-out;transform-box:fill-box;transform-origin:center}
+@keyframes pop{0%{transform:scale(1.1);filter:brightness(1.9)}100%{transform:scale(1);filter:brightness(1)}}
+
+#controls{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 10px 8px;background:#0b0f19;border-top:1px solid #1e293b;flex-shrink:0;z-index:20;touch-action:none}
+.btns{display:flex;gap:5px;flex-shrink:1;min-width:0}
+.cbtn{width:clamp(40px,10.8vw,66px);height:clamp(46px,13vw,66px);border-radius:14px;border:0;color:#fff;font-weight:800;font-size:10.5px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:0 4px 0 #0008;cursor:pointer;line-height:1.1;touch-action:none}
+.cbtn b{font-size:17px}
+.cbtn:active{transform:translateY(3px);box-shadow:0 1px 0 #0008}
+#bColor{background:linear-gradient(135deg,#f43f5e,#f59e0b,#10b981,#3b82f6)}
+#bLight{background:linear-gradient(135deg,#eab308,#f97316)}
+#bSound{background:linear-gradient(135deg,#0ea5e9,#6366f1)}
+#bStart{background:linear-gradient(135deg,#22c55e,#15803d)}
+#bStart.on{background:linear-gradient(135deg,#ef4444,#991b1b)}
+
+#remote{display:grid;grid-template-columns:repeat(5,clamp(27px,7.1vw,42px));grid-template-rows:repeat(2,clamp(30px,8.5vw,42px));gap:4px;padding:5px;flex-shrink:0;border-radius:16px;background:#1e293b;border:1px solid #334155;box-shadow:0 4px 0 #0008;touch-action:none}
+.r{border:0;border-radius:9px;background:#334155;color:#f8fafc;font-size:14px;font-weight:900;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;touch-action:none;padding:0}
+.r i{font-style:normal;font-size:7.5px;font-weight:800;color:#94a3b8;margin-top:2px;white-space:nowrap}
+.r.st.on{background:#f97316}.r.st.on i{color:#fff}
+.r:active,.r.act{background:#facc15;color:#0f172a}.r:active i,.r.act i{color:#0f172a}
+.r.push{background:#dc2626;color:#fff;font-size:12px}.r.push i{color:#fecaca}
+.r.push.act{background:#facc15;color:#0f172a}
+.r.auto{background:#16a34a;color:#fff}.r.auto.act{background:#facc15;color:#0f172a}
+
+#drag{position:fixed;pointer-events:none;z-index:9999;filter:drop-shadow(0 10px 20px #000c)}
+#msg{position:fixed;left:50%;top:65px;transform:translateX(-50%);background:#c2410c;color:#fff;padding:8px 18px;border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.3px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:10000;box-shadow:0 8px 24px #0008;white-space:nowrap}
+#measure{position:absolute;left:-9999px;top:0;width:10px;height:10px;visibility:hidden}
+
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.15}}
+@keyframes blink2{0%,49%{opacity:.15}50%,100%{opacity:1}}
+.bl1{animation:blink .8s infinite}.bl2{animation:blink2 .8s infinite}
+</style>
+</head>
+<body>
+<main>
+<svg width="0" height="0" style="position:absolute"><defs id="defs"></defs></svg>
+<svg id="measure"><g id="measureG"></g></svg>
+<header>
+  <h1>🏋️ 5-Station Gym Builder</h1>
+  <span id="count" class="pill">0 / 30</span>
+  <button id="reset" class="pill">Reset</button>
+</header>
+<div id="boardWrap">
+  <div id="board">
+    <div id="zoomHud">
+      <button class="zbtn" id="zOut" title="Zoom Out">−</button>
+      <span id="zoomVal">100%</span>
+      <button class="zbtn" id="zIn" title="Zoom In">+</button>
+      <button class="zbtn" id="zReset" title="Reset Zoom">↺</button>
+    </div>
+    <svg id="scene" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <radialGradient id="floorShadow" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#000" stop-opacity=".6"/>
+          <stop offset="1" stop-color="#000" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="spot" cx=".5" cy=".5" r=".5">
+          <stop offset="0" stop-color="#fff7b0" stop-opacity=".55"/>
+          <stop offset="1" stop-color="#fff7b0" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="floorG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#334155" stop-opacity=".55"/>
+          <stop offset="1" stop-color="#0f172a" stop-opacity=".95"/>
+        </linearGradient>
+        <linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1e2340" stop-opacity="0"/>
+          <stop offset="1" stop-color="#262c4d" stop-opacity=".7"/>
+        </linearGradient>
+        <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+          <stop offset=".5" stop-color="#fff" stop-opacity=".07"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <g id="camera">
+        <rect x="-400" y="-200" width="1800" height="586" fill="url(#wallG)"/>
+        <g stroke="#94a3b8" stroke-opacity=".06" stroke-width="1">
+          <path d="M-400 120H1400M-400 250H1400"/>
+          <path d="M150 -200V386M300 -200V386M450 -200V386M600 -200V386M750 -200V386M900 -200V386"/>
+        </g>
+        <rect x="-400" y="326" width="1800" height="5" fill="#f97316" opacity=".28"/>
+        <rect x="-400" y="380" width="1800" height="6" fill="#0f172a"/>
+        <rect x="-400" y="386" width="1800" height="130" fill="url(#floorG)"/>
+        <g stroke="#94a3b8" stroke-opacity=".08"><path d="M-400 402H1400M-400 428H1400M-400 466H1400"/></g>
+        <ellipse cx="540" cy="392" rx="430" ry="18" fill="url(#floorShadow)"/>
+        <g id="ghost"></g>
+        <g id="target"></g>
+        <g id="spotLayer"></g>
+        <g id="plane"></g>
+        <g id="lights"></g>
+      </g>
+    </svg>
+    <div id="hint">Drag the 30 parts below here to build the 5-station gym</div>
+    <div id="stats"></div>
+  </div>
+</div>
+<div id="trayWrap"><section id="tray"></section><div class="more" id="moreUp">▲ more parts</div><div class="more" id="moreDown">▼ scroll for more parts</div></div>
+<div id="controls">
+  <div class="btns">
+    <button class="cbtn" id="bColor"><b>🎨</b>Color</button>
+    <button class="cbtn" id="bLight"><b>💡</b>Light</button>
+    <button class="cbtn" id="bSound"><b>🔊</b>Sound</button>
+    <button class="cbtn" id="bStart"><b>▶</b>Start</button>
+  </div>
+  <div id="remote" title="Gym Stations">
+    <button class="r st" data-st="lat" title="Lat Pulldown">⬇<i>LAT</i></button>
+    <button class="r st on" data-st="chest" title="Chest Press">💪<i>CHEST</i></button>
+    <button class="r st" data-st="fly" title="Pec Fly">🦋<i>FLY</i></button>
+    <button class="r st" data-st="ext" title="Leg Extension">🦵<i>EXT</i></button>
+    <button class="r st" data-st="press" title="Leg Press">🦶<i>PRESS</i></button>
+    <button class="r" data-k="kgDown" title="Less weight">−<i>KG</i></button>
+    <button class="r" data-k="kgUp" title="More weight">+<i>KG</i></button>
+    <button class="r push" data-k="push" style="grid-column:span 2" title="Hold to lift">⬆ PUSH<i>HOLD</i></button>
+    <button class="r auto" data-k="auto" title="Automatic reps">🔁<i>AUTO</i></button>
+  </div>
+</div>
+</main>
+<div id="msg"></div>
+
+<script>
+// ---------- Mobile gesture guards ----------
+document.addEventListener('gesturestart', e => e.preventDefault(), {passive:false});
+document.addEventListener('gesturechange', e => e.preventDefault(), {passive:false});
+document.addEventListener('gestureend', e => e.preventDefault(), {passive:false});
+document.addEventListener('touchmove', e => {
+  if (e.target.closest('#board') || drag) e.preventDefault();
+}, {passive:false});
+let lastTap = 0;
+document.addEventListener('touchend', e => {
+  const now = Date.now();
+  if (now - lastTap < 280) e.preventDefault();
+  lastTap = now;
+}, {passive:false});
+
+// ---------- 3D drawing helpers ----------
+const TOTAL = 30;
+const VB = {x:135, y:0, w:810, h:415};
+const S = 'stroke="#0a0f1c" stroke-width="1.6" stroke-linejoin="round"';
+const g = (c, v='') => `url(#g-${c}${v})`;
+const DEPTH = d => [d*.8, -d*.5];
+const P = a => a.map(p => p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+function hull(pts){
+  pts = pts.slice().sort((a,b) => a[0]-b[0] || a[1]-b[1]);
+  const cr = (o,a,b) => (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0]);
+  const lo=[], up=[];
+  for (const p of pts){ while(lo.length>=2 && cr(lo[lo.length-2],lo[lo.length-1],p)<=0) lo.pop(); lo.push(p); }
+  for (const p of pts.slice().reverse()){ while(up.length>=2 && cr(up[up.length-2],up[up.length-1],p)<=0) up.pop(); up.push(p); }
+  return lo.slice(0,-1).concat(up.slice(0,-1));
+}
+function box(x,y,w,h,c,d=14,rx=2){
+  const [ox,oy] = DEPTH(d);
+  return `<polygon points="${P([[x+w,y],[x+w+ox,y+oy],[x+w+ox,y+h+oy],[x+w,y+h]])}" fill="${g(c,'S')}" ${S}/>`+
+    `<polygon points="${P([[x,y],[x+ox,y+oy],[x+w+ox,y+oy],[x+w,y]])}" fill="${g(c,'T')}" ${S}/>`+
+    `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${g(c)}" ${S}/>`+
+    (h>w*2.5
+      ? `<rect x="${x+w*.18}" y="${y+3}" width="${Math.max(1.4,w*.16)}" height="${h-6}" rx="1" fill="#fff" opacity=".32"/><rect x="${x+w*.72}" y="${y+3}" width="${Math.max(1,w*.12)}" height="${h-6}" rx="1" fill="#000" opacity=".18"/>`
+      : (h>5 ? `<rect x="${x+w*.05}" y="${y+h*.14}" width="${w*.9}" height="${Math.max(1.2,h*.12)}" rx="1" fill="#fff" opacity=".32"/><rect x="${x+2}" y="${y+h*.78}" width="${Math.max(0,w-4)}" height="${h*.16}" rx="1" fill="#000" opacity=".16"/>` : ''))+
+    `<line x1="${x+rx}" y1="${y+.4}" x2="${x+w-rx}" y2="${y+.4}" stroke="#fff" stroke-opacity=".5" stroke-width=".8"/>`;
+}
+function pad(x,y,w,h,c,d=24,rx=7){
+  const tall = h>w*2, n = tall ? Math.floor(h/26) : Math.floor(w/30);
+  let tufts = '';
+  for (let i=1;i<=n;i++) tufts += tall
+    ? `<path d="M${x+3},${y+h*i/(n+1)}H${x+w-3}" stroke="#000" stroke-opacity=".22" stroke-width="1.1"/>`
+    : `<path d="M${x+w*i/(n+1)},${y+3}V${y+h-3}" stroke="#000" stroke-opacity=".22" stroke-width="1.1"/>`;
+  return box(x,y,w,h,c,d,rx)+tufts+
+    `<rect x="${x+2.6}" y="${y+2.6}" width="${w-5.2}" height="${h-5.2}" rx="${Math.max(1,rx-3)}" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width=".8" stroke-dasharray="2.4 1.8"/>`;
+}
+function ext(pts,c,d=14){
+  const [ox,oy] = DEPTH(d);
+  const back = pts.map(p => [p[0]+ox, p[1]+oy]);
+  return `<polygon points="${P(hull(pts.concat(back)))}" fill="${g(c,'S')}" ${S}/><polygon points="${P(pts)}" fill="${g(c)}" ${S}/>`;
+}
+function beam(x1,y1,x2,y2,w,c,d=10){
+  const L = Math.hypot(x2-x1,y2-y1), nx = -(y2-y1)/L*w/2, ny = (x2-x1)/L*w/2;
+  return ext([[x1+nx,y1+ny],[x2+nx,y2+ny],[x2-nx,y2-ny],[x1-nx,y1-ny]], c, d)+
+    `<line x1="${(x1+nx*.45).toFixed(1)}" y1="${(y1+ny*.45).toFixed(1)}" x2="${(x2+nx*.45).toFixed(1)}" y2="${(y2+ny*.45).toFixed(1)}" stroke="#fff" stroke-opacity=".42" stroke-width="${Math.max(.8,w*.2).toFixed(1)}" stroke-linecap="round"/>`;
+}
+function disc(cx,cy,r,c,d=12){
+  const [ox,oy] = DEPTH(d), L = Math.hypot(ox,oy), nx = -oy/L*r, ny = ox/L*r;
+  return `<circle cx="${cx+ox}" cy="${cy+oy}" r="${r}" fill="${g(c,'S')}" ${S}/>`+
+    `<polygon points="${P([[cx+nx,cy+ny],[cx+ox+nx,cy+oy+ny],[cx+ox-nx,cy+oy-ny],[cx-nx,cy-ny]])}" fill="${g(c,'S')}"/>`+
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${g(c,'R')}" ${S}/>`+
+    `<circle cx="${cx}" cy="${cy}" r="${r*.78}" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="1"/>`+
+    `<path d="M${cx-r*.6},${cy-r*.45}A${r*.75},${r*.75} 0 0 1 ${cx+r*.1},${cy-r*.75}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="${Math.max(1,r*.12).toFixed(1)}" stroke-linecap="round"/>`;
+}
+const spokes = (cx,cy,r,anim) => `<g data-anim="${anim}" data-c="${cx},${cy}"><path d="M${cx-r*.78},${cy}H${cx+r*.78}M${cx},${cy-r*.78}V${cy+r*.78}" stroke="#0a0f1c" stroke-width="${Math.max(1.5,r*.2)}" stroke-linecap="round"/></g><circle cx="${cx}" cy="${cy}" r="${r*.26}" fill="#e2e8f0" ${S}/>`;
+const bolt = (x,y) => `<circle cx="${x}" cy="${y}" r="3.2" fill="${g('silver','R')}" ${S}/>`;
+
+// ---------- 30 Gym Parts (render order = depth order) ----------
+const STACK_Y = 246, PLATE = 10;
+const plates = Array.from({length:12}, (_,i) =>
+  `<g data-anim="plate" data-i="${i}">${box(500,STACK_Y+i*PLATE,72,8.5,'pl'+(i%6),18,2)}<rect x="531" y="${STACK_Y+i*PLATE+2}" width="10" height="4.5" rx="1" fill="#0a0f1c" opacity=".55"/><text x="516" y="${STACK_Y+i*PLATE+6.8}" font-size="6" font-weight="900" fill="#fff" stroke="#0a0f1c" stroke-width="1.4" paint-order="stroke" text-anchor="middle" font-family="sans-serif">${(i+1)*5}</text></g>`).join('');
+const PARTS = [
+ {id:30, n:"Rubber Floor Mat", a: box(140,388,780,8,'black',26,3)+[0,1,2,3,4,5,6,7,8,9,10,11,12].map(i=>`<rect x="${160+i*58}" y="390" width="34" height="2" rx="1" fill="#fff" opacity=".08"/>`).join('')},
+ {id:1,  n:"Base Frame", a: box(170,372,720,16,'steel',22,3)+bolt(190,380)+bolt(870,380)+bolt(480,380)+bolt(600,380)},
+ {id:2,  n:"Rear Tower Post", a: box(586,40,16,332,'post2',22,2)},
+ {id:5,  n:"Guide Rods", a: `<rect x="511" y="56" width="3" height="316" fill="${g('silver')}" ${S}/><rect x="557" y="56" width="3" height="316" fill="${g('silver')}" ${S}/>`},
+ {id:6,  n:"Weight Stack", a: plates},
+ {id:7,  n:"Top Plate & Cable", a: `<rect data-anim="cable" x="535" y="52" width="2" height="98" fill="#0a0f1c"/><g data-anim="lift"><rect x="534" y="150" width="4" height="88" fill="${g('silver')}" ${S}/>${box(497,236,78,10,'gold',18,3)}</g>`},
+ {id:8,  n:"Selector Pin", a: `<g data-anim="pin"><rect x="572" y="${STACK_Y+3}" width="22" height="3.5" rx="1.5" fill="${g('silver')}" ${S}/><circle cx="597" cy="${STACK_Y+4.7}" r="5" fill="${g('yellow','R')}" ${S}/></g>`},
+ {id:3,  n:"Front Tower Post", a: box(470,40,16,332,'post1',22,2)},
+ {id:4,  n:"Top Boom", a: box(250,26,354,14,'boom',22,3)+bolt(478,33)+bolt(594,33)+bolt(262,33)},
+ {id:10, n:"Head Pulley", a: disc(536,48,9,'silver',10)+spokes(536,48,9,'pulley')},
+ {id:11, n:"Boom Pulley", a: `<rect x="272" y="38.2" width="264" height="1.8" fill="#0a0f1c"/>`+disc(272,48,9,'silver',10)+spokes(272,48,9,'pulley')},
+ {id:12, n:"Lat Cable", st:'lat', a: `<rect data-anim="latcable" x="271" y="57" width="2" height="62" fill="#0a0f1c"/><circle cx="272" cy="58" r="2.5" fill="${g('dark')}"/>`},
+ {id:9,  n:"Logo Shroud", a: box(489,64,94,38,'indigo',8,6)+`<text x="536" y="88" font-size="11.5" font-weight="900" fill="#fff" text-anchor="middle" font-family="sans-serif" letter-spacing=".5">5-STATION</text>`},
+ {id:16, n:"Backrest Post", a: box(394,110,12,262,'post3',16,2)},
+ {id:14, n:"Seat Post", a: box(300,268,14,104,'post3',16,2)+bolt(307,300)},
+ {id:23, n:"Front Stabilizer", a: box(214,362,130,10,'dark',22,3)+bolt(226,367)+bolt(332,367)},
+ {id:24, n:"Low Pulley", a: disc(332,356,8,'silver',10)+spokes(332,356,8,'pulley')},
+ {id:15, n:"Seat Cushion", a: pad(246,254,116,16,'blue',28,7)},
+ {id:17, n:"Backrest Pad", a: pad(368,120,24,130,'blue',22,9)},
+ {id:20, n:"Pec Fly Arms", st:'fly', a: `<g data-anim="fly" data-c="396,98">${beam(396,98,350,116,7,'silver',8)}${pad(336,112,16,74,'purple',14,7)}</g>`},
+ {id:18, n:"Chest Press Arms", st:'chest', a: `<g data-anim="press" data-c="400,108">${beam(400,108,268,168,7,'silver',10)}${bolt(400,108)}</g>`},
+ {id:19, n:"Press Grips", st:'chest', a: `<g data-anim="press" data-c="400,108">${beam(268,154,262,190,9,'black',10)}</g>`},
+ {id:13, n:"Lat Bar", st:'lat', a: `<g data-anim="latbar">${beam(196,128,236,118,7,'silver',8)}${beam(236,118,308,118,7,'silver',8)}${beam(308,118,348,128,7,'silver',8)}${beam(188,130,208,127,9,'black',8)}${beam(336,127,356,130,9,'black',8)}</g>`},
+ {id:21, n:"Leg Extension Arm", st:'ext', a: `<g data-anim="legext" data-c="254,266">${beam(254,266,244,336,8,'silver',10)}${bolt(254,266)}</g>`},
+ {id:22, n:"Foam Rollers", st:'ext', a: `<g data-anim="legext" data-c="254,266">${disc(244,306,9,'orange',22)}${disc(244,334,9,'orange',22)}</g>`},
+ {id:25, n:"Leg Press Rail", st:'press', a: box(616,334,256,12,'rail',22,3)+bolt(630,340)+bolt(858,340)},
+ {id:29, n:"Plate Linkage", st:'press', a: `<g data-anim="legpress">${beam(662,300,722,336,8,'silver',10)}${bolt(722,336)}</g>`},
+ {id:28, n:"Foot Plate", st:'press', a: `<g data-anim="legpress">${box(646,206,18,116,'lime',24,5)}${[0,1,2,3,4,5].map(i=>`<rect x="649" y="${216+i*17}" width="12" height="3" rx="1.5" fill="#0a0f1c" opacity=".45"/>`).join('')}</g>`},
+ {id:26, n:"Press Seat", st:'press', a: box(796,318,14,16,'rail',12,2)+pad(752,302,100,16,'teal',28,7)},
+ {id:27, n:"Press Backrest", st:'press', a: ext([[842,300],[864,300],[902,196],[882,190]],'teal',24)},
+];
+const STATIONS = {
+  lat:   {name:"Lat Pulldown",  spot:[272,150]},
+  chest: {name:"Chest Press",   spot:[300,180]},
+  fly:   {name:"Pec Fly",       spot:[350,160]},
+  ext:   {name:"Leg Extension", spot:[250,310]},
+  press: {name:"Leg Press",     spot:[760,270]},
+};
+
+// ---------- Colors & Themes ----------
+// Every frame piece has its own color key so each theme can paint them differently
+const BASE = {red:"#ef4444",blue:"#3b82f6",cyan:"#22d3ee",orange:"#f97316",yellow:"#facc15",green:"#22c55e",
+  steel:"#06b6d4",post1:"#ef4444",post2:"#3b82f6",post3:"#10b981",boom:"#f59e0b",rail:"#a855f7",
+  purple:"#d946ef",pink:"#ec4899",gold:"#f59e0b",teal:"#14b8a6",lime:"#84cc16",indigo:"#6366f1",dark:"#1e293b",silver:"#cbd5e1",coral:"#fb7185",black:"#111827",
+  pl0:"#ef4444",pl1:"#f97316",pl2:"#facc15",pl3:"#22c55e",pl4:"#3b82f6",pl5:"#a855f7"};
+// T(name, frame, frame2, dark, pad, pad2, accent, accent2, shroud, plate, plate2)
+const T = (name,f,f2,dk,pd,pd2,ac,ac2,sh,pl,pl2,mt="#cbd5e1") => ({name, map:{steel:f,post1:f,post2:f,post3:f2,boom:f2,rail:f2,dark:dk,blue:pd,teal:pd2,purple:ac,gold:ac,yellow:ac2,orange:ac2,lime:ac2,indigo:sh,pl0:pl,pl2:pl,pl4:pl,pl1:pl2,pl3:pl2,pl5:pl2,silver:mt}});
+const THEMES = [
+ {name:"Rainbow Gym", map:{}},
+ T("Iron Black","#27272a","#3f3f46","#09090b","#18181b","#27272a","#a1a1aa","#e4e4e7","#18181b","#3f3f46","#52525b"),
+ T("Power Red","#b91c1c","#7f1d1d","#18181b","#111827","#1f2937","#ef4444","#fca5a5","#7f1d1d","#18181b","#dc2626"),
+ T("Royal Blue","#1d4ed8","#1e3a8a","#0f172a","#0ea5e9","#0284c7","#facc15","#38bdf8","#172554","#2563eb","#60a5fa"),
+ T("Army Green","#4d7c0f","#365314","#1a2e05","#a16207","#854d0e","#ca8a04","#a3e635","#1a2e05","#3f6212","#65a30d"),
+ T("Chrome Silver","#cbd5e1","#94a3b8","#334155","#1e293b","#334155","#0ea5e9","#38bdf8","#475569","#94a3b8","#e2e8f0","#f1f5f9"),
+ T("Candy Pink","#ec4899","#db2777","#831843","#f9a8d4","#c084fc","#a855f7","#fde047","#9d174d","#f472b6","#e879f9"),
+ T("Sunset Orange","#ea580c","#c2410c","#431407","#1f2937","#7c2d12","#facc15","#fb923c","#9a3412","#f97316","#fbbf24"),
+ T("Ocean Teal","#0d9488","#0f766e","#042f2e","#0e7490","#155e75","#5eead4","#fcd34d","#134e4a","#14b8a6","#22d3ee"),
+ T("Gold Luxury","#ca8a04","#a16207","#1c1917","#1c1917","#292524","#fde68a","#facc15","#422006","#eab308","#292524","#fef3c7"),
+ T("Neon Purple","#7c3aed","#6d28d9","#1e1b4b","#22d3ee","#06b6d4","#f0abfc","#a3e635","#2e1065","#8b5cf6","#22d3ee"),
+ T("Mint Fresh","#10b981","#059669","#064e3b","#f8fafc","#d1fae5","#f472b6","#fde047","#065f46","#34d399","#a7f3d0"),
+ {name:"Random Mix", random:true, map:{}},
+];
+const defs = document.getElementById('defs');
+function mix(a,b,t){const p=h=>[1,3,5].map(i=>parseInt(h.substr(i,2),16));const A=p(a),B=p(b);return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*t).toString(16).padStart(2,'0')).join('')}
+function hsl(h,s,l){s/=100;l/=100;const k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,9-k(n),1));return '#'+[0,8,4].map(n=>Math.round(f(n)*255).toString(16).padStart(2,'0')).join('')}
+function randomMap(){
+  const m = {};
+  Object.keys(BASE).forEach(k => { if (k!=='black' && k!=='silver' && k!=='dark') m[k] = hsl(Math.random()*360, 70+Math.random()*25, 45+Math.random()*15); });
+  return m;
+}
+function paint(t){
+  if (THEMES[t].random) THEMES[t].map = randomMap();
+  const m = {...BASE, ...THEMES[t].map};
+  defs.innerHTML = Object.entries(m).map(([k,c]) =>
+    `<linearGradient id="g-${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${mix(c,'#ffffff',.5)}"/><stop offset=".45" stop-color="${c}"/><stop offset="1" stop-color="${mix(c,'#000000',.4)}"/></linearGradient>`+
+    `<linearGradient id="g-${k}T" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="${mix(c,'#ffffff',.6)}"/><stop offset="1" stop-color="${mix(c,'#ffffff',.22)}"/></linearGradient>`+
+    `<linearGradient id="g-${k}S" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${mix(c,'#000000',.32)}"/><stop offset="1" stop-color="${mix(c,'#000000',.6)}"/></linearGradient>`+
+    `<radialGradient id="g-${k}R" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="${mix(c,'#ffffff',.65)}"/><stop offset=".5" stop-color="${c}"/><stop offset="1" stop-color="${mix(c,'#000000',.5)}"/></radialGradient>`
+  ).join('');
+}
+paint(0);
+
+const measureG = document.getElementById('measureG');
+PARTS.forEach(p => { measureG.innerHTML = p.a; const b = measureG.getBBox(); p.b = [b.x-3, b.y-3, b.width+6, b.height+6]; });
+measureG.innerHTML = '';
+
+const TRAY = [19,3,27,8,12,24,1,9,20,15,13,4,30,16,11,6,22,2,26,10,17,5,29,21,7,14,25,23,18,28];
+const $ = id => document.getElementById(id);
+const scene=$('scene'), plane=$('plane'), board=$('board'), tray=$('tray'), ghost=$('ghost');
+scene.setAttribute('viewBox', `${VB.x} ${VB.y} ${VB.w} ${VB.h}`);
+
+// ---------- Zoom (board only) ----------
+let zoom=1, panX=0, panY=0;
+function updateCamera(){
+  zoom = Math.max(0.8, Math.min(3.5, zoom));
+  const cx = VB.x+VB.w/2, cy = VB.y+VB.h/2;
+  $('camera').setAttribute('transform', `translate(${panX} ${panY}) translate(${cx} ${cy}) scale(${zoom}) translate(${-cx} ${-cy})`);
+  $('zoomVal').textContent = Math.round(zoom*100)+'%';
+}
+$('zIn').onclick = () => { zoom=Math.min(3.5,zoom+0.25); updateCamera(); msg('Zoom: '+Math.round(zoom*100)+'%'); };
+$('zOut').onclick = () => { zoom=Math.max(0.8,zoom-0.25); updateCamera(); msg('Zoom: '+Math.round(zoom*100)+'%'); };
+$('zReset').onclick = () => { zoom=1; panX=0; panY=0; updateCamera(); msg('Zoom Reset'); };
+board.addEventListener('wheel', e => { e.preventDefault(); zoom += e.deltaY<0 ? 0.15 : -0.15; updateCamera(); }, {passive:false});
+let boardTouches = new Map(), initialDist = null, initialZoom = 1;
+board.addEventListener('touchstart', e => {
+  if (drag) return;
+  for (const t of e.changedTouches) boardTouches.set(t.identifier, {x:t.clientX, y:t.clientY});
+  if (boardTouches.size === 2){ const p=[...boardTouches.values()]; initialDist=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y); initialZoom=zoom; }
+}, {passive:true});
+board.addEventListener('touchmove', e => {
+  if (drag) return;
+  for (const t of e.changedTouches) boardTouches.set(t.identifier, {x:t.clientX, y:t.clientY});
+  if (boardTouches.size === 2 && initialDist){ e.preventDefault(); const p=[...boardTouches.values()]; zoom=initialZoom*Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)/initialDist; updateCamera(); }
+}, {passive:false});
+const clearBoardTouch = e => { for (const t of e.changedTouches) boardTouches.delete(t.identifier); if (boardTouches.size<2) initialDist=null; };
+board.addEventListener('touchend', clearBoardTouch);
+board.addEventListener('touchcancel', clearBoardTouch);
+
+function fit(){ const r=board.getBoundingClientRect(); const s=Math.min(r.width/VB.w, r.height/VB.h); return {r,s}; }
+
+// ---------- Drag & Drop Parts ----------
+let placed = new Set();
+let drag = null, dragEl = null;
+function buildTray(){
+  tray.innerHTML = '';
+  TRAY.forEach((id, i) => {
+    const p = PARTS.find(q => q.id===id);
+    const d = document.createElement('div');
+    d.className = 'slot'+(placed.has(id)?' gone':'');
+    d.dataset.id = id;
+    // Very long/thin parts: zoom into their middle so they stay easy to see in the tray
+    let [vx,vy,vw,vh] = p.b; const R = 2.4;
+    if (vw/vh > R){ const nw = vh*R; vx += (vw-nw)/2; vw = nw; }
+    else if (vh/vw > R){ const nh = vw*R; vy += (vh-nh)/2; vh = nh; }
+    d.innerHTML = `<b class="num">${i+1}</b><svg viewBox="${vx} ${vy} ${vw} ${vh}" preserveAspectRatio="xMidYMid meet">${p.a}</svg><span>${p.n}</span>`;
+    d.addEventListener('touchstart', e => { if (placed.has(id)||drag||press) return; e.preventDefault(); startPress(id, e.changedTouches[0]); }, {passive:false});
+    d.addEventListener('mousedown', e => { if (e.button!==0||placed.has(id)||drag) return; e.preventDefault(); initDrag(id,e.clientX,e.clientY,null); });
+    tray.appendChild(d);
+  });
+  updateMore();
+}
+
+// ---------- Scrolling the parts area (touch) ----------
+// Swipe up/down = scroll the 30 parts. Hold a part, move it sideways, or pull it out of the area = pick it up.
+let press = null;
+const canScroll = () => tray.scrollHeight > tray.clientHeight + 1;
+const slotOf = id => tray.querySelector(`[data-id="${id}"]`);
+function updateMore(){
+  const max = tray.scrollHeight - tray.clientHeight;
+  $('moreDown').classList.toggle('show', max > 2 && tray.scrollTop < max - 2);
+  $('moreUp').classList.toggle('show', max > 2 && tray.scrollTop > 2);
+}
+tray.addEventListener('scroll', updateMore, {passive:true});
+window.addEventListener('resize', updateMore);
+function startPress(id, t){
+  if (id && !canScroll()){ initDrag(id, t.clientX, t.clientY, t.identifier); return; }
+  press = {id, tid:t.identifier, x0:t.clientX, y0:t.clientY, cx:t.clientX, cy:t.clientY, top0:tray.scrollTop, mode:null, v:0, ly:t.clientY, lt:performance.now()};
+  if (id){ slotOf(id)?.classList.add('hold'); press.timer = setTimeout(() => { if (press && !press.mode) pressToDrag(); }, 260); }
+}
+function endPress(){ if (!press) return; clearTimeout(press.timer); if (press.id) slotOf(press.id)?.classList.remove('hold'); press = null; }
+function pressToDrag(){ const p = press; endPress(); initDrag(p.id, p.cx, p.cy, p.tid); }
+tray.addEventListener('touchstart', e => { if (e.target!==tray || drag || press) return; e.preventDefault(); startPress(null, e.changedTouches[0]); }, {passive:false});
+const pressTouch = e => press ? [...e.changedTouches].find(t => t.identifier===press.tid) : null;
+window.addEventListener('touchmove', e => {
+  const t = pressTouch(e); if (!t || drag) return;
+  e.preventDefault();
+  press.cx = t.clientX; press.cy = t.clientY;
+  const dx = t.clientX - press.x0, dy = t.clientY - press.y0;
+  if (!press.mode){
+    if (Math.hypot(dx, dy) < 8) return;
+    if (Math.abs(dy) >= Math.abs(dx)){ press.mode = 'scroll'; clearTimeout(press.timer); if (press.id) slotOf(press.id)?.classList.remove('hold'); }
+    else if (press.id){ pressToDrag(); return; }
+    else press.mode = 'scroll';
+  }
+  const now = performance.now(); press.v = (t.clientY - press.ly) / Math.max(1, now - press.lt); press.ly = t.clientY; press.lt = now;
+  const max = tray.scrollHeight - tray.clientHeight, want = press.top0 - dy;
+  tray.scrollTop = Math.max(0, Math.min(max, want));
+  const r = tray.getBoundingClientRect();
+  // Pulled past the end of the list or out of the parts area: lift the part out
+  if (press.id && (t.clientY < r.top || want > max + 28)) pressToDrag();
+}, {passive:false});
+function releasePress(e){
+  const t = pressTouch(e); if (!t) return;
+  const v = press.mode==='scroll' ? press.v : 0; endPress();
+  // gentle glide after a flick
+  let vel = -v * 16; const glide = () => { if (Math.abs(vel) < 0.5) return; tray.scrollTop += vel; vel *= 0.92; requestAnimationFrame(glide); };
+  if (Math.abs(vel) > 2) requestAnimationFrame(glide);
+}
+window.addEventListener('touchend', releasePress);
+window.addEventListener('touchcancel', releasePress);
+function initDrag(id, x, y, touchId){
+  const p = PARTS.find(q => q.id===id);
+  const {s} = fit();
+  drag = {id, x, y, touchId};
+  let w = Math.max(48, p.b[2]*s*zoom*1.15), h = Math.max(48, p.b[3]*s*zoom*1.15);
+  const k = Math.min(1, 280/w, 220/h); w*=k; h*=k;
+  dragEl = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  dragEl.id = 'drag';
+  dragEl.setAttribute('viewBox', p.b.join(' '));
+  dragEl.setAttribute('width', w); dragEl.setAttribute('height', h);
+  dragEl.innerHTML = p.a;
+  document.body.appendChild(dragEl);
+  const slot = tray.querySelector(`[data-id="${id}"]`); if (slot) slot.classList.add('gone');
+  $('target').innerHTML = p.a;
+  moveDrag(x, y);
+}
+function moveDrag(x, y){
+  if (!drag||!dragEl) return;
+  drag.x=x; drag.y=y;
+  dragEl.style.left = (x - parseFloat(dragEl.getAttribute('width'))/2)+'px';
+  dragEl.style.top  = (y - parseFloat(dragEl.getAttribute('height'))/2)+'px';
+}
+const touchOf = e => drag && drag.touchId!==null ? [...e.changedTouches].find(t => t.identifier===drag.touchId) : null;
+window.addEventListener('touchmove', e => { const t=touchOf(e); if (t){ e.preventDefault(); moveDrag(t.clientX,t.clientY); } }, {passive:false});
+window.addEventListener('touchend', e => { const t=touchOf(e); if (t) finishDrag(t.clientX,t.clientY); });
+window.addEventListener('touchcancel', e => { const t=touchOf(e); if (t) finishDrag(t.clientX,t.clientY); });
+window.addEventListener('mousemove', e => { if (drag && drag.touchId===null){ e.preventDefault(); moveDrag(e.clientX,e.clientY); } });
+window.addEventListener('mouseup', e => { if (drag && drag.touchId===null) finishDrag(e.clientX,e.clientY); });
+function finishDrag(x, y){
+  if (!drag) return;
+  const p = PARTS.find(q => q.id===drag.id);
+  const {r} = fit();
+  $('target').innerHTML = '';
+  if (x>=r.left && x<=r.right && y>=r.top && y<=r.bottom){ placed.add(drag.id); renderMachine(drag.id); msg((placed.size===TOTAL?'✅ All 30 fitted! Press Start':'Fitted '+placed.size+'/'+TOTAL+': '+p.n)); }
+  else { const slot = tray.querySelector(`[data-id="${drag.id}"]`); if (slot) slot.classList.remove('gone'); }
+  if (dragEl){ dragEl.remove(); dragEl=null; }
+  drag = null;
+}
+function renderMachine(newId){
+  plane.innerHTML = PARTS.filter(p => placed.has(p.id)).map(p => `<g data-pid="${p.id}"${p.st?` data-st="${p.st}"`:''}${p.id===newId?' class="pop"':''}>${p.a}</g>`).join('');
+  ghost.innerHTML = placed.size<TOTAL ? PARTS.filter(p => !placed.has(p.id)).map(p => p.a).join('') : '';
+  $('count').textContent = placed.size+' / '+TOTAL;
+  $('hint').style.display = placed.size ? 'none' : 'flex';
+  markStation();
+  updateLights();
+}
+
+const msg = t => { const m=$('msg'); m.textContent=t; m.style.opacity=1; clearTimeout(msg.t); msg.t=setTimeout(()=>m.style.opacity=0,1400); };
+
+// ---------- 1 Color ----------
+let theme = 0;
+$('bColor').onclick = () => { theme=(theme+1)%THEMES.length; paint(theme); buildTray(); msg('🎨 '+(theme+1)+'/'+THEMES.length+' '+THEMES[theme].name); };
+
+// ---------- 2 Light ----------
+const LIGHTS = ["Lights Off","Station Spotlight","LED Frame","Neon Aura","Night Gym"];
+let light = 0;
+$('bLight').onclick = () => { light=(light+1)%LIGHTS.length; updateLights(); msg('💡 '+LIGHTS[light]); };
+function updateLights(){
+  board.classList.toggle('night', light===4);
+  plane.style.filter = light===3 ? 'drop-shadow(0 0 9px hsl('+(Date.now()/10%360)+',100%,60%))' : '';
+  let spot = '', h = '';
+  if ((light===1||light===4) && placed.size){
+    const [x,y] = STATIONS[station].spot;
+    spot = `<ellipse cx="${x}" cy="${y}" rx="120" ry="110" fill="url(#spot)"/><polygon points="${x-14},-20 ${x+14},-20 ${x+110},${y+80} ${x-110},${y+80}" fill="#fff7b0" opacity=".07"/>`;
+  }
+  if ((light===2||light===4) && placed.has(3)){
+    h += `<rect x="472" y="44" width="3" height="326" fill="#f97316" filter="url(#glow)"/>`+
+         (placed.has(2) ? `<rect x="588" y="44" width="3" height="326" fill="#f97316" filter="url(#glow)"/>` : '')+
+         `<circle class="bl1" cx="478" cy="60" r="4" fill="#fff"/><circle class="bl2" cx="594" cy="60" r="4" fill="#fff"/>`;
+  }
+  $('spotLayer').innerHTML = spot;
+  $('lights').innerHTML = h;
+}
+setInterval(() => { if (light===3) updateLights(); }, 60);
+
+// ---------- 3 Start, Stations & Weight ----------
+const RULES = {plates:12, kgPerPlate:5, minPlates:1};
+let started=false, station='chest', lvl=4, auto=false, pushing=false;
+let phase=0, cyc=0, atTop=false, reps=0, kcal=0, pulleyRot=0;
+const repsBy = {lat:0, chest:0, fly:0, ext:0, press:0};
+$('bStart').onclick = () => {
+  if (placed.size<TOTAL){ msg('Assemble all '+TOTAL+' parts first!'); return; }
+  started = !started;
+  $('bStart').classList.toggle('on', started);
+  $('bStart').innerHTML = started ? '<b>■</b>Stop' : '<b>▶</b>Start';
+  if (started) ensureAudio();
+  else { auto=false; pushing=false; document.querySelectorAll('.r.auto,.r.push').forEach(b=>b.classList.remove('act')); }
+  msg(started ? '🏋️ Gym Ready – press PUSH or AUTO' : 'Workout Stopped');
+};
+function markStation(){
+  plane.querySelectorAll('[data-st]').forEach(el => el.classList.toggle('sel', placed.size===TOTAL && el.dataset.st===station));
+  document.querySelectorAll('.r.st').forEach(b => b.classList.toggle('on', b.dataset.st===station));
+}
+document.querySelectorAll('.r.st').forEach(b => {
+  b.onclick = () => { station = b.dataset.st; phase = 0; cyc = 0; atTop = false; markStation(); updateLights(); msg('Station: '+STATIONS[station].name); };
+});
+function setLvl(v){ lvl = Math.max(RULES.minPlates, Math.min(RULES.plates, v)); msg('Weight: '+lvl*RULES.kgPerPlate+' kg'); }
+const kgBtn = (b, d) => b.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  if (phase>.05){ msg('Lower the weight first!'); return; }
+  setLvl(lvl+d);
+});
+kgBtn(document.querySelector('[data-k="kgDown"]'), -1);
+kgBtn(document.querySelector('[data-k="kgUp"]'), 1);
+const pushBtn = document.querySelector('[data-k="push"]'), autoBtn = document.querySelector('[data-k="auto"]');
+pushBtn.addEventListener('pointerdown', e => { e.preventDefault(); if (!started){ msg('Press Start first!'); return; } pushing=true; pushBtn.classList.add('act'); });
+const release = () => { pushing=false; pushBtn.classList.remove('act'); };
+pushBtn.addEventListener('pointerup', release); pushBtn.addEventListener('pointerleave', release); pushBtn.addEventListener('pointercancel', release);
+autoBtn.onclick = () => { if (!started){ msg('Press Start first!'); return; } auto=!auto; cyc = Math.acos(1-2*phase); autoBtn.classList.toggle('act', auto); msg(auto?'Auto Reps: On':'Auto Reps: Off'); };
+addEventListener('keydown', e => {
+  if (e.code==='Space'){ e.preventDefault(); if (started && !e.repeat){ pushing=true; pushBtn.classList.add('act'); } }
+  const n = {Digit1:'lat',Digit2:'chest',Digit3:'fly',Digit4:'ext',Digit5:'press'}[e.code];
+  if (n) document.querySelector(`.r.st[data-st="${n}"]`).click();
+  if (e.code==='ArrowUp') setLvl(lvl+1);
+  if (e.code==='ArrowDown') setLvl(lvl-1);
+});
+addEventListener('keyup', e => { if (e.code==='Space') release(); });
+
+// ---------- Animation Loop ----------
+const ROT = {press:18, fly:38, legext:72};
+let last = performance.now();
+function loop(t){
+  const dt = Math.min(.05, (t-last)/1000); last = t;
+  const prev = phase;
+  if (started && auto){ cyc += dt*2.4; phase = (1-Math.cos(cyc))/2; }
+  else if (started && pushing) phase += (1-phase)*Math.min(1, dt*3.2);
+  else phase += (0-phase)*Math.min(1, dt*3.8);
+  if (phase<.001) phase = 0;
+  if (phase>.9 && !atTop){ atTop = true; reps++; repsBy[station]++; kcal += lvl*RULES.kgPerPlate*.02; }
+  if (phase<.08 && atTop){ atTop = false; clank(); }
+  const vel = Math.abs(phase-prev)/Math.max(dt,.001);
+  const lift = phase*70;
+  pulleyRot += (phase-prev)*420;
+
+  plane.querySelectorAll('[data-anim]').forEach(el => {
+    const k = el.dataset.anim, st = el.closest('[data-st]')?.dataset.st, on = st===station ? phase : 0;
+    if (k==='plate') el.setAttribute('transform', +el.dataset.i < lvl ? `translate(0 ${-lift})` : '');
+    else if (k==='lift') el.setAttribute('transform', `translate(0 ${-lift})`);
+    else if (k==='pin') el.setAttribute('transform', `translate(0 ${(lvl-1)*PLATE - lift})`);
+    else if (k==='cable') el.setAttribute('height', (98-lift).toFixed(1));
+    else if (k==='pulley'){ const c=el.dataset.c.split(','); el.setAttribute('transform', `rotate(${pulleyRot} ${c[0]} ${c[1]})`); }
+    else if (k==='latcable') el.setAttribute('height', (62+on*60).toFixed(1));
+    else if (k==='latbar') el.setAttribute('transform', `translate(0 ${on*60})`);
+    else if (k==='legpress') el.setAttribute('transform', `translate(${-on*28} 0)`);
+    else if (ROT[k]){ const c=el.dataset.c.split(','); el.setAttribute('transform', `rotate(${on*ROT[k]} ${c[0]} ${c[1]})`); }
+  });
+  updSound(vel);
+
+  $('stats').innerHTML = placed.size===TOTAL
+    ? `<b>🏋 <i>${STATIONS[station].name}</i></b><b>⚖ <i>${lvl*RULES.kgPerPlate}</i> kg</b><b>🔁 <i>${repsBy[station]}</i> reps</b><b>Σ <i>${reps}</i> total</b><b>🔥 <i>${Math.round(kcal)}</i> kcal</b>`
+    : '';
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+$('reset').onclick = () => {
+  placed=new Set(); started=false; auto=false; pushing=false; phase=0; reps=0; kcal=0; lvl=4;
+  Object.keys(repsBy).forEach(k => repsBy[k]=0);
+  $('bStart').classList.remove('on'); $('bStart').innerHTML='<b>▶</b>Start';
+  document.querySelectorAll('.r.auto,.r.push').forEach(b=>b.classList.remove('act'));
+  buildTray(); renderMachine(); msg('Workspace Reset');
+};
+buildTray();
+renderMachine();
+updateCamera();
+
+// ---------- Sound: cable whir & plate clank ----------
+let snd=true, actx=null, J=null;
+function ensureAudio(){
+  if (actx){ actx.resume(); return; }
+  const A = window.AudioContext||window.webkitAudioContext; if (!A) return;
+  actx = new A();
+  const master = actx.createGain(); master.gain.value=0; master.connect(actx.destination);
+  const buf = actx.createBuffer(1, actx.sampleRate*2, actx.sampleRate), d = buf.getChannelData(0);
+  for (let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  const src = actx.createBufferSource(); src.buffer=buf; src.loop=true;
+  const bp = actx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=900; bp.Q.value=1.2;
+  src.connect(bp); bp.connect(master);
+  const hum = actx.createOscillator(); hum.type='triangle'; hum.frequency.value=180;
+  const hg = actx.createGain(); hg.gain.value=.08; hum.connect(hg); hg.connect(master);
+  src.start(); hum.start();
+  J = {master, bp, hum, buf};
+}
+function clank(){
+  if (!actx||!snd) return;
+  const now = actx.currentTime, gg = actx.createGain();
+  gg.connect(actx.destination);
+  gg.gain.setValueAtTime(.0001,now); gg.gain.exponentialRampToValueAtTime(.4,now+.005); gg.gain.exponentialRampToValueAtTime(.0001,now+.35);
+  [310, 467, 742].forEach(f => { const o=actx.createOscillator(); o.type='square'; o.frequency.value=f; const og=actx.createGain(); og.gain.value=.25; o.connect(og); og.connect(gg); o.start(now); o.stop(now+.36); });
+  const n = actx.createBufferSource(); n.buffer = J.buf; const ng = actx.createGain(); ng.gain.value=.6; n.connect(ng); ng.connect(gg); n.start(now); n.stop(now+.08);
+}
+function updSound(vel){
+  if (!actx||!J) return;
+  const t = actx.currentTime, v = (snd && started) ? Math.min(.35, vel*.25) : 0;
+  J.master.gain.setTargetAtTime(v, t, .05);
+  J.bp.frequency.setTargetAtTime(600+vel*900, t, .08);
+  J.hum.frequency.setTargetAtTime(150+lvl*12+vel*80, t, .08);
+}
+$('bSound').onclick = () => { ensureAudio(); snd=!snd; $('bSound').innerHTML = snd?'<b>🔊</b>Sound':'<b>🔇</b>Muted'; msg(snd?'Sound Enabled':'Sound Muted'); };
+document.addEventListener('click', () => { if (started) ensureAudio(); }, true);
+</script>
+</body>
+</html>
