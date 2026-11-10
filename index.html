@@ -792,7 +792,7 @@ body.home-mode .footer-text {
 </style>
 </head>
 
-<body>
+<body class="home-mode">
 
 <!-- =========================
      HOME SCREEN
@@ -1557,9 +1557,18 @@ function showScreen(screenId){
         target.style.display = "block";
     }
 
+    // Home screen scroll control
+    if(screenId === "homeScreen"){
+        document.body.classList.add("home-mode");
+    }else{
+        document.body.classList.remove("home-mode");
+    }
+
     window.scrollTo(0,0);
+
     playClickSound();
 }
+
 
 function openHomeScreen(){
     showScreen("homeScreen");
