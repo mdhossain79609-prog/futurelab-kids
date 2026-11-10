@@ -626,24 +626,166 @@ body.home-mode .footer-text {
     }
 
     body.home-mode .logo {
-        font-size:52px;
+
+/* ===== HOME SCREEN FINAL POSITION & SCROLL FIX ===== */
+
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* HOME SCREEN NO SCROLL */
+
+body.home-mode {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+    overscroll-behavior: none;
+}
+
+body.home-mode #homeScreen {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+
+/* TOP BAR */
+
+body.home-mode .top-bar {
+    height: 55px !important;
+    flex-shrink: 0;
+}
+
+/* HOME CONTENT POSITION */
+
+body.home-mode .home {
+    height: calc(100vh - 55px) !important;
+    height: calc(100dvh - 55px) !important;
+    min-height: 0 !important;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start !important;
+    align-items: center;
+
+    overflow: hidden !important;
+
+    padding: 5px 16px 5px !important;
+}
+
+/* LOGO */
+
+body.home-mode .logo {
+    margin: 0 !important;
+    font-size: 60px !important;
+    line-height: 1.05 !important;
+    flex-shrink: 0;
+}
+
+/* APP NAME */
+
+body.home-mode .app-name {
+    margin: 3px 0 2px !important;
+    font-size: 34px !important;
+    flex-shrink: 0;
+}
+
+/* SLOGAN */
+
+body.home-mode .slogan {
+    margin: 3px 0 12px !important;
+    flex-shrink: 0;
+}
+
+/* WELCOME CARD */
+
+body.home-mode .welcome-card {
+    margin-top: 0 !important;
+    padding: 15px !important;
+    flex-shrink: 0;
+}
+
+/* START BUTTON */
+
+body.home-mode .start-btn {
+    margin-top: 12px !important;
+    flex-shrink: 0;
+}
+
+/* BOTTOM BUTTONS */
+
+body.home-mode .bottom-buttons {
+    margin-top: 12px !important;
+    flex-shrink: 0;
+}
+
+/* FOOTER */
+
+body.home-mode .footer-text {
+    margin-top: 10px !important;
+    flex-shrink: 0;
+}
+
+/* SHORT MOBILE SCREENS */
+
+@media(max-height:750px) {
+
+    body.home-mode .home {
+        padding-top: 2px !important;
+    }
+
+    body.home-mode .logo {
+        font-size: 49px !important;
+    }
+
+    body.home-mode .app-name {
+        font-size: 29px !important;
+    }
+
+    body.home-mode .slogan {
+        font-size: 9px !important;
+        margin-bottom: 9px !important;
     }
 
     body.home-mode .welcome-card {
-        padding:12px !important;
+        padding: 11px !important;
+    }
+
+    body.home-mode .welcome-card h2 {
+        font-size: 18px !important;
+    }
+
+    body.home-mode .welcome-card p {
+        font-size: 11px !important;
     }
 
     body.home-mode .start-btn {
-        margin-top:11px !important;
-        padding:13px !important;
+        margin-top: 9px !important;
+        padding: 12px !important;
+        font-size: 15px !important;
     }
 
     body.home-mode .bottom-buttons {
-        margin-top:11px !important;
+        margin-top: 9px !important;
+    }
+
+    body.home-mode .small-btn {
+        padding: 9px 4px !important;
     }
 
     body.home-mode .footer-text {
-        margin-top:10px !important;
+        margin-top: 8px !important;
     }
 }
     
