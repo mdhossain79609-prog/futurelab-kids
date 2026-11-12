@@ -23,13 +23,8 @@ html,body{
     overflow-x:hidden;
 }
 
-button,a{
-    font-family:inherit;
-}
-
-button{
-    cursor:pointer;
-}
+button,a{font-family:inherit}
+button{cursor:pointer}
 
 .screen{
     display:none;
@@ -38,13 +33,13 @@ button{
     padding:16px;
 }
 
-.screen.active{
-    display:block;
-}
+.screen.active{display:block}
+
+/* HOME */
 
 #homeScreen{
-    min-height:100vh;
     height:100vh;
+    min-height:100vh;
     overflow:hidden;
     display:none;
     text-align:center;
@@ -89,9 +84,7 @@ button{
     color:#0879bd;
 }
 
-.home-title span{
-    color:#ff8b19;
-}
+.home-title span{color:#ff8b19}
 
 .tagline{
     font-size:12px;
@@ -151,25 +144,6 @@ button{
     margin-bottom:12px;
 }
 
-.home-secondary{
-    width:100%;
-    max-width:340px;
-    display:flex;
-    gap:10px;
-    margin-top:8px;
-}
-
-.home-secondary button{
-    flex:1;
-    min-height:48px;
-    border:0;
-    border-radius:13px;
-    background:white;
-    color:#28648b;
-    font-weight:bold;
-    box-shadow:0 3px 10px #c8e2ed;
-}
-
 .achievement-home{
     width:100%;
     max-width:340px;
@@ -180,6 +154,29 @@ button{
     color:#95620b;
     font-weight:bold;
     border:1px solid #ffe29a;
+    cursor:pointer;
+}
+
+.home-secondary{
+    width:100%;
+    max-width:340px;
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    gap:10px;
+    margin-top:8px;
+}
+
+.home-secondary button{
+    flex:1;
+    min-width:0;
+    min-height:48px;
+    border:0;
+    border-radius:13px;
+    background:white;
+    color:#28648b;
+    font-weight:bold;
+    box-shadow:0 3px 10px #c8e2ed;
 }
 
 .home-footer{
@@ -190,12 +187,14 @@ button{
     color:#7695a6;
 }
 
-/* General screens */
+/* HEADERS */
 
 .header{
     max-width:750px;
     margin:0 auto 17px;
     display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
     align-items:center;
     gap:12px;
 }
@@ -216,13 +215,14 @@ button{
     margin:0;
     font-size:22px;
     color:#0879bd;
+    flex:1;
+    min-width:0;
 }
 
-.header-spacer{
-    flex:1;
-}
+.header-spacer{flex:1}
 
 .language-small{
+    flex-shrink:0;
     border:0;
     background:white;
     padding:10px;
@@ -239,31 +239,26 @@ button{
     font-size:14px;
 }
 
+/* CATEGORY AND BUILDER CARDS */
 .card-list{
     width:100%;
     max-width:750px;
     margin:auto;
     display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:13px;
+    grid-template-columns:1fr;
+    gap:16px;
 }
 
 .category-card,.builder-card{
+    width:100%;
     min-width:0;
-    min-height:105px;
-    position:relative;
+    min-height:125px;
     display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
     align-items:center;
-    gap:11px;
-    padding:14px 12px;
-    border:0;
-    border-radius:17px;
-    background:white;
-    color:#244a63;
-    text-decoration:none;
-    text-align:left;
-    box-shadow:0 4px 12px #c8e2ed;
-    transition:transform .15s;
+    gap:16px;
+    padding:18px 20px;
 }
 
 .category-card:active,.builder-card:active{
@@ -284,6 +279,7 @@ button{
 .project-text{
     flex:1;
     min-width:0;
+    overflow-wrap:anywhere;
 }
 
 .project-text strong{
@@ -302,6 +298,7 @@ button{
 .arrow{
     color:#69a9ca;
     font-size:26px;
+    flex-shrink:0;
 }
 
 .builder-card.locked{
@@ -311,7 +308,7 @@ button{
 }
 
 .lock-icon{
-    font-size:20px;
+    font-size:19px;
     flex-shrink:0;
 }
 
@@ -326,6 +323,8 @@ button{
     margin-top:5px;
     color:#159b61;
 }
+
+/* INFO PANELS */
 
 .info-panel{
     max-width:550px;
@@ -346,6 +345,8 @@ button{
     font-weight:bold;
 }
 
+/* COLORFUL LANGUAGE SCREEN */
+
 .language-modal{
     position:fixed;
     inset:0;
@@ -353,57 +354,131 @@ button{
     display:none;
     align-items:center;
     justify-content:center;
-    padding:20px;
-    background:#102d4388;
+    padding:16px;
+    background:rgba(12,38,63,.72);
+    backdrop-filter:blur(5px);
 }
 
-.language-modal.show{
-    display:flex;
-}
+.language-modal.show{display:flex}
 
 .language-box{
     width:100%;
-    max-width:380px;
-    max-height:85vh;
+    max-width:430px;
+    max-height:88vh;
     overflow-y:auto;
-    background:white;
-    padding:20px;
-    border-radius:22px;
+    background:linear-gradient(160deg,#ffffff,#eaf8ff);
+    padding:19px;
+    border-radius:25px;
+    box-shadow:0 12px 40px #102d4366;
+    animation:languageOpen .2s ease;
 }
 
-.language-box h2{
-    margin-top:0;
+@keyframes languageOpen{
+    from{transform:scale(.92);opacity:0}
+    to{transform:scale(1);opacity:1}
+}
+
+.language-heading{
+    text-align:center;
+    margin-bottom:17px;
+}
+
+.language-heading .globe{
+    font-size:36px;
+}
+
+.language-heading h2{
+    margin:5px 0;
     color:#0879bd;
+    font-size:23px;
+}
+
+.language-heading p{
+    margin:0;
+    color:#7892a3;
+    font-size:12px;
+}
+
+.language-options{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
 }
 
 .language-option{
     width:100%;
-    display:block;
-    padding:12px;
-    margin:7px 0;
-    border:1px solid #d7eaf3;
-    background:#f5fbff;
-    border-radius:12px;
+    min-width:0;
+    min-height:53px;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    gap:9px;
+    padding:9px;
+    border:2px solid transparent;
+    border-radius:14px;
+    background:linear-gradient(135deg,#f0f9ff,#ffffff);
+    box-shadow:0 3px 8px #c8e2ed;
     text-align:left;
     font-weight:bold;
+    font-size:14px;
     color:#28516b;
+    transition:.15s;
+}
+
+.language-option:nth-child(6n+1){
+    background:linear-gradient(135deg,#dff3ff,#ffffff);
+}
+.language-option:nth-child(6n+2){
+    background:linear-gradient(135deg,#fff0d9,#ffffff);
+}
+.language-option:nth-child(6n+3){
+    background:linear-gradient(135deg,#e5f9e9,#ffffff);
+}
+.language-option:nth-child(6n+4){
+    background:linear-gradient(135deg,#f5eaff,#ffffff);
+}
+.language-option:nth-child(6n+5){
+    background:linear-gradient(135deg,#ffe9ed,#ffffff);
+}
+.language-option:nth-child(6n+6){
+    background:linear-gradient(135deg,#e5f6f5,#ffffff);
 }
 
 .language-option.selected{
-    border:2px solid #168ac7;
-    background:#e4f6ff;
+    border-color:#159bd4;
+    box-shadow:0 0 0 2px #159bd433;
+    background:linear-gradient(135deg,#bdeaff,#ffffff);
+}
+
+.language-flag{
+    font-size:22px;
+    flex-shrink:0;
+}
+
+.language-name{
+    flex:1;
+    min-width:0;
+}
+
+.language-check{
+    color:#0baf70;
+    font-size:17px;
 }
 
 .close-language{
     width:100%;
-    padding:12px;
+    min-height:47px;
     border:0;
-    border-radius:12px;
-    background:#ff8b22;
+    border-radius:14px;
+    background:linear-gradient(135deg,#ff9b23,#ff6b22);
     color:white;
     font-weight:bold;
-    margin-top:10px;
+    font-size:15px;
+    margin-top:15px;
+    box-shadow:0 4px 0 #d95518;
 }
+
+/* RTL */
 
 body.rtl{
     direction:rtl;
@@ -415,35 +490,62 @@ body.rtl .builder-card{
     text-align:right;
 }
 
+body.rtl .language-option{
+    text-align:right;
+}
+
+body.rtl .language-flag{
+    order:2;
+}
+
+body.rtl .language-check{
+    order:-1;
+}
+
+/* MOBILE */
+
 @media(max-width:380px){
+
     .home-logo{font-size:54px}
     .home-title{font-size:30px}
+
     .card-list{gap:9px}
+
     .category-card,.builder-card{
         padding:10px 8px;
         gap:7px;
+        min-height:95px;
     }
+
     .project-icon{
         width:39px;
         height:39px;
         font-size:24px;
     }
+
     .project-text strong{font-size:12px}
+    .project-text small{font-size:10px}
+
+    .arrow{font-size:22px}
+    .header{gap:7px}
+    .header h2{font-size:18px}
 }
 
 @media(max-height:650px){
+
     .home-logo{font-size:49px;margin-top:4px}
     .home-title{font-size:28px}
     .tagline{margin-bottom:8px}
     .welcome-card{padding:10px;margin-bottom:9px}
     .home-secondary{margin-top:4px}
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- HOME SCREEN -->
+<!-- HOME -->
 
 <section id="homeScreen" class="screen active">
 
@@ -468,9 +570,7 @@ body.rtl .builder-card{
     </div>
 
     <button class="main-btn" onclick="openLabScreen()"
-        data-i18n="start">
-        START ADVENTURE
-    </button>
+        data-i18n="start">START ADVENTURE</button>
 
     <button class="language-home" onclick="openLanguage()">
         🌐 <span data-i18n="language">LANGUAGE</span>
@@ -490,21 +590,20 @@ body.rtl .builder-card{
         </button>
     </div>
 
-    <div class="home-footer">
+    <div class="home-footer" data-i18n="learnBuildTestCreate">
         Learn • Build • Test • Create
     </div>
 
 </section>
 
 
-<!-- MAIN CATEGORY SCREEN -->
+<!-- MAIN CATEGORIES -->
 
 <section id="labScreen" class="screen">
 
     <div class="header">
         <button class="back-btn" onclick="openHomeScreen()">‹</button>
         <h2 data-i18n="explore">Explore Your Lab</h2>
-        <div class="header-spacer"></div>
         <button class="language-small" onclick="openLanguage()">🌐</button>
     </div>
 
@@ -517,7 +616,7 @@ body.rtl .builder-card{
         <button class="category-card" onclick="openScreen('builderScreen')">
             <div class="project-icon">🚗</div>
             <div class="project-text">
-                <strong>Engineering World</strong>
+                <strong data-i18n="engineering">Engineering World</strong>
                 <small>Build vehicles and machines</small>
             </div>
             <span class="arrow">›</span>
@@ -526,7 +625,7 @@ body.rtl .builder-card{
         <button class="category-card" onclick="openScreen('aviationScreen')">
             <div class="project-icon">🚁</div>
             <div class="project-text">
-                <strong>Aviation & Pilot</strong>
+                <strong data-i18n="aviation">Aviation & Pilot</strong>
                 <small>Explore aircraft</small>
             </div>
             <span class="arrow">›</span>
@@ -535,7 +634,7 @@ body.rtl .builder-card{
         <button class="category-card" onclick="openScreen('computerScienceScreen')">
             <div class="project-icon">💻</div>
             <div class="project-text">
-                <strong>Computer Science & Technology</strong>
+                <strong data-i18n="computer">Computer Science & Technology</strong>
                 <small>Build computers</small>
             </div>
             <span class="arrow">›</span>
@@ -544,7 +643,7 @@ body.rtl .builder-card{
         <button class="category-card" onclick="openScreen('medicalScreen')">
             <div class="project-icon">🏥</div>
             <div class="project-text">
-                <strong>Medical Science & Technology</strong>
+                <strong data-i18n="medical">Medical Science & Technology</strong>
                 <small>Discover medical machines</small>
             </div>
             <span class="arrow">›</span>
@@ -553,7 +652,7 @@ body.rtl .builder-card{
         <button class="category-card" onclick="openScreen('spaceScienceScreen')">
             <div class="project-icon">🚀</div>
             <div class="project-text">
-                <strong>Space & Science</strong>
+                <strong data-i18n="space">Space & Science</strong>
                 <small>Explore the universe</small>
             </div>
             <span class="arrow">›</span>
@@ -562,7 +661,7 @@ body.rtl .builder-card{
         <button class="category-card" onclick="openScreen('agricultureScreen')">
             <div class="project-icon">🚜</div>
             <div class="project-text">
-                <strong>Agriculture World</strong>
+                <strong data-i18n="agriculture">Agriculture World</strong>
                 <small>Explore farming machines</small>
             </div>
             <span class="arrow">›</span>
@@ -571,7 +670,7 @@ body.rtl .builder-card{
         <button class="category-card" onclick="openScreen('sportsScreen')">
             <div class="project-icon">🏋️</div>
             <div class="project-text">
-                <strong>Sports World</strong>
+                <strong data-i18n="sports">Sports World</strong>
                 <small>Explore fitness equipment</small>
             </div>
             <span class="arrow">›</span>
@@ -581,91 +680,81 @@ body.rtl .builder-card{
 </section>
 
 
-<!-- ENGINEERING WORLD -->
+<!-- ENGINEERING -->
 
 <section id="builderScreen" class="screen">
 
     <div class="header">
         <button class="back-btn" onclick="openLabScreen()">‹</button>
-        <h2>🚗 Junior Builder</h2>
-        <div class="header-spacer"></div>
+        <h2>🚗 <span data-i18n="juniorBuilder">Junior Builder</span></h2>
         <button class="language-small" onclick="openLanguage()">🌐</button>
     </div>
 
     <p class="intro">Build your own amazing vehicles!</p>
-
     <div class="card-list" id="engineeringList"></div>
 
 </section>
 
 
-<!-- AVIATION WORLD -->
+<!-- AVIATION -->
 
 <section id="aviationScreen" class="screen">
 
     <div class="header">
         <button class="back-btn" onclick="openLabScreen()">‹</button>
-        <h2>✈️ Aviation World</h2>
-        <div class="header-spacer"></div>
+        <h2>✈️ <span data-i18n="aviationWorld">Aviation World</span></h2>
         <button class="language-small" onclick="openLanguage()">🌐</button>
     </div>
 
     <p class="intro">Build aircraft and discover aviation!</p>
-
     <div class="card-list" id="aviationList"></div>
 
 </section>
 
 
-<!-- COMPUTER SCIENCE -->
+<!-- COMPUTER -->
 
 <section id="computerScienceScreen" class="screen">
 
     <div class="header">
         <button class="back-btn" onclick="openLabScreen()">‹</button>
         <h2>💻 Computer Technology</h2>
-        <div class="header-spacer"></div>
         <button class="language-small" onclick="openLanguage()">🌐</button>
     </div>
 
     <p class="intro">Discover computer hardware and technology!</p>
-
     <div class="card-list" id="computerList"></div>
 
 </section>
 
 
-<!-- MEDICAL SCIENCE -->
+<!-- MEDICAL -->
 
 <section id="medicalScreen" class="screen">
 
     <div class="header">
         <button class="back-btn" onclick="openLabScreen()">‹</button>
         <h2>🏥 Medical Science</h2>
-        <div class="header-spacer"></div>
         <button class="language-small" onclick="openLanguage()">🌐</button>
     </div>
 
     <p class="intro">Discover medical machines and equipment!</p>
-
     <div class="card-list" id="medicalList"></div>
 
 </section>
 
 
-<!-- SPACE SCIENCE -->
+<!-- SPACE -->
 
 <section id="spaceScienceScreen" class="screen">
 
     <div class="header">
         <button class="back-btn" onclick="openLabScreen()">‹</button>
         <h2>🚀 Space & Science</h2>
-        <div class="header-spacer"></div>
         <button class="language-small" onclick="openLanguage()">🌐</button>
     </div>
 
     <p class="intro">Explore rockets and space technology!</p>
-
     <div class="card-list" id="spaceList"></div>
 
 </section>
@@ -678,12 +767,10 @@ body.rtl .builder-card{
     <div class="header">
         <button class="back-btn" onclick="openLabScreen()">‹</button>
         <h2>🚜 Agriculture World</h2>
-        <div class="header-spacer"></div>
         <button class="language-small" onclick="openLanguage()">🌐</button>
     </div>
 
     <p class="intro">Build machines for modern farming!</p>
-
     <div class="card-list" id="agricultureList"></div>
 
 </section>
@@ -696,12 +783,10 @@ body.rtl .builder-card{
     <div class="header">
         <button class="back-btn" onclick="openLabScreen()">‹</button>
         <h2>🏋️ Sports World</h2>
-        <div class="header-spacer"></div>
         <button class="language-small" onclick="openLanguage()">🌐</button>
     </div>
 
     <p class="intro">Explore fitness and sports equipment!</p>
-
     <div class="card-list" id="sportsList"></div>
 
 </section>
@@ -785,24 +870,31 @@ body.rtl .builder-card{
 
     <div class="language-box">
 
-        <h2>🌐 Select Language</h2>
+        <div class="language-heading">
+            <div class="globe">🌐</div>
+            <h2 data-i18n="selectLanguage">Select Language</h2>
+            <p>Choose your preferred language</p>
+        </div>
 
-        <div id="languageOptions"></div>
+        <div class="language-options" id="languageOptions"></div>
 
-        <button class="close-language" onclick="closeLanguage()">
-            Close
-        </button>
+        <button class="close-language" onclick="closeLanguage()"
+            data-i18n="close">Close</button>
 
     </div>
 
 </div>
 
 
+<!-- CENTRAL LANGUAGE FILE LOAD FIRST -->
+
+<script src="language.js"></script>
+
 <script>
 
-/* ==================================
+/* ===================================
    PROGRESS STORAGE
-================================== */
+=================================== */
 
 const STORAGE_KEY = "futurelabKidsProgressV1";
 
@@ -835,33 +927,35 @@ function getProgress(){
 let progress = getProgress();
 
 function saveProgress(){
-
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(progress));
-
+    try{
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(progress));
+    }catch(error){
+        console.error("Progress could not be saved:",error);
+    }
 }
 
 
-/* ==================================
+/* ===================================
    BUILDER DATA
-================================== */
+=================================== */
 
 const builderGroups = {
 
     engineering:{
         container:"engineeringList",
         items:[
-            ["Sports Car Builder","🏎️","sports-car-builder.html"],
-            ["Jeep Builder","🚙","jeep.html"],
-            ["Volvo AC Bus","🚌","mega-bus.html"],
-            ["Train Builder","🚆","train-builder.html"]
+            ["Sports Car Builder","🏎️","sports-car-builder.html","sportsCar"],
+            ["Jeep Builder","🚙","jeep.html","jeep"],
+            ["Volvo AC Bus","🚌","mega-bus.html","bus"],
+            ["Train Builder","🚆","train-builder.html","train"]
         ]
     },
 
     aviation:{
         container:"aviationList",
         items:[
-            ["Helicopter Builder","🚁","helicopter-builder.html"],
-            ["Airplane Builder","✈️","airplane-builder.html"],
+            ["Helicopter Builder","🚁","helicopter-builder.html","helicopter"],
+            ["Airplane Builder","✈️","airplane-builder.html","airplane"],
             ["Bomber Aircraft","💣","bomber-builder.html"],
             ["Fighter Jet","🛩️","fighter-jet.html"]
         ]
@@ -870,8 +964,8 @@ const builderGroups = {
     computer:{
         container:"computerList",
         items:[
-            ["Laptop Builder","💻","laptop-builder.html"],
-            ["Desktop PC Builder","🖥️","desktop-pc-builder.html"]
+            ["Laptop Builder","💻","laptop-builder.html","laptopBuilder"],
+            ["Desktop PC Builder","🖥️","desktop-pc-builder.html","desktopBuilder"]
         ]
     },
 
@@ -890,7 +984,7 @@ const builderGroups = {
     space:{
         container:"spaceList",
         items:[
-            ["Rocket Builder","🚀","rocket-builder.html"]
+            ["Rocket Builder","🚀","rocket-builder.html","rocketBuilder"]
         ]
     },
 
@@ -913,12 +1007,11 @@ const builderGroups = {
 };
 
 
-/* ==================================
-   BUILDER COMPLETION & LOCK SYSTEM
-================================== */
+/* ===================================
+   SEQUENTIAL UNLOCK SYSTEM
+=================================== */
 
 function isCompleted(projectId){
-
     return progress.projects[projectId] === true;
 }
 
@@ -930,9 +1023,7 @@ function isUnlocked(category,index){
 
     for(let i=0;i<index;i++){
 
-        const previousId = items[i][2];
-
-        if(!isCompleted(previousId)){
+        if(!isCompleted(items[i][2])){
             return false;
         }
     }
@@ -940,46 +1031,50 @@ function isUnlocked(category,index){
     return true;
 }
 
+
+/* ===================================
+   RENDER BUILDER BUTTONS
+=================================== */
+
 function renderBuilders(){
 
     Object.keys(builderGroups).forEach(category=>{
 
         const group = builderGroups[category];
-
         const container = document.getElementById(group.container);
+
+        if(!container) return;
 
         container.innerHTML = "";
 
         group.items.forEach((item,index)=>{
 
-            const [name,emoji,link] = item;
+            const [name,emoji,link,translationKey] = item;
 
             const unlocked = isUnlocked(category,index);
-
             const completed = isCompleted(link);
 
             const card = document.createElement("a");
 
             card.className = "builder-card";
 
-            if(!unlocked){
-                card.classList.add("locked");
-            }
-
-            if(completed){
-                card.classList.add("completed");
-            }
+            if(!unlocked) card.classList.add("locked");
+            if(completed) card.classList.add("completed");
 
             card.href = unlocked ? link : "#";
+
+            const title = translationKey
+                ? `<strong data-i18n="${translationKey}">${name}</strong>`
+                : `<strong>${name}</strong>`;
 
             card.innerHTML = `
                 <div class="project-icon">${emoji}</div>
 
                 <div class="project-text">
-                    <strong>${name}</strong>
+                    ${title}
                     ${
                         completed
-                        ? '<span class="status">✓ COMPLETED</span>'
+                        ? '<span class="status" data-i18n="completed">✓ COMPLETED</span>'
                         : ''
                     }
                 </div>
@@ -995,7 +1090,13 @@ function renderBuilders(){
 
                 if(!unlocked){
                     event.preventDefault();
-                    alert("Complete the previous Builder first!");
+
+                    alert(
+                        window.FutureLabLanguage
+                        ? window.FutureLabLanguage.t("completePrevious")
+                        : "Complete the previous Builder first!"
+                    );
+
                     return;
                 }
 
@@ -1010,32 +1111,46 @@ function renderBuilders(){
 
     });
 
+    if(window.FutureLabLanguage){
+        window.FutureLabLanguage.apply();
+    }
+
 }
 
 
-/* ==================================
+/* ===================================
    BUILDER COMPLETION API
+=================================== */
 
-   Builder pages can call:
-   FutureLabProgress.complete("sports-car-builder.html")
-================================== */
+/*
+Builder pages can call:
+
+FutureLabProgress.complete("sports-car-builder.html");
+
+*/
 
 window.FutureLabProgress = {
 
     complete:function(projectId){
 
         const exists = Object.values(builderGroups)
-            .some(group=>group.items.some(item=>item[2]===projectId));
+            .some(group=>
+                group.items.some(item=>item[2]===projectId)
+            );
 
         if(!exists) return false;
 
         progress.projects[projectId] = true;
 
         saveProgress();
-
         renderBuilders();
-
         updateProgress();
+
+        window.dispatchEvent(
+            new CustomEvent("futurelab-progress-changed",{
+                detail:{projectId:projectId}
+            })
+        );
 
         return true;
     },
@@ -1058,14 +1173,18 @@ window.FutureLabProgress = {
         }
 
         return false;
+    },
+
+    isCompleted:function(projectId){
+        return isCompleted(projectId);
     }
 
 };
 
 
-/* ==================================
+/* ===================================
    SCREEN NAVIGATION
-================================== */
+=================================== */
 
 function openScreen(id){
 
@@ -1082,7 +1201,6 @@ function openScreen(id){
     closeLanguage();
 
     window.scrollTo(0,0);
-
 }
 
 function openHomeScreen(){
@@ -1112,9 +1230,9 @@ function openSettings(){
 }
 
 
-/* ==================================
+/* ===================================
    PROGRESS DISPLAY
-================================== */
+=================================== */
 
 function updateProgress(){
 
@@ -1124,214 +1242,40 @@ function updateProgress(){
     const completed = Object.values(progress.projects)
         .filter(value=>value===true).length;
 
+    const safeCompleted = Math.min(completed,total);
+
     document.getElementById("progressSummary").textContent =
-        "Completed Projects: "+completed+" / "+total;
+        "Completed Projects: "+safeCompleted+" / "+total;
 
     document.getElementById("progressDetails").textContent =
-        Math.round(completed/total*100)+"% of projects completed.";
+        Math.round(safeCompleted/total*100)+"% of projects completed.";
 
     document.getElementById("achievementDetails").textContent =
-        completed===0
+        safeCompleted===0
         ? "Start building to earn achievements!"
-        : "🌟 You have completed "+completed+" project(s)!";
+        : "🌟 You have completed "+safeCompleted+" project(s)!";
 
 }
 
 
-/* ==================================
-   LANGUAGE SYSTEM
-================================== */
+/* ===================================
+   COLORFUL LANGUAGE SELECTOR
+=================================== */
 
-const languages = [
-
-    ["en","English"],
-    ["bn","বাংলা"],
-    ["zh","中文"],
-    ["hi","हिन्दी"],
-    ["es","Español"],
-    ["ar","العربية"],
-    ["fr","Français"],
-    ["pt","Português"],
-    ["ru","Русский"],
-    ["ur","اردو"],
-    ["id","Indonesia"],
-    ["ja","日本語"]
-
-];
-
-const translations = {
-
-    en:{
-        welcome:"Your Future Starts Here!",
-        welcomeText:"Explore, build and discover amazing things.",
-        start:"START ADVENTURE",
-        language:"LANGUAGE",
-        achievements:"Achievements",
-        progress:"My Progress",
-        help:"Help Center",
-        explore:"Explore Your Lab",
-        chooseCategory:"Choose a world and start your adventure!"
-    },
-
-    bn:{
-        welcome:"তোমার ভবিষ্যৎ শুরু এখানেই!",
-        welcomeText:"অন্বেষণ করো, তৈরি করো এবং নতুন কিছু আবিষ্কার করো।",
-        start:"অ্যাডভেঞ্চার শুরু করো",
-        language:"ভাষা",
-        achievements:"অর্জনসমূহ",
-        progress:"আমার অগ্রগতি",
-        help:"সাহায্য কেন্দ্র",
-        explore:"তোমার ল্যাব অন্বেষণ করো",
-        chooseCategory:"একটি বিভাগ বেছে নাও এবং শুরু করো!"
-    },
-
-    zh:{
-        welcome:"你的未来从这里开始！",
-        welcomeText:"探索、建造并发现精彩事物。",
-        start:"开始冒险",
-        language:"语言",
-        achievements:"成就",
-        progress:"我的进度",
-        help:"帮助中心",
-        explore:"探索你的实验室",
-        chooseCategory:"选择一个世界，开始冒险！"
-    },
-
-    hi:{
-        welcome:"तुम्हारा भविष्य यहाँ से शुरू होता है!",
-        welcomeText:"खोजो, बनाओ और नई चीजें सीखो।",
-        start:"रोमांच शुरू करें",
-        language:"भाषा",
-        achievements:"उपलब्धियाँ",
-        progress:"मेरी प्रगति",
-        help:"सहायता केंद्र",
-        explore:"अपनी लैब खोजें",
-        chooseCategory:"एक दुनिया चुनें और शुरुआत करें!"
-    },
-
-    es:{
-        welcome:"¡Tu futuro comienza aquí!",
-        welcomeText:"Explora, construye y descubre cosas increíbles.",
-        start:"COMENZAR AVENTURA",
-        language:"IDIOMA",
-        achievements:"Logros",
-        progress:"Mi progreso",
-        help:"Centro de ayuda",
-        explore:"Explora tu laboratorio",
-        chooseCategory:"¡Elige un mundo y comienza tu aventura!"
-    },
-
-    ar:{
-        welcome:"مستقبلك يبدأ من هنا!",
-        welcomeText:"استكشف وابنِ واكتشف أشياء رائعة.",
-        start:"ابدأ المغامرة",
-        language:"اللغة",
-        achievements:"الإنجازات",
-        progress:"تقدمي",
-        help:"مركز المساعدة",
-        explore:"استكشف مختبرك",
-        chooseCategory:"اختر عالماً وابدأ مغامرتك!"
-    },
-
-    fr:{
-        welcome:"Ton avenir commence ici !",
-        welcomeText:"Explore, construis et découvre des choses incroyables.",
-        start:"COMMENCER L'AVENTURE",
-        language:"LANGUE",
-        achievements:"Réalisations",
-        progress:"Ma progression",
-        help:"Centre d'aide",
-        explore:"Explore ton laboratoire",
-        chooseCategory:"Choisis un monde et commence ton aventure !"
-    },
-
-    pt:{
-        welcome:"Seu futuro começa aqui!",
-        welcomeText:"Explore, construa e descubra coisas incríveis.",
-        start:"COMEÇAR AVENTURA",
-        language:"IDIOMA",
-        achievements:"Conquistas",
-        progress:"Meu progresso",
-        help:"Central de ajuda",
-        explore:"Explore seu laboratório",
-        chooseCategory:"Escolha um mundo e comece sua aventura!"
-    },
-
-    ru:{
-        welcome:"Твоё будущее начинается здесь!",
-        welcomeText:"Исследуй, создавай и открывай новое.",
-        start:"НАЧАТЬ ПРИКЛЮЧЕНИЕ",
-        language:"ЯЗЫК",
-        achievements:"Достижения",
-        progress:"Мой прогресс",
-        help:"Центр помощи",
-        explore:"Исследуй свою лабораторию",
-        chooseCategory:"Выбери мир и начни приключение!"
-    },
-
-    ur:{
-        welcome:"آپ کا مستقبل یہاں سے شروع ہوتا ہے!",
-        welcomeText:"دریافت کریں، بنائیں اور نئی چیزیں سیکھیں۔",
-        start:"مہم شروع کریں",
-        language:"زبان",
-        achievements:"کامیابیاں",
-        progress:"میری پیشرفت",
-        help:"مدد مرکز",
-        explore:"اپنی لیب دریافت کریں",
-        chooseCategory:"ایک دنیا منتخب کریں اور شروع کریں!"
-    },
-
-    id:{
-        welcome:"Masa depanmu dimulai di sini!",
-        welcomeText:"Jelajahi, bangun, dan temukan hal menakjubkan.",
-        start:"MULAI PETUALANGAN",
-        language:"BAHASA",
-        achievements:"Pencapaian",
-        progress:"Progres Saya",
-        help:"Pusat Bantuan",
-        explore:"Jelajahi Laboratoriummu",
-        chooseCategory:"Pilih dunia dan mulai petualanganmu!"
-    },
-
-    ja:{
-        welcome:"未来はここから始まる！",
-        welcomeText:"探検し、作り、素晴らしいことを発見しよう。",
-        start:"冒険を始める",
-        language:"言語",
-        achievements:"実績",
-        progress:"進捗状況",
-        help:"ヘルプセンター",
-        explore:"ラボを探検しよう",
-        chooseCategory:"世界を選んで冒険を始めよう！"
-    }
-
+const languageFlags = {
+    en:"🇬🇧",
+    bn:"🇧🇩",
+    hi:"🇮🇳",
+    ar:"🇸🇦",
+    es:"🇪🇸",
+    fr:"🇫🇷",
+    zh:"🇨🇳",
+    ja:"🇯🇵",
+    pt:"🇵🇹",
+    ru:"🇷🇺",
+    ur:"🇵🇰",
+    id:"🇮🇩"
 };
-
-let currentLanguage =
-    localStorage.getItem("futurelabLanguage") || "en";
-
-function applyLanguage(){
-
-    const dictionary = translations[currentLanguage] || translations.en;
-
-    document.documentElement.lang = currentLanguage;
-
-    document.body.classList.toggle(
-        "rtl",
-        currentLanguage==="ar" || currentLanguage==="ur"
-    );
-
-    document.querySelectorAll("[data-i18n]").forEach(element=>{
-
-        const key = element.getAttribute("data-i18n");
-
-        if(dictionary[key]){
-            element.textContent = dictionary[key];
-        }
-
-    });
-
-}
 
 function openLanguage(){
 
@@ -1339,35 +1283,48 @@ function openLanguage(){
 
     container.innerHTML = "";
 
-    languages.forEach(language=>{
+    const languageAPI = window.FutureLabLanguage;
+
+    if(!languageAPI){
+        alert("Language file not connected. Check language.js");
+        return;
+    }
+
+    const languages = languageAPI.languages;
+    const current = languageAPI.getLanguage();
+
+    Object.keys(languages).forEach(code=>{
 
         const button = document.createElement("button");
 
+        button.type = "button";
         button.className = "language-option";
 
-        if(language[0]===currentLanguage){
+        if(code===current){
             button.classList.add("selected");
         }
 
-        button.textContent = language[1];
+        button.innerHTML = `
+            <span class="language-flag">${languageFlags[code] || "🌐"}</span>
+            <span class="language-name">${languages[code]}</span>
+            <span class="language-check">${code===current ? "✓" : ""}</span>
+        `;
 
-        button.onclick = function(){
+        button.addEventListener("click",function(){
 
-            currentLanguage = language[0];
-
-            localStorage.setItem("futurelabLanguage",currentLanguage);
-
-            applyLanguage();
+            languageAPI.setLanguage(code);
 
             openLanguage();
 
-        };
+        });
 
         container.appendChild(button);
 
     });
 
     document.getElementById("languageModal").classList.add("show");
+
+    languageAPI.apply();
 
 }
 
@@ -1379,13 +1336,30 @@ function closeLanguage(){
 }
 
 
-/* ==================================
+/* ===================================
+   LANGUAGE CHANGE EVENT
+=================================== */
+
+window.addEventListener("futurelab-language-changed",function(){
+
+    if(window.FutureLabLanguage){
+        window.FutureLabLanguage.apply();
+    }
+
+    renderBuilders();
+
+});
+
+
+/* ===================================
    INITIALIZATION
-================================== */
+=================================== */
 
 renderBuilders();
 
-applyLanguage();
+if(window.FutureLabLanguage){
+    window.FutureLabLanguage.apply();
+}
 
 updateProgress();
 
