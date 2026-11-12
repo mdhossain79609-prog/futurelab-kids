@@ -617,6 +617,67 @@ body.rtl .language-check{
 .builder-card.completed{
     border:2px solid #35bc7c !important;
 }
+    
+/* BUILDER BUTTON NEW DESIGN */
+.builder-card{
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    width:100%!important;
+    min-height:112px!important;
+    padding:14px 16px!important;
+    margin-bottom:15px!important;
+
+    background:linear-gradient(135deg,#E8F5FF,#D5EEFF)!important;
+    border:2px solid #62B6E8!important;
+    border-radius:20px!important;
+
+    box-shadow:
+        0 5px 0 #91C9E8,
+        0 8px 15px rgba(30,100,150,.16)!important;
+}
+
+.builder-card .project-icon{
+    width:65px!important;
+    height:65px!important;
+    min-width:65px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    border-radius:18px!important;
+    background:#FFFFFF!important;
+    border:2px solid #B5DDF5!important;
+    font-size:36px!important;
+}
+
+.builder-card .project-text{
+    flex:1!important;
+    text-align:left!important;
+    margin-left:14px!important;
+}
+
+.builder-card .project-text strong{
+    color:#174A70!important;
+    font-size:21px!important;
+    font-weight:900!important;
+}
+
+.builder-card .project-text small{
+    color:#47718D!important;
+    font-size:15px!important;
+    font-weight:700!important;
+}
+
+.builder-card .builder-arrow{
+    color:#167BB5!important;
+    font-size:32px!important;
+    font-weight:900!important;
+}
+
+.builder-card:active{
+    transform:scale(.98);
+}
+
 
 </style>
 </head>
