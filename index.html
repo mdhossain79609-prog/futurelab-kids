@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e7f7ff">
 <title>FutureLab Kids</title>
 
 <style>
@@ -16,1768 +17,1376 @@ html,body{
     margin:0;
     width:100%;
     min-height:100%;
-    overflow-x:hidden;
-    font-family:Arial, sans-serif;
-    color:#24324a;
+    font-family:Arial,sans-serif;
     background:linear-gradient(135deg,#dff6ff,#f5fbff);
+    color:#18334b;
+    overflow-x:hidden;
+}
+
+button,a{
+    font-family:inherit;
 }
 
 button{
-    font-family:inherit;
     cursor:pointer;
-    border:0;
 }
 
 .screen{
     display:none;
-    min-height:100vh;
     width:100%;
-    padding:12px 15px 25px;
-    overflow-x:hidden;
+    min-height:100vh;
+    padding:16px;
+}
+
+.screen.active{
+    display:block;
 }
 
 #homeScreen{
-    display:block;
-    height:100vh;
     min-height:100vh;
+    height:100vh;
     overflow:hidden;
-    padding:0;
-}
-
-/* TOP BAR */
-
-.top-bar{
-    height:65px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:8px 18px;
-}
-
-.icon-btn{
-    width:44px;
-    height:44px;
-    border-radius:50%;
-    background:white;
-    font-size:21px;
-    box-shadow:0 4px 12px #00000012;
-    transition:transform .2s;
-}
-
-.icon-btn:active{
-    transform:scale(.9);
-}
-
-/* HOME */
-
-.home{
-    height:calc(100vh - 65px);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:0 16px 12px;
-}
-
-.logo{
-    font-size:clamp(55px,12vw,76px);
-    line-height:1.1;
-    filter:drop-shadow(0 5px 5px #00000015);
-}
-
-.app-name{
-    margin:5px 0 3px;
-    font-size:clamp(29px,7vw,38px);
-    font-weight:900;
-    color:#2457c5;
-    letter-spacing:-1px;
-}
-
-.app-name span{
-    color:#ff7900;
-}
-
-.slogan{
-    color:#65748b;
-    font-size:11px;
-    font-weight:bold;
-    letter-spacing:3px;
-    margin:5px 0 16px;
-}
-
-.welcome-card{
-    width:min(100%,410px);
-    background:white;
-    border-radius:24px;
-    padding:17px 16px;
-    box-shadow:0 8px 25px #3274aa18;
-    border:2px solid #ffffff;
-}
-
-.welcome-card h2{
-    margin:0 0 9px;
-    font-size:21px;
-    color:#2457c5;
-}
-
-.welcome-card p{
-    margin:0;
-    color:#65748b;
-    font-size:13px;
-    line-height:1.6;
-}
-
-.start-btn{
-    width:min(100%,380px);
-    margin-top:17px;
-    padding:16px 12px;
-    border-radius:18px;
-    color:white;
-    background:linear-gradient(135deg,#ff9b24,#ff6500);
-    font-size:18px;
-    font-weight:900;
-    box-shadow:0 6px 0 #dc5600,0 10px 20px #ff790033;
-    transition:transform .2s;
-}
-
-.start-btn:active{
-    transform:translateY(4px);
-    box-shadow:0 2px 0 #dc5600;
-}
-
-.bottom-buttons{
-    width:min(100%,390px);
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-top:17px;
-}
-
-.small-btn{
-    background:white;
-    padding:13px 5px;
-    border-radius:15px;
-    font-size:13px;
-    font-weight:bold;
-    color:#34517c;
-    box-shadow:0 4px 12px #00000010;
-}
-
-.small-btn:active{
-    transform:scale(.96);
-}
-
-.footer-text{
-    margin-top:17px;
-    color:#8192a8;
-    font-size:11px;
-    letter-spacing:2px;
-    font-weight:bold;
-}
-
-/* SCREEN HEADER */
-
-.page-header{
-    text-align:center;
-    padding:12px 8px 18px;
-}
-
-.page-icon{
-    font-size:48px;
-    margin-bottom:5px;
-}
-
-.page-title{
-    margin:0;
-    color:#2457c5;
-    font-size:27px;
-    font-weight:900;
-}
-
-.page-subtitle{
-    color:#75849a;
-    font-size:13px;
-    line-height:1.5;
-    margin:8px auto 0;
-    max-width:340px;
-}
-
-/* CATEGORY CARDS */
-
-.card-list{
-    width:min(100%,470px);
-    margin:0 auto;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-}
-
-.lab-card{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    width:100%;
-    min-height:82px;
-    padding:13px 15px;
-    border-radius:19px;
-    background:white;
-    text-align:left;
-    box-shadow:0 5px 16px #0000000d;
-    border:1px solid #eaf1fb;
-    transition:transform .18s;
-}
-
-.lab-card:active{
-    transform:scale(.98);
-}
-
-.card-icon{
-    width:52px;
-    height:52px;
-    flex-shrink:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-radius:16px;
-    background:#edf5ff;
-    font-size:29px;
-}
-
-.card-info{
-    flex:1;
-    min-width:0;
-}
-
-.card-info h3{
-    margin:0;
-    color:#2e4770;
-    font-size:16px;
-    font-weight:900;
-}
-
-.card-info p{
-    margin:5px 0 0;
-    color:#8996a9;
-    font-size:11px;
-    line-height:1.4;
-}
-
-.card-arrow{
-    font-size:25px;
-    color:#8da5c8;
-    font-weight:bold;
-}
-
-/* PROJECT CARDS */
-
-.builder-card{
-    display:flex;
-    align-items:center;
-    gap:13px;
-    min-height:76px;
-    padding:12px 14px;
-    width:100%;
-    background:white;
-    border-radius:18px;
-    box-shadow:0 5px 16px #0000000d;
-    text-decoration:none;
-    color:#2e4770;
-    border:1px solid #eaf1fb;
-    transition:transform .18s;
-}
-
-.builder-card:active{
-    transform:scale(.98);
-}
-
-.builder-project-icon{
-    width:50px;
-    height:50px;
-    border-radius:15px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#eef5ff;
-    font-size:29px;
-    flex-shrink:0;
-}
-
-.builder-project-text{
-    flex:1;
-    font-size:15px;
-    font-weight:900;
-}
-
-.builder-arrow{
-    font-size:23px;
-    color:#8da5c8;
-}
-
-/* BACK BUTTON */
-
-.back-btn{
-    display:block;
-    width:min(100%,300px);
-    margin:24px auto 5px;
-    padding:14px;
-    border-radius:15px;
-    background:linear-gradient(135deg,#6c63e9,#5147c9);
-    color:white;
-    font-size:14px;
-    font-weight:bold;
-    box-shadow:0 5px 12px #5147c933;
-}
-
-/* POPUP / MODAL */
-
-.modal-overlay{
     display:none;
-    position:fixed;
-    inset:0;
-    z-index:1000;
-    background:#15233bbd;
-    align-items:center;
-    justify-content:center;
-    padding:18px;
-}
-
-.modal-overlay.show{
-    display:flex;
-}
-
-.modal{
-    width:min(100%,420px);
-    max-height:85vh;
-    overflow-y:auto;
-    background:white;
-    border-radius:25px;
-    padding:22px 18px;
-    box-shadow:0 15px 45px #00000035;
-    animation:popIn .22s ease;
-}
-
-@keyframes popIn{
-    from{transform:scale(.92);opacity:0}
-    to{transform:scale(1);opacity:1}
-}
-
-.modal-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:16px;
-}
-
-.modal-header h2{
-    margin:0;
-    color:#2457c5;
-    font-size:22px;
-}
-
-.close-btn{
-    width:35px;
-    height:35px;
-    border-radius:50%;
-    background:#edf3ff;
-    color:#34517c;
-    font-size:20px;
-}
-
-.setting-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    padding:15px 5px;
-    border-bottom:1px solid #edf1f7;
-}
-
-.setting-name{
-    font-size:15px;
-    font-weight:bold;
-    color:#344b70;
-}
-
-.setting-description{
-    font-size:11px;
-    color:#8794a7;
-    margin-top:4px;
-}
-
-.toggle-btn{
-    min-width:65px;
-    padding:9px 12px;
-    border-radius:20px;
-    background:#dfe6ef;
-    color:#607086;
-    font-weight:bold;
-    font-size:12px;
-}
-
-.toggle-btn.active{
-    background:#20bd79;
-    color:white;
-}
-
-.progress-card{
-    background:#f1f7ff;
-    border-radius:17px;
-    padding:14px;
-    margin:10px 0;
-}
-
-.progress-card strong{
-    display:block;
-    color:#2457c5;
-    font-size:25px;
-    margin-bottom:4px;
-}
-
-.progress-card span{
-    color:#728198;
-    font-size:12px;
-}
-
-.progress-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-
-.achievement{
-    background:#f5f8ff;
-    border:1px solid #e8eef9;
-    border-radius:16px;
-    padding:14px 8px;
     text-align:center;
+    position:relative;
+    padding:12px 18px;
 }
 
-.achievement .medal{
-    font-size:31px;
-    filter:grayscale(1);
-    opacity:.35;
-}
-
-.achievement.unlocked .medal{
-    filter:none;
-    opacity:1;
-}
-
-.achievement h3{
-    margin:7px 0 4px;
-    color:#34517c;
-    font-size:13px;
-}
-
-.achievement p{
-    margin:0;
-    color:#8a97a9;
-    font-size:10px;
-}
-
-.help-item{
-    padding:13px 5px;
-    border-bottom:1px solid #edf1f7;
-}
-
-.help-item h3{
-    color:#2457c5;
-    margin:0 0 6px;
-    font-size:15px;
-}
-
-.help-item p{
-    color:#718096;
-    font-size:12px;
-    line-height:1.6;
-    margin:0;
-}
-
-.modal-note{
-    text-align:center;
-    color:#8b98aa;
-    font-size:11px;
-    margin-top:15px;
-}
-
-/* ANIMATION SETTING */
-
-body.no-animations *,
-body.no-animations *::before,
-body.no-animations *::after{
-    animation:none!important;
-    transition:none!important;
-}
-
-/* SMALL MOBILE */
-
-@media(max-height:700px){
-    .top-bar{height:52px}
-    .home{height:calc(100vh - 52px)}
-    .logo{font-size:53px}
-    .app-name{font-size:29px}
-    .slogan{margin:3px 0 10px;font-size:9px}
-    .welcome-card{padding:12px}
-    .welcome-card h2{font-size:18px}
-    .welcome-card p{font-size:11px}
-    .start-btn{margin-top:12px;padding:13px;font-size:16px}
-    .bottom-buttons{margin-top:12px}
-    .small-btn{padding:10px 4px;font-size:12px}
-    .footer-text{margin-top:11px;font-size:9px}
-}
-
-@media(max-width:350px){
-    .app-name{font-size:27px}
-    .welcome-card h2{font-size:17px}
-    .welcome-card p{font-size:11px}
-    .start-btn{font-size:15px}
-}
-
-/* ===== FINAL HOME SCREEN POSITION & SCROLL FIX ===== */
-
-html,
-body {
-    margin:0 !important;
-    padding:0 !important;
-    width:100%;
-    max-width:100%;
-}
-
-body.home-mode {
-    position:fixed !important;
-    inset:0 !important;
-    width:100% !important;
-    height:100vh !important;
-    height:100dvh !important;
-    overflow:hidden !important;
-    overscroll-behavior:none;
-}
-
-body.home-mode #homeScreen {
-    position:absolute !important;
-    inset:0 !important;
-    width:100% !important;
-    height:100vh !important;
-    height:100dvh !important;
-    min-height:0 !important;
-    overflow:hidden !important;
-    padding:0 !important;
-}
-
-body.home-mode .top-bar {
-    height:60px !important;
-    flex-shrink:0;
-}
-
-body.home-mode .home {
-    height:calc(100vh - 60px) !important;
-    height:calc(100dvh - 60px) !important;
-    min-height:0 !important;
-
+#homeScreen.active{
     display:flex;
     flex-direction:column;
-    justify-content:flex-start !important;
     align-items:center;
-
-    overflow:hidden !important;
-
-    padding:35px 16px 5px !important;
 }
 
-/* Move logo and all home content upward */
+.top-actions{
+    width:100%;
+    max-width:520px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
-body.home-mode .logo {
-    margin:0 !important;
+.round-btn{
+    width:43px;
+    height:43px;
+    border:0;
+    border-radius:50%;
+    background:white;
+    box-shadow:0 3px 12px #b9d9e8;
+    font-size:21px;
+}
+
+.home-logo{
+    margin-top:12px;
     font-size:65px;
     line-height:1.1;
 }
 
-body.home-mode .app-name {
-    margin:5px 0 2px !important;
+.home-title{
+    margin:5px 0;
+    font-size:35px;
+    font-weight:900;
+    color:#0879bd;
 }
 
-body.home-mode .slogan {
-    margin:5px 0 15px !important;
+.home-title span{
+    color:#ff8b19;
 }
 
-body.home-mode .welcome-card {
-    margin-top:0 !important;
+.tagline{
+    font-size:12px;
+    letter-spacing:3px;
+    font-weight:bold;
+    color:#62849a;
+    margin:4px 0 17px;
 }
 
-body.home-mode .start-btn {
-    margin-top:15px !important;
+.welcome-card{
+    width:100%;
+    max-width:390px;
+    padding:16px 12px;
+    background:white;
+    border-radius:22px;
+    box-shadow:0 7px 20px #c5e3f0;
+    margin-bottom:14px;
 }
 
-body.home-mode .bottom-buttons {
-    margin-top:15px !important;
+.welcome-card h2{
+    margin:0 0 7px;
+    color:#147db8;
+    font-size:23px;
 }
 
-body.home-mode .footer-text {
-    margin-top:15px !important;
+.welcome-card p{
+    margin:0;
+    color:#658195;
+    font-size:14px;
 }
 
-/* Short mobile screens */
+.main-btn{
+    width:100%;
+    max-width:340px;
+    min-height:54px;
+    border:0;
+    border-radius:17px;
+    color:white;
+    font-size:17px;
+    font-weight:900;
+    letter-spacing:1px;
+    background:linear-gradient(135deg,#ff9b23,#ff6b22);
+    box-shadow:0 5px 0 #d95518;
+    margin-bottom:14px;
+}
 
-@media(max-height:750px) {
+.language-home{
+    width:100%;
+    max-width:340px;
+    min-height:46px;
+    border:2px solid #68bce6;
+    background:white;
+    color:#0879bd;
+    border-radius:14px;
+    font-weight:bold;
+    font-size:15px;
+    margin-bottom:12px;
+}
 
-    body.home-mode .home {
-        padding-top:15px !important;
+.home-secondary{
+    width:100%;
+    max-width:340px;
+    display:flex;
+    gap:10px;
+    margin-top:8px;
+}
+
+.home-secondary button{
+    flex:1;
+    min-height:48px;
+    border:0;
+    border-radius:13px;
+    background:white;
+    color:#28648b;
+    font-weight:bold;
+    box-shadow:0 3px 10px #c8e2ed;
+}
+
+.achievement-home{
+    width:100%;
+    max-width:340px;
+    margin:8px 0;
+    padding:11px;
+    border-radius:14px;
+    background:#fff4c9;
+    color:#95620b;
+    font-weight:bold;
+    border:1px solid #ffe29a;
+}
+
+.home-footer{
+    margin-top:auto;
+    padding:10px 0 3px;
+    font-size:11px;
+    letter-spacing:1px;
+    color:#7695a6;
+}
+
+/* General screens */
+
+.header{
+    max-width:750px;
+    margin:0 auto 17px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.back-btn{
+    width:43px;
+    height:43px;
+    flex-shrink:0;
+    border:0;
+    border-radius:13px;
+    background:white;
+    color:#147db8;
+    font-size:23px;
+    box-shadow:0 3px 10px #c8e2ed;
+}
+
+.header h2{
+    margin:0;
+    font-size:22px;
+    color:#0879bd;
+}
+
+.header-spacer{
+    flex:1;
+}
+
+.language-small{
+    border:0;
+    background:white;
+    padding:10px;
+    border-radius:12px;
+    font-weight:bold;
+    color:#0879bd;
+}
+
+.intro{
+    max-width:750px;
+    margin:0 auto 18px;
+    text-align:center;
+    color:#638399;
+    font-size:14px;
+}
+
+.card-list{
+    width:100%;
+    max-width:750px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:13px;
+}
+
+.category-card,.builder-card{
+    min-width:0;
+    min-height:105px;
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:14px 12px;
+    border:0;
+    border-radius:17px;
+    background:white;
+    color:#244a63;
+    text-decoration:none;
+    text-align:left;
+    box-shadow:0 4px 12px #c8e2ed;
+    transition:transform .15s;
+}
+
+.category-card:active,.builder-card:active{
+    transform:scale(.97);
+}
+
+.project-icon{
+    width:49px;
+    height:49px;
+    flex-shrink:0;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    background:#e9f7ff;
+    font-size:29px;
+}
+
+.project-text{
+    flex:1;
+    min-width:0;
+}
+
+.project-text strong{
+    display:block;
+    font-size:14px;
+    line-height:1.35;
+}
+
+.project-text small{
+    display:block;
+    color:#8199a8;
+    margin-top:5px;
+    font-size:11px;
+}
+
+.arrow{
+    color:#69a9ca;
+    font-size:26px;
+}
+
+.builder-card.locked{
+    opacity:.65;
+    background:#e8edf1;
+    cursor:not-allowed;
+}
+
+.lock-icon{
+    font-size:20px;
+    flex-shrink:0;
+}
+
+.builder-card.completed{
+    border:2px solid #35bc7c;
+}
+
+.status{
+    display:block;
+    font-size:10px;
+    font-weight:bold;
+    margin-top:5px;
+    color:#159b61;
+}
+
+.info-panel{
+    max-width:550px;
+    margin:15px auto;
+    padding:18px;
+    background:white;
+    border-radius:17px;
+    box-shadow:0 4px 12px #c8e2ed;
+    text-align:center;
+}
+
+.info-panel button{
+    border:0;
+    border-radius:12px;
+    padding:12px 18px;
+    background:#168ac7;
+    color:white;
+    font-weight:bold;
+}
+
+.language-modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:#102d4388;
+}
+
+.language-modal.show{
+    display:flex;
+}
+
+.language-box{
+    width:100%;
+    max-width:380px;
+    max-height:85vh;
+    overflow-y:auto;
+    background:white;
+    padding:20px;
+    border-radius:22px;
+}
+
+.language-box h2{
+    margin-top:0;
+    color:#0879bd;
+}
+
+.language-option{
+    width:100%;
+    display:block;
+    padding:12px;
+    margin:7px 0;
+    border:1px solid #d7eaf3;
+    background:#f5fbff;
+    border-radius:12px;
+    text-align:left;
+    font-weight:bold;
+    color:#28516b;
+}
+
+.language-option.selected{
+    border:2px solid #168ac7;
+    background:#e4f6ff;
+}
+
+.close-language{
+    width:100%;
+    padding:12px;
+    border:0;
+    border-radius:12px;
+    background:#ff8b22;
+    color:white;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+body.rtl{
+    direction:rtl;
+}
+
+body.rtl .project-text,
+body.rtl .category-card,
+body.rtl .builder-card{
+    text-align:right;
+}
+
+@media(max-width:380px){
+    .home-logo{font-size:54px}
+    .home-title{font-size:30px}
+    .card-list{gap:9px}
+    .category-card,.builder-card{
+        padding:10px 8px;
+        gap:7px;
     }
-
-    body.home-mode .logo {
-
-/* ===== HOME SCREEN FINAL POSITION & SCROLL FIX ===== */
-
-html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-}
-
-/* HOME SCREEN NO SCROLL */
-
-body.home-mode {
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    overflow: hidden !important;
-    overscroll-behavior: none;
-}
-
-body.home-mode #homeScreen {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100vh !important;
-    height: 100dvh !important;
-    min-height: 0 !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-}
-
-/* TOP BAR */
-
-body.home-mode .top-bar {
-    height: 55px !important;
-    flex-shrink: 0;
-}
-
-/* HOME CONTENT POSITION */
-
-body.home-mode .home {
-    height: calc(100vh - 55px) !important;
-    height: calc(100dvh - 55px) !important;
-    min-height: 0 !important;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start !important;
-    align-items: center;
-
-    overflow: hidden !important;
-
-    padding: 5px 16px 5px !important;
-}
-
-/* LOGO */
-
-body.home-mode .logo {
-    margin: 0 !important;
-    font-size: 60px !important;
-    line-height: 1.05 !important;
-    flex-shrink: 0;
-}
-
-/* APP NAME */
-
-body.home-mode .app-name {
-    margin: 3px 0 2px !important;
-    font-size: 34px !important;
-    flex-shrink: 0;
-}
-
-/* SLOGAN */
-
-body.home-mode .slogan {
-    margin: 3px 0 12px !important;
-    flex-shrink: 0;
-}
-
-/* WELCOME CARD */
-
-body.home-mode .welcome-card {
-    margin-top: 0 !important;
-    padding: 15px !important;
-    flex-shrink: 0;
-}
-
-/* START BUTTON */
-
-body.home-mode .start-btn {
-    margin-top: 12px !important;
-    flex-shrink: 0;
-}
-
-/* BOTTOM BUTTONS */
-
-body.home-mode .bottom-buttons {
-    margin-top: 12px !important;
-    flex-shrink: 0;
-}
-
-/* FOOTER */
-
-body.home-mode .footer-text {
-    margin-top: 10px !important;
-    flex-shrink: 0;
-}
-
-/* SHORT MOBILE SCREENS */
-
-@media(max-height:750px) {
-
-    body.home-mode .home {
-        padding-top: 2px !important;
+    .project-icon{
+        width:39px;
+        height:39px;
+        font-size:24px;
     }
-
-    body.home-mode .logo {
-        font-size: 49px !important;
-    }
-
-    body.home-mode .app-name {
-        font-size: 29px !important;
-    }
-
-    body.home-mode .slogan {
-        font-size: 9px !important;
-        margin-bottom: 9px !important;
-    }
-
-    body.home-mode .welcome-card {
-        padding: 11px !important;
-    }
-
-    body.home-mode .welcome-card h2 {
-        font-size: 18px !important;
-    }
-
-    body.home-mode .welcome-card p {
-        font-size: 11px !important;
-    }
-
-    body.home-mode .start-btn {
-        margin-top: 9px !important;
-        padding: 12px !important;
-        font-size: 15px !important;
-    }
-
-    body.home-mode .bottom-buttons {
-        margin-top: 9px !important;
-    }
-
-    body.home-mode .small-btn {
-        padding: 9px 4px !important;
-    }
-
-    body.home-mode .footer-text {
-        margin-top: 8px !important;
-    }
+    .project-text strong{font-size:12px}
 }
-    
+
+@media(max-height:650px){
+    .home-logo{font-size:49px;margin-top:4px}
+    .home-title{font-size:28px}
+    .tagline{margin-bottom:8px}
+    .welcome-card{padding:10px;margin-bottom:9px}
+    .home-secondary{margin-top:4px}
+}
 </style>
 </head>
 
-<body class="home-mode">
+<body>
 
-<!-- =========================
-     HOME SCREEN
-========================= -->
+<!-- HOME SCREEN -->
 
-<div id="homeScreen" class="screen">
+<section id="homeScreen" class="screen active">
 
-    <div class="top-bar">
-        <button class="icon-btn" onclick="openSettings()" aria-label="Settings">⚙️</button>
-        <button class="icon-btn" onclick="openAchievements()" aria-label="Achievements">⭐</button>
+    <div class="top-actions">
+        <button class="round-btn" onclick="openSettings()">⚙️</button>
+        <button class="round-btn" onclick="openAchievements()">⭐</button>
     </div>
 
-    <main class="home">
+    <div class="home-logo">🚀</div>
 
-        <div class="logo">🚀</div>
+    <h1 class="home-title">
+        FutureLab <span>Kids</span>
+    </h1>
 
-        <h1 class="app-name">FutureLab <span>Kids</span></h1>
+    <div class="tagline">BUILD • DISCOVER • INVENT</div>
 
-        <div class="slogan">BUILD • DISCOVER • INVENT</div>
-
-        <div class="welcome-card">
-            <h2>🌟 Your Future Starts Here!</h2>
-            <p>
-                Build amazing things, solve fun challenges,
-                explore technology and discover your future.
-            </p>
-        </div>
-
-        <button class="start-btn" onclick="startAdventure()">
-            🚀 START ADVENTURE
-        </button>
-
-        <div class="bottom-buttons">
-            <button class="small-btn" onclick="openProgress()">
-                🏆 My Progress
-            </button>
-
-            <button class="small-btn" onclick="openHelp()">
-                💡 Help Center
-            </button>
-        </div>
-
-        <div class="footer-text">
-            Learn • Build • Test • Create
-        </div>
-
-    </main>
-</div>
-
-
-<!-- =========================
-     CATEGORY SCREEN
-========================= -->
-
-<div id="labScreen" class="screen">
-
-    <div class="page-header">
-        <div class="page-icon">🌍</div>
-        <h1 class="page-title">Explore Your World</h1>
-        <p class="page-subtitle">
-            Choose your favorite world and start creating!
+    <div class="welcome-card">
+        <h2 data-i18n="welcome">Your Future Starts Here!</h2>
+        <p data-i18n="welcomeText">
+            Explore, build and discover amazing things.
         </p>
     </div>
 
-    <div class="card-list">
-
-        <button class="lab-card" onclick="openBuilderScreen()">
-            <div class="card-icon">👷</div>
-            <div class="card-info">
-                <h3>Engineering World</h3>
-                <p>Build vehicles and amazing machines</p>
-            </div>
-            <div class="card-arrow">›</div>
-        </button>
-
-        <button class="lab-card" onclick="openAviationScreen()">
-            <div class="card-icon">✈️</div>
-            <div class="card-info">
-                <h3>Aviation & Pilot</h3>
-                <p>Explore aircraft and flying machines</p>
-            </div>
-            <div class="card-arrow">›</div>
-        </button>
-
-        <button class="lab-card" onclick="openComputerScienceScreen()">
-            <div class="card-icon">💻</div>
-            <div class="card-info">
-                <h3>Computer Science & Technology</h3>
-                <p>Discover computers and technology</p>
-            </div>
-            <div class="card-arrow">›</div>
-        </button>
-
-        <button class="lab-card" onclick="openMedicalScreen()">
-            <div class="card-icon">🏥</div>
-            <div class="card-info">
-                <h3>Medical Science & Technology</h3>
-                <p>Explore medical machines and equipment</p>
-            </div>
-            <div class="card-arrow">›</div>
-        </button>
-
-        <button class="lab-card" onclick="openSpaceScienceScreen()">
-            <div class="card-icon">🚀</div>
-            <div class="card-info">
-                <h3>Space & Science</h3>
-                <p>Discover rockets and the universe</p>
-            </div>
-            <div class="card-arrow">›</div>
-        </button>
-
-        <button class="lab-card" onclick="openAgricultureScreen()">
-            <div class="card-icon">🌾</div>
-            <div class="card-info">
-                <h3>Agriculture World</h3>
-                <p>Explore farming machines</p>
-            </div>
-            <div class="card-arrow">›</div>
-        </button>
-
-        <button class="lab-card" onclick="openSportsScreen()">
-            <div class="card-icon">🏆</div>
-            <div class="card-info">
-                <h3>Sports World</h3>
-                <p>Discover sports and fitness equipment</p>
-            </div>
-            <div class="card-arrow">›</div>
-        </button>
-
-    </div>
-
-    <button class="back-btn" onclick="openHomeScreen()">
-        🏠 Back to Home
+    <button class="main-btn" onclick="openLabScreen()"
+        data-i18n="start">
+        START ADVENTURE
     </button>
 
-</div>
+    <button class="language-home" onclick="openLanguage()">
+        🌐 <span data-i18n="language">LANGUAGE</span>
+    </button>
 
-
-<!-- =========================
-     AVIATION SCREEN
-========================= -->
-
-<div id="aviationScreen" class="screen">
-
-    <div class="page-header">
-        <div class="page-icon">✈️</div>
-        <h1 class="page-title">Aviation World</h1>
-        <p class="page-subtitle">
-            Explore the amazing world of aircraft!
-        </p>
+    <div class="achievement-home" onclick="openAchievements()">
+        🏆 <span data-i18n="achievements">Achievements</span>
     </div>
+
+    <div class="home-secondary">
+        <button onclick="openProgress()">
+            📊 <span data-i18n="progress">My Progress</span>
+        </button>
+
+        <button onclick="openHelp()">
+            ❓ <span data-i18n="help">Help Center</span>
+        </button>
+    </div>
+
+    <div class="home-footer">
+        Learn • Build • Test • Create
+    </div>
+
+</section>
+
+
+<!-- MAIN CATEGORY SCREEN -->
+
+<section id="labScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openHomeScreen()">‹</button>
+        <h2 data-i18n="explore">Explore Your Lab</h2>
+        <div class="header-spacer"></div>
+        <button class="language-small" onclick="openLanguage()">🌐</button>
+    </div>
+
+    <p class="intro" data-i18n="chooseCategory">
+        Choose a world and start your adventure!
+    </p>
 
     <div class="card-list">
 
-        <a class="builder-card project-link" href="helicopter-builder.html">
-            <div class="builder-project-icon">🚁</div>
-            <div class="builder-project-text">Helicopter Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="airplane-builder.html">
-            <div class="builder-project-icon">✈️</div>
-            <div class="builder-project-text">Airplane Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="bomber-builder.html">
-            <div class="builder-project-icon">🛩️</div>
-            <div class="builder-project-text">Bomber Aircraft</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="fighter-jet.html">
-            <div class="builder-project-icon">🛫</div>
-            <div class="builder-project-text">Fighter Jet</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-    </div>
-
-    <button class="back-btn" onclick="openLabScreen()">
-        ← Back to Categories
-    </button>
-
-</div>
-
-
-<!-- =========================
-     JUNIOR BUILDER SCREEN
-========================= -->
-
-<div id="builderScreen" class="screen">
-
-    <div class="page-header">
-        <div class="page-icon">👷</div>
-        <h1 class="page-title">Junior Builder</h1>
-        <p class="page-subtitle">
-            Build amazing machines and become a young engineer!
-        </p>
-    </div>
-
-    <div class="card-list">
-
-        <a class="builder-card project-link" href="sports-car-builder.html">
-            <div class="builder-project-icon">🏎️</div>
-            <div class="builder-project-text">Sports Car Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="jeep.html">
-            <div class="builder-project-icon">🚙</div>
-            <div class="builder-project-text">Jeep Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="mega-bus.html">
-            <div class="builder-project-icon">🚌</div>
-            <div class="builder-project-text">Volvo AC Bus</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="train-builder.html">
-            <div class="builder-project-icon">🚆</div>
-            <div class="builder-project-text">Train Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-    </div>
-
-    <button class="back-btn" onclick="openLabScreen()">
-        ← Back to Categories
-    </button>
-
-</div>
-
-
-<!-- =========================
-     COMPUTER SCIENCE SCREEN
-========================= -->
-
-<div id="computerScienceScreen" class="screen">
-
-    <div class="page-header">
-        <div class="page-icon">💻</div>
-        <h1 class="page-title">Computer Technology</h1>
-        <p class="page-subtitle">
-            Build and explore computer systems!
-        </p>
-    </div>
-
-    <div class="card-list">
-
-        <a class="builder-card project-link" href="laptop-builder.html">
-            <div class="builder-project-icon">💻</div>
-            <div class="builder-project-text">Laptop Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="desktop-pc-builder.html">
-            <div class="builder-project-icon">🖥️</div>
-            <div class="builder-project-text">Desktop PC Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-    </div>
-
-    <button class="back-btn" onclick="openLabScreen()">
-        ← Back to Categories
-    </button>
-
-</div>
-
-
-<!-- =========================
-     MEDICAL SCREEN
-========================= -->
-
-<div id="medicalScreen" class="screen">
-
-    <div class="page-header">
-        <div class="page-icon">🏥</div>
-        <h1 class="page-title">Medical Science</h1>
-        <p class="page-subtitle">
-            Discover machines used in modern healthcare!
-        </p>
-    </div>
-
-    <div class="card-list">
-
-        <a class="builder-card project-link" href="xray-machine.html">
-            <div class="builder-project-icon">🩻</div>
-            <div class="builder-project-text">X-Ray Machine</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="ultrasound-machine.html">
-            <div class="builder-project-icon">🖥️</div>
-            <div class="builder-project-text">Ultrasound Machine</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="ct-scan-machine.html">
-            <div class="builder-project-icon">🏥</div>
-            <div class="builder-project-text">CT Scan Machine</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="eeg-machine.html">
-            <div class="builder-project-icon">🧠</div>
-            <div class="builder-project-text">EEG Machine</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="dental-equipment.html">
-            <div class="builder-project-icon">🦷</div>
-            <div class="builder-project-text">Dental Equipment</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-
-<a class="builder-card project-link" href="eye-examination-equipment.html">
-    <div class="builder-project-icon">👁️</div>
-    <div class="builder-project-text">Eye Examination Equipment</div>
-    <div class="builder-arrow">›</div>
-</a>
-
-
-    </div>
-
-    <button class="back-btn" onclick="openLabScreen()">
-        ← Back to Categories
-    </button>
-
-</div>
-
-
-<!-- =========================
-     SPACE SCIENCE SCREEN
-========================= -->
-
-<div id="spaceScienceScreen" class="screen">
-
-    <div class="page-header">
-        <div class="page-icon">🌌</div>
-        <h1 class="page-title">Space & Science</h1>
-        <p class="page-subtitle">
-            Explore space, rockets and the universe!
-        </p>
-    </div>
-
-    <div class="card-list">
-
-        <a class="builder-card project-link" href="rocket-builder.html">
-            <div class="builder-project-icon">🚀</div>
-            <div class="builder-project-text">Rocket Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-    </div>
-
-    <button class="back-btn" onclick="openLabScreen()">
-        ← Back to Categories
-    </button>
-
-</div>
-
-
-<!-- =========================
-     AGRICULTURE SCREEN
-========================= -->
-
-<div id="agricultureScreen" class="screen">
-
-    <div class="page-header">
-        <div class="page-icon">🌾</div>
-        <h1 class="page-title">Agriculture World</h1>
-        <p class="page-subtitle">
-            Discover powerful farming machines!
-        </p>
-    </div>
-
-    <div class="card-list">
-
-        <a class="builder-card project-link" href="mini-tractor.html">
-            <div class="builder-project-icon">🚜</div>
-            <div class="builder-project-text">Mini Tractor Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="power-tiller.html">
-            <div class="builder-project-icon">🌱</div>
-            <div class="builder-project-text">Power Tiller Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-    </div>
-
-    <button class="back-btn" onclick="openLabScreen()">
-        ← Back to Categories
-    </button>
-
-</div>
-
-
-<!-- =========================
-     SPORTS SCREEN
-========================= -->
-
-<div id="sportsScreen" class="screen">
-
-    <div class="page-header">
-        <div class="page-icon">🏆</div>
-        <h1 class="page-title">Sports World</h1>
-        <p class="page-subtitle">
-            Explore sports and fitness equipment!
-        </p>
-    </div>
-
-    <div class="card-list">
-
-        <a class="builder-card project-link" href="treadmill.html">
-            <div class="builder-project-icon">🏃</div>
-            <div class="builder-project-text">Treadmill Builder</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-        <a class="builder-card project-link" href="five-station-gym.html">
-            <div class="builder-project-icon">🏋️</div>
-            <div class="builder-project-text">Five Station Gym</div>
-            <div class="builder-arrow">›</div>
-        </a>
-
-    </div>
-
-    <button class="back-btn" onclick="openLabScreen()">
-        ← Back to Categories
-    </button>
-
-</div>
-
-
-<!-- =========================
-     SETTINGS MODAL
-========================= -->
-
-<div class="modal-overlay" id="settingsModal" onclick="closeOutside(event,'settingsModal')">
-
-    <div class="modal">
-
-        <div class="modal-header">
-            <h2>⚙️ Settings</h2>
-            <button class="close-btn" onclick="closeModal('settingsModal')">×</button>
-        </div>
-
-        <div class="setting-row">
-            <div>
-                <div class="setting-name">🔊 Sound Effects</div>
-                <div class="setting-description">Play a sound when buttons are pressed</div>
+        <button class="category-card" onclick="openScreen('builderScreen')">
+            <div class="project-icon">🚗</div>
+            <div class="project-text">
+                <strong>Engineering World</strong>
+                <small>Build vehicles and machines</small>
             </div>
-            <button class="toggle-btn" id="soundToggle" onclick="toggleSetting('sound')">OFF</button>
-        </div>
+            <span class="arrow">›</span>
+        </button>
 
-        <div class="setting-row">
-            <div>
-                <div class="setting-name">✨ Animations</div>
-                <div class="setting-description">Enable interface animations</div>
+        <button class="category-card" onclick="openScreen('aviationScreen')">
+            <div class="project-icon">🚁</div>
+            <div class="project-text">
+                <strong>Aviation & Pilot</strong>
+                <small>Explore aircraft</small>
             </div>
-            <button class="toggle-btn active" id="animationToggle" onclick="toggleSetting('animations')">ON</button>
-        </div>
+            <span class="arrow">›</span>
+        </button>
 
-        <p class="modal-note">Your settings are saved on this device.</p>
-
-    </div>
-</div>
-
-
-<!-- =========================
-     PROGRESS MODAL
-========================= -->
-
-<div class="modal-overlay" id="progressModal" onclick="closeOutside(event,'progressModal')">
-
-    <div class="modal">
-
-        <div class="modal-header">
-            <h2>🏆 My Progress</h2>
-            <button class="close-btn" onclick="closeModal('progressModal')">×</button>
-        </div>
-
-        <div class="progress-grid">
-
-            <div class="progress-card">
-                <strong id="adventureCount">0</strong>
-                <span>Adventures Started</span>
+        <button class="category-card" onclick="openScreen('computerScienceScreen')">
+            <div class="project-icon">💻</div>
+            <div class="project-text">
+                <strong>Computer Science & Technology</strong>
+                <small>Build computers</small>
             </div>
+            <span class="arrow">›</span>
+        </button>
 
-            <div class="progress-card">
-                <strong id="categoryCount">0</strong>
-                <span>Worlds Explored</span>
+        <button class="category-card" onclick="openScreen('medicalScreen')">
+            <div class="project-icon">🏥</div>
+            <div class="project-text">
+                <strong>Medical Science & Technology</strong>
+                <small>Discover medical machines</small>
             </div>
+            <span class="arrow">›</span>
+        </button>
 
-            <div class="progress-card">
-                <strong id="projectCount">0</strong>
-                <span>Projects Opened</span>
+        <button class="category-card" onclick="openScreen('spaceScienceScreen')">
+            <div class="project-icon">🚀</div>
+            <div class="project-text">
+                <strong>Space & Science</strong>
+                <small>Explore the universe</small>
             </div>
+            <span class="arrow">›</span>
+        </button>
 
-            <div class="progress-card">
-                <strong id="achievementCount">0</strong>
-                <span>Achievements</span>
+        <button class="category-card" onclick="openScreen('agricultureScreen')">
+            <div class="project-icon">🚜</div>
+            <div class="project-text">
+                <strong>Agriculture World</strong>
+                <small>Explore farming machines</small>
             </div>
+            <span class="arrow">›</span>
+        </button>
 
-        </div>
-
-        <p class="modal-note">Keep exploring and unlock new achievements!</p>
-
-        <button class="back-btn" onclick="openAchievementsFromProgress()">
-            🏅 View Achievements
+        <button class="category-card" onclick="openScreen('sportsScreen')">
+            <div class="project-icon">🏋️</div>
+            <div class="project-text">
+                <strong>Sports World</strong>
+                <small>Explore fitness equipment</small>
+            </div>
+            <span class="arrow">›</span>
         </button>
 
     </div>
-</div>
+</section>
 
 
-<!-- =========================
-     ACHIEVEMENTS MODAL
-========================= -->
+<!-- ENGINEERING WORLD -->
 
-<div class="modal-overlay" id="achievementsModal" onclick="closeOutside(event,'achievementsModal')">
+<section id="builderScreen" class="screen">
 
-    <div class="modal">
+    <div class="header">
+        <button class="back-btn" onclick="openLabScreen()">‹</button>
+        <h2>🚗 Junior Builder</h2>
+        <div class="header-spacer"></div>
+        <button class="language-small" onclick="openLanguage()">🌐</button>
+    </div>
 
-        <div class="modal-header">
-            <h2>🏅 Achievements</h2>
-            <button class="close-btn" onclick="closeModal('achievementsModal')">×</button>
-        </div>
+    <p class="intro">Build your own amazing vehicles!</p>
 
-        <div class="progress-grid">
+    <div class="card-list" id="engineeringList"></div>
 
-            <div class="achievement" id="badgeAdventure">
-                <div class="medal">🚀</div>
-                <h3>First Adventure</h3>
-                <p>Start your first adventure</p>
-            </div>
+</section>
 
-            <div class="achievement" id="badgeExplorer">
-                <div class="medal">🌍</div>
-                <h3>Explorer</h3>
-                <p>Explore 3 different worlds</p>
-            </div>
 
-            <div class="achievement" id="badgeSuper">
-                <div class="medal">⭐</div>
-                <h3>Super Explorer</h3>
-                <p>Explore 5 different worlds</p>
-            </div>
+<!-- AVIATION WORLD -->
 
-            <div class="achievement" id="badgeEngineer">
-                <div class="medal">👷</div>
-                <h3>Junior Engineer</h3>
-                <p>Open your first project</p>
-            </div>
+<section id="aviationScreen" class="screen">
 
-        </div>
+    <div class="header">
+        <button class="back-btn" onclick="openLabScreen()">‹</button>
+        <h2>✈️ Aviation World</h2>
+        <div class="header-spacer"></div>
+        <button class="language-small" onclick="openLanguage()">🌐</button>
+    </div>
 
-        <p class="modal-note">Unlocked achievements will light up!</p>
+    <p class="intro">Build aircraft and discover aviation!</p>
+
+    <div class="card-list" id="aviationList"></div>
+
+</section>
+
+
+<!-- COMPUTER SCIENCE -->
+
+<section id="computerScienceScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openLabScreen()">‹</button>
+        <h2>💻 Computer Technology</h2>
+        <div class="header-spacer"></div>
+        <button class="language-small" onclick="openLanguage()">🌐</button>
+    </div>
+
+    <p class="intro">Discover computer hardware and technology!</p>
+
+    <div class="card-list" id="computerList"></div>
+
+</section>
+
+
+<!-- MEDICAL SCIENCE -->
+
+<section id="medicalScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openLabScreen()">‹</button>
+        <h2>🏥 Medical Science</h2>
+        <div class="header-spacer"></div>
+        <button class="language-small" onclick="openLanguage()">🌐</button>
+    </div>
+
+    <p class="intro">Discover medical machines and equipment!</p>
+
+    <div class="card-list" id="medicalList"></div>
+
+</section>
+
+
+<!-- SPACE SCIENCE -->
+
+<section id="spaceScienceScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openLabScreen()">‹</button>
+        <h2>🚀 Space & Science</h2>
+        <div class="header-spacer"></div>
+        <button class="language-small" onclick="openLanguage()">🌐</button>
+    </div>
+
+    <p class="intro">Explore rockets and space technology!</p>
+
+    <div class="card-list" id="spaceList"></div>
+
+</section>
+
+
+<!-- AGRICULTURE -->
+
+<section id="agricultureScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openLabScreen()">‹</button>
+        <h2>🚜 Agriculture World</h2>
+        <div class="header-spacer"></div>
+        <button class="language-small" onclick="openLanguage()">🌐</button>
+    </div>
+
+    <p class="intro">Build machines for modern farming!</p>
+
+    <div class="card-list" id="agricultureList"></div>
+
+</section>
+
+
+<!-- SPORTS -->
+
+<section id="sportsScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openLabScreen()">‹</button>
+        <h2>🏋️ Sports World</h2>
+        <div class="header-spacer"></div>
+        <button class="language-small" onclick="openLanguage()">🌐</button>
+    </div>
+
+    <p class="intro">Explore fitness and sports equipment!</p>
+
+    <div class="card-list" id="sportsList"></div>
+
+</section>
+
+
+<!-- PROGRESS -->
+
+<section id="progressScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openHomeScreen()">‹</button>
+        <h2>📊 My Progress</h2>
+    </div>
+
+    <div class="info-panel">
+        <h2>🏆 Your Learning Journey</h2>
+        <p id="progressSummary">Completed Projects: 0</p>
+        <p id="progressDetails">Keep building and exploring!</p>
+    </div>
+
+</section>
+
+
+<!-- ACHIEVEMENTS -->
+
+<section id="achievementsScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openHomeScreen()">‹</button>
+        <h2>🏆 Achievements</h2>
+    </div>
+
+    <div class="info-panel">
+        <h2>🌟 Your Achievements</h2>
+        <p id="achievementDetails">Start building to earn achievements!</p>
+    </div>
+
+</section>
+
+
+<!-- HELP -->
+
+<section id="helpScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openHomeScreen()">‹</button>
+        <h2>❓ Help Center</h2>
+    </div>
+
+    <div class="info-panel">
+        <h3>Welcome to FutureLab Kids!</h3>
+        <p>Choose a category and open a Builder.</p>
+        <p>Follow the instructions in each project.</p>
+        <p>Complete the required activities to unlock the next Builder.</p>
+        <p>Your progress is saved on your device.</p>
+    </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settingsScreen" class="screen">
+
+    <div class="header">
+        <button class="back-btn" onclick="openHomeScreen()">‹</button>
+        <h2>⚙️ Settings</h2>
+    </div>
+
+    <div class="info-panel">
+        <h3>Language Settings</h3>
+        <button onclick="openLanguage()">🌐 Change Language</button>
+    </div>
+
+</section>
+
+
+<!-- LANGUAGE POPUP -->
+
+<div class="language-modal" id="languageModal">
+
+    <div class="language-box">
+
+        <h2>🌐 Select Language</h2>
+
+        <div id="languageOptions"></div>
+
+        <button class="close-language" onclick="closeLanguage()">
+            Close
+        </button>
 
     </div>
-</div>
 
-
-<!-- =========================
-     HELP CENTER MODAL
-========================= -->
-
-<div class="modal-overlay" id="helpModal" onclick="closeOutside(event,'helpModal')">
-
-    <div class="modal">
-
-        <div class="modal-header">
-            <h2>💡 Help Center</h2>
-            <button class="close-btn" onclick="closeModal('helpModal')">×</button>
-        </div>
-
-        <div class="help-item">
-            <h3>🚀 How to Start?</h3>
-            <p>Tap START ADVENTURE to enter the world selection screen.</p>
-        </div>
-
-        <div class="help-item">
-            <h3>🌍 Explore Worlds</h3>
-            <p>Choose a category such as Engineering, Aviation, Medical Science or Space.</p>
-        </div>
-
-        <div class="help-item">
-            <h3>🔧 Open Projects</h3>
-            <p>Tap any project card to open its builder page and explore the machine.</p>
-        </div>
-
-        <div class="help-item">
-            <h3>🏆 Track Progress</h3>
-            <p>Visit My Progress to see your explored worlds, opened projects and achievements.</p>
-        </div>
-
-        <div class="help-item">
-            <h3>⚙️ Settings</h3>
-            <p>Use Settings to turn sound effects and animations on or off.</p>
-        </div>
-
-        <p class="modal-note">FutureLab Kids — Learn • Build • Test • Create</p>
-
-    </div>
 </div>
 
 
 <script>
 
-/* =========================
-   LOCAL DATA
-========================= */
+/* ==================================
+   PROGRESS STORAGE
+================================== */
 
 const STORAGE_KEY = "futurelabKidsProgressV1";
 
-function getData(){
+function getProgress(){
 
     try{
-        const saved = localStorage.getItem(STORAGE_KEY);
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
-        if(saved){
-            const data = JSON.parse(saved);
-
-            return {
-                adventures: Number(data.adventures) || 0,
-                categories: Array.isArray(data.categories) ? data.categories : [],
-                projects: Number(data.projects) || 0,
-                sound: data.sound === true,
-                animations: data.animations !== false
-            };
-        }
+        return {
+            ...saved,
+            adventures:saved.adventures || {},
+            categories:saved.categories || {},
+            projects:saved.projects || {},
+            sound:saved.sound ?? true,
+            animations:saved.animations ?? true
+        };
 
     }catch(error){
-        console.log("Progress data could not be loaded.");
-    }
 
-    return {
-        adventures:0,
-        categories:[],
-        projects:0,
-        sound:false,
-        animations:true
-    };
-}
-
-let appData = getData();
-
-function saveData(){
-    try{
-        localStorage.setItem(STORAGE_KEY,JSON.stringify(appData));
-    }catch(error){
-        console.log("Progress could not be saved.");
+        return {
+            adventures:{},
+            categories:{},
+            projects:{},
+            sound:true,
+            animations:true
+        };
     }
 }
 
+let progress = getProgress();
 
-/* =========================
-   SOUND EFFECT
-========================= */
+function saveProgress(){
 
-let audioContext = null;
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(progress));
 
-function playClickSound(){
+}
 
-    if(!appData.sound) return;
 
-    try{
-        const AudioContextClass =
-            window.AudioContext || window.webkitAudioContext;
+/* ==================================
+   BUILDER DATA
+================================== */
 
-        if(!AudioContextClass) return;
+const builderGroups = {
 
-        if(!audioContext){
-            audioContext = new AudioContextClass();
+    engineering:{
+        container:"engineeringList",
+        items:[
+            ["Sports Car Builder","🏎️","sports-car-builder.html"],
+            ["Jeep Builder","🚙","jeep.html"],
+            ["Volvo AC Bus","🚌","mega-bus.html"],
+            ["Train Builder","🚆","train-builder.html"]
+        ]
+    },
+
+    aviation:{
+        container:"aviationList",
+        items:[
+            ["Helicopter Builder","🚁","helicopter-builder.html"],
+            ["Airplane Builder","✈️","airplane-builder.html"],
+            ["Bomber Aircraft","💣","bomber-builder.html"],
+            ["Fighter Jet","🛩️","fighter-jet.html"]
+        ]
+    },
+
+    computer:{
+        container:"computerList",
+        items:[
+            ["Laptop Builder","💻","laptop-builder.html"],
+            ["Desktop PC Builder","🖥️","desktop-pc-builder.html"]
+        ]
+    },
+
+    medical:{
+        container:"medicalList",
+        items:[
+            ["X-Ray Machine","🩻","xray-machine.html"],
+            ["Ultrasound Machine","🏥","ultrasound-machine.html"],
+            ["CT Scan Machine","🧠","ct-scan-machine.html"],
+            ["EEG Machine","📈","eeg-machine.html"],
+            ["Dental Equipment","🦷","dental-equipment.html"],
+            ["Eye Examination Equipment","👁️","eye-examination-equipment.html"]
+        ]
+    },
+
+    space:{
+        container:"spaceList",
+        items:[
+            ["Rocket Builder","🚀","rocket-builder.html"]
+        ]
+    },
+
+    agriculture:{
+        container:"agricultureList",
+        items:[
+            ["Mini Tractor Builder","🚜","mini-tractor.html"],
+            ["Power Tiller Builder","🌾","power-tiller.html"]
+        ]
+    },
+
+    sports:{
+        container:"sportsList",
+        items:[
+            ["Treadmill Builder","🏃","treadmill.html"],
+            ["Five Station Gym","🏋️","five-station-gym.html"]
+        ]
+    }
+
+};
+
+
+/* ==================================
+   BUILDER COMPLETION & LOCK SYSTEM
+================================== */
+
+function isCompleted(projectId){
+
+    return progress.projects[projectId] === true;
+}
+
+function isUnlocked(category,index){
+
+    const items = builderGroups[category].items;
+
+    if(index === 0) return true;
+
+    for(let i=0;i<index;i++){
+
+        const previousId = items[i][2];
+
+        if(!isCompleted(previousId)){
+            return false;
         }
-
-        if(audioContext.state === "suspended"){
-            audioContext.resume();
-        }
-
-        const oscillator = audioContext.createOscillator();
-        const gain = audioContext.createGain();
-
-        oscillator.type = "sine";
-        oscillator.frequency.value = 620;
-
-        gain.gain.setValueAtTime(0.07,audioContext.currentTime);
-        gain.gain.exponentialRampToValueAtTime(
-            0.001,
-            audioContext.currentTime + 0.09
-        );
-
-        oscillator.connect(gain);
-        gain.connect(audioContext.destination);
-
-        oscillator.start();
-        oscillator.stop(audioContext.currentTime + 0.09);
-
-    }catch(error){
-        console.log("Sound unavailable.");
-    }
-}
-
-
-/* =========================
-   SETTINGS
-========================= */
-
-function updateSettingsUI(){
-
-    const soundButton = document.getElementById("soundToggle");
-    const animationButton = document.getElementById("animationToggle");
-
-    soundButton.textContent = appData.sound ? "ON" : "OFF";
-    soundButton.classList.toggle("active",appData.sound);
-
-    animationButton.textContent = appData.animations ? "ON" : "OFF";
-    animationButton.classList.toggle("active",appData.animations);
-
-    document.body.classList.toggle("no-animations",!appData.animations);
-}
-
-function toggleSetting(setting){
-
-    if(setting === "sound"){
-        appData.sound = !appData.sound;
     }
 
-    if(setting === "animations"){
-        appData.animations = !appData.animations;
-    }
-
-    saveData();
-    updateSettingsUI();
-    playClickSound();
+    return true;
 }
 
-function openSettings(){
-    updateSettingsUI();
-    openModal("settingsModal");
-}
+function renderBuilders(){
 
+    Object.keys(builderGroups).forEach(category=>{
 
-/* =========================
-   SCREEN NAVIGATION
-========================= */
+        const group = builderGroups[category];
 
-function showScreen(screenId){
+        const container = document.getElementById(group.container);
 
-    document.querySelectorAll(".screen").forEach(screen=>{
-        screen.style.display = "none";
+        container.innerHTML = "";
+
+        group.items.forEach((item,index)=>{
+
+            const [name,emoji,link] = item;
+
+            const unlocked = isUnlocked(category,index);
+
+            const completed = isCompleted(link);
+
+            const card = document.createElement("a");
+
+            card.className = "builder-card";
+
+            if(!unlocked){
+                card.classList.add("locked");
+            }
+
+            if(completed){
+                card.classList.add("completed");
+            }
+
+            card.href = unlocked ? link : "#";
+
+            card.innerHTML = `
+                <div class="project-icon">${emoji}</div>
+
+                <div class="project-text">
+                    <strong>${name}</strong>
+                    ${
+                        completed
+                        ? '<span class="status">✓ COMPLETED</span>'
+                        : ''
+                    }
+                </div>
+
+                ${
+                    unlocked
+                    ? '<span class="arrow">›</span>'
+                    : '<span class="lock-icon">🔒</span>'
+                }
+            `;
+
+            card.addEventListener("click",function(event){
+
+                if(!unlocked){
+                    event.preventDefault();
+                    alert("Complete the previous Builder first!");
+                    return;
+                }
+
+                progress.adventures[link] = true;
+                saveProgress();
+
+            });
+
+            container.appendChild(card);
+
+        });
+
     });
 
-    const target = document.getElementById(screenId);
+}
+
+
+/* ==================================
+   BUILDER COMPLETION API
+
+   Builder pages can call:
+   FutureLabProgress.complete("sports-car-builder.html")
+================================== */
+
+window.FutureLabProgress = {
+
+    complete:function(projectId){
+
+        const exists = Object.values(builderGroups)
+            .some(group=>group.items.some(item=>item[2]===projectId));
+
+        if(!exists) return false;
+
+        progress.projects[projectId] = true;
+
+        saveProgress();
+
+        renderBuilders();
+
+        updateProgress();
+
+        return true;
+    },
+
+    getProgress:function(){
+        return JSON.parse(JSON.stringify(progress));
+    },
+
+    isUnlocked:function(projectId){
+
+        for(const category in builderGroups){
+
+            const items = builderGroups[category].items;
+
+            const index = items.findIndex(item=>item[2]===projectId);
+
+            if(index !== -1){
+                return isUnlocked(category,index);
+            }
+        }
+
+        return false;
+    }
+
+};
+
+
+/* ==================================
+   SCREEN NAVIGATION
+================================== */
+
+function openScreen(id){
+
+    document.querySelectorAll(".screen").forEach(screen=>{
+        screen.classList.remove("active");
+    });
+
+    const target = document.getElementById(id);
 
     if(target){
-        target.style.display = "block";
+        target.classList.add("active");
     }
 
-    // Home screen scroll control
-    if(screenId === "homeScreen"){
-        document.body.classList.add("home-mode");
-    }else{
-        document.body.classList.remove("home-mode");
-    }
+    closeLanguage();
 
     window.scrollTo(0,0);
 
-    playClickSound();
 }
-
 
 function openHomeScreen(){
-    showScreen("homeScreen");
-}
-
-function startAdventure(){
-
-    appData.adventures++;
-    saveData();
-
-    showScreen("labScreen");
+    openScreen("homeScreen");
 }
 
 function openLabScreen(){
-    showScreen("labScreen");
-}
-
-
-/* =========================
-   CATEGORY TRACKING
-========================= */
-
-const categoryMap = {
-    builderScreen:"Engineering World",
-    aviationScreen:"Aviation & Pilot",
-    computerScienceScreen:"Computer Science & Technology",
-    medicalScreen:"Medical Science & Technology",
-    spaceScienceScreen:"Space & Science",
-    agricultureScreen:"Agriculture World",
-    sportsScreen:"Sports World"
-};
-
-function openCategory(screenId){
-
-    const category = categoryMap[screenId];
-
-    if(category && !appData.categories.includes(category)){
-        appData.categories.push(category);
-        saveData();
-    }
-
-    showScreen(screenId);
-}
-
-function openBuilderScreen(){
-    openCategory("builderScreen");
-}
-
-function openAviationScreen(){
-    openCategory("aviationScreen");
-}
-
-function openComputerScienceScreen(){
-    openCategory("computerScienceScreen");
-}
-
-function openMedicalScreen(){
-    openCategory("medicalScreen");
-}
-
-function openSpaceScienceScreen(){
-    openCategory("spaceScienceScreen");
-}
-
-function openAgricultureScreen(){
-    openCategory("agricultureScreen");
-}
-
-function openSportsScreen(){
-    openCategory("sportsScreen");
-}
-
-
-/* =========================
-   PROJECT TRACKING
-========================= */
-
-document.querySelectorAll(".project-link").forEach(link=>{
-
-    link.addEventListener("click",function(){
-
-        appData.projects++;
-        saveData();
-
-    });
-
-});
-
-
-/* =========================
-   ACHIEVEMENTS
-========================= */
-
-function getAchievementCount(){
-
-    let count = 0;
-
-    if(appData.adventures >= 1) count++;
-    if(appData.categories.length >= 3) count++;
-    if(appData.categories.length >= 5) count++;
-    if(appData.projects >= 1) count++;
-
-    return count;
-}
-
-function updateAchievements(){
-
-    document.getElementById("badgeAdventure")
-        .classList.toggle("unlocked",appData.adventures >= 1);
-
-    document.getElementById("badgeExplorer")
-        .classList.toggle("unlocked",appData.categories.length >= 3);
-
-    document.getElementById("badgeSuper")
-        .classList.toggle("unlocked",appData.categories.length >= 5);
-
-    document.getElementById("badgeEngineer")
-        .classList.toggle("unlocked",appData.projects >= 1);
-}
-
-
-/* =========================
-   PROGRESS
-========================= */
-
-function updateProgress(){
-
-    document.getElementById("adventureCount").textContent =
-        appData.adventures;
-
-    document.getElementById("categoryCount").textContent =
-        appData.categories.length;
-
-    document.getElementById("projectCount").textContent =
-        appData.projects;
-
-    document.getElementById("achievementCount").textContent =
-        getAchievementCount();
-
-    updateAchievements();
+    openScreen("labScreen");
 }
 
 function openProgress(){
-
     updateProgress();
-    openModal("progressModal");
+    openScreen("progressScreen");
 }
 
 function openAchievements(){
-
     updateProgress();
-    openModal("achievementsModal");
+    openScreen("achievementsScreen");
 }
-
-function openAchievementsFromProgress(){
-
-    closeModal("progressModal");
-    openAchievements();
-}
-
-
-/* =========================
-   HELP CENTER
-========================= */
 
 function openHelp(){
-    openModal("helpModal");
+    openScreen("helpScreen");
+}
+
+function openSettings(){
+    openScreen("settingsScreen");
 }
 
 
-/* =========================
-   MODAL FUNCTIONS
-========================= */
+/* ==================================
+   PROGRESS DISPLAY
+================================== */
 
-function openModal(id){
+function updateProgress(){
 
-    const modal = document.getElementById(id);
+    const total = Object.values(builderGroups)
+        .reduce((sum,group)=>sum+group.items.length,0);
 
-    if(modal){
-        modal.classList.add("show");
+    const completed = Object.values(progress.projects)
+        .filter(value=>value===true).length;
+
+    document.getElementById("progressSummary").textContent =
+        "Completed Projects: "+completed+" / "+total;
+
+    document.getElementById("progressDetails").textContent =
+        Math.round(completed/total*100)+"% of projects completed.";
+
+    document.getElementById("achievementDetails").textContent =
+        completed===0
+        ? "Start building to earn achievements!"
+        : "🌟 You have completed "+completed+" project(s)!";
+
+}
+
+
+/* ==================================
+   LANGUAGE SYSTEM
+================================== */
+
+const languages = [
+
+    ["en","English"],
+    ["bn","বাংলা"],
+    ["zh","中文"],
+    ["hi","हिन्दी"],
+    ["es","Español"],
+    ["ar","العربية"],
+    ["fr","Français"],
+    ["pt","Português"],
+    ["ru","Русский"],
+    ["ur","اردو"],
+    ["id","Indonesia"],
+    ["ja","日本語"]
+
+];
+
+const translations = {
+
+    en:{
+        welcome:"Your Future Starts Here!",
+        welcomeText:"Explore, build and discover amazing things.",
+        start:"START ADVENTURE",
+        language:"LANGUAGE",
+        achievements:"Achievements",
+        progress:"My Progress",
+        help:"Help Center",
+        explore:"Explore Your Lab",
+        chooseCategory:"Choose a world and start your adventure!"
+    },
+
+    bn:{
+        welcome:"তোমার ভবিষ্যৎ শুরু এখানেই!",
+        welcomeText:"অন্বেষণ করো, তৈরি করো এবং নতুন কিছু আবিষ্কার করো।",
+        start:"অ্যাডভেঞ্চার শুরু করো",
+        language:"ভাষা",
+        achievements:"অর্জনসমূহ",
+        progress:"আমার অগ্রগতি",
+        help:"সাহায্য কেন্দ্র",
+        explore:"তোমার ল্যাব অন্বেষণ করো",
+        chooseCategory:"একটি বিভাগ বেছে নাও এবং শুরু করো!"
+    },
+
+    zh:{
+        welcome:"你的未来从这里开始！",
+        welcomeText:"探索、建造并发现精彩事物。",
+        start:"开始冒险",
+        language:"语言",
+        achievements:"成就",
+        progress:"我的进度",
+        help:"帮助中心",
+        explore:"探索你的实验室",
+        chooseCategory:"选择一个世界，开始冒险！"
+    },
+
+    hi:{
+        welcome:"तुम्हारा भविष्य यहाँ से शुरू होता है!",
+        welcomeText:"खोजो, बनाओ और नई चीजें सीखो।",
+        start:"रोमांच शुरू करें",
+        language:"भाषा",
+        achievements:"उपलब्धियाँ",
+        progress:"मेरी प्रगति",
+        help:"सहायता केंद्र",
+        explore:"अपनी लैब खोजें",
+        chooseCategory:"एक दुनिया चुनें और शुरुआत करें!"
+    },
+
+    es:{
+        welcome:"¡Tu futuro comienza aquí!",
+        welcomeText:"Explora, construye y descubre cosas increíbles.",
+        start:"COMENZAR AVENTURA",
+        language:"IDIOMA",
+        achievements:"Logros",
+        progress:"Mi progreso",
+        help:"Centro de ayuda",
+        explore:"Explora tu laboratorio",
+        chooseCategory:"¡Elige un mundo y comienza tu aventura!"
+    },
+
+    ar:{
+        welcome:"مستقبلك يبدأ من هنا!",
+        welcomeText:"استكشف وابنِ واكتشف أشياء رائعة.",
+        start:"ابدأ المغامرة",
+        language:"اللغة",
+        achievements:"الإنجازات",
+        progress:"تقدمي",
+        help:"مركز المساعدة",
+        explore:"استكشف مختبرك",
+        chooseCategory:"اختر عالماً وابدأ مغامرتك!"
+    },
+
+    fr:{
+        welcome:"Ton avenir commence ici !",
+        welcomeText:"Explore, construis et découvre des choses incroyables.",
+        start:"COMMENCER L'AVENTURE",
+        language:"LANGUE",
+        achievements:"Réalisations",
+        progress:"Ma progression",
+        help:"Centre d'aide",
+        explore:"Explore ton laboratoire",
+        chooseCategory:"Choisis un monde et commence ton aventure !"
+    },
+
+    pt:{
+        welcome:"Seu futuro começa aqui!",
+        welcomeText:"Explore, construa e descubra coisas incríveis.",
+        start:"COMEÇAR AVENTURA",
+        language:"IDIOMA",
+        achievements:"Conquistas",
+        progress:"Meu progresso",
+        help:"Central de ajuda",
+        explore:"Explore seu laboratório",
+        chooseCategory:"Escolha um mundo e comece sua aventura!"
+    },
+
+    ru:{
+        welcome:"Твоё будущее начинается здесь!",
+        welcomeText:"Исследуй, создавай и открывай новое.",
+        start:"НАЧАТЬ ПРИКЛЮЧЕНИЕ",
+        language:"ЯЗЫК",
+        achievements:"Достижения",
+        progress:"Мой прогресс",
+        help:"Центр помощи",
+        explore:"Исследуй свою лабораторию",
+        chooseCategory:"Выбери мир и начни приключение!"
+    },
+
+    ur:{
+        welcome:"آپ کا مستقبل یہاں سے شروع ہوتا ہے!",
+        welcomeText:"دریافت کریں، بنائیں اور نئی چیزیں سیکھیں۔",
+        start:"مہم شروع کریں",
+        language:"زبان",
+        achievements:"کامیابیاں",
+        progress:"میری پیشرفت",
+        help:"مدد مرکز",
+        explore:"اپنی لیب دریافت کریں",
+        chooseCategory:"ایک دنیا منتخب کریں اور شروع کریں!"
+    },
+
+    id:{
+        welcome:"Masa depanmu dimulai di sini!",
+        welcomeText:"Jelajahi, bangun, dan temukan hal menakjubkan.",
+        start:"MULAI PETUALANGAN",
+        language:"BAHASA",
+        achievements:"Pencapaian",
+        progress:"Progres Saya",
+        help:"Pusat Bantuan",
+        explore:"Jelajahi Laboratoriummu",
+        chooseCategory:"Pilih dunia dan mulai petualanganmu!"
+    },
+
+    ja:{
+        welcome:"未来はここから始まる！",
+        welcomeText:"探検し、作り、素晴らしいことを発見しよう。",
+        start:"冒険を始める",
+        language:"言語",
+        achievements:"実績",
+        progress:"進捗状況",
+        help:"ヘルプセンター",
+        explore:"ラボを探検しよう",
+        chooseCategory:"世界を選んで冒険を始めよう！"
     }
 
-    playClickSound();
+};
+
+let currentLanguage =
+    localStorage.getItem("futurelabLanguage") || "en";
+
+function applyLanguage(){
+
+    const dictionary = translations[currentLanguage] || translations.en;
+
+    document.documentElement.lang = currentLanguage;
+
+    document.body.classList.toggle(
+        "rtl",
+        currentLanguage==="ar" || currentLanguage==="ur"
+    );
+
+    document.querySelectorAll("[data-i18n]").forEach(element=>{
+
+        const key = element.getAttribute("data-i18n");
+
+        if(dictionary[key]){
+            element.textContent = dictionary[key];
+        }
+
+    });
+
 }
 
-function closeModal(id){
+function openLanguage(){
 
-    const modal = document.getElementById(id);
+    const container = document.getElementById("languageOptions");
 
-    if(modal){
-        modal.classList.remove("show");
-    }
+    container.innerHTML = "";
+
+    languages.forEach(language=>{
+
+        const button = document.createElement("button");
+
+        button.className = "language-option";
+
+        if(language[0]===currentLanguage){
+            button.classList.add("selected");
+        }
+
+        button.textContent = language[1];
+
+        button.onclick = function(){
+
+            currentLanguage = language[0];
+
+            localStorage.setItem("futurelabLanguage",currentLanguage);
+
+            applyLanguage();
+
+            openLanguage();
+
+        };
+
+        container.appendChild(button);
+
+    });
+
+    document.getElementById("languageModal").classList.add("show");
+
 }
 
-function closeOutside(event,id){
+function closeLanguage(){
 
-    if(event.target.id === id){
-        closeModal(id);
-    }
+    document.getElementById("languageModal")
+        .classList.remove("show");
+
 }
 
 
-/* =========================
-   INITIALIZE APP
-========================= */
+/* ==================================
+   INITIALIZATION
+================================== */
 
-updateSettingsUI();
+renderBuilders();
+
+applyLanguage();
+
 updateProgress();
 
 </script>
