@@ -1393,6 +1393,15 @@ function openSettings(){
 =================================== */
 
 function updateProgress(){
+    window.addEventListener("pageshow", function(){
+
+    progress = getProgress();
+
+    renderBuilders();
+
+    updateProgress();
+
+});
 
     const total = Object.values(builderGroups)
         .reduce((sum,group)=>sum+group.items.length,0);
