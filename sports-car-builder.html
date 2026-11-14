@@ -394,16 +394,40 @@ scene.setAttribute('viewBox',`${VB.x} ${VB.y} ${VB.w} ${VB.h}`);
 let placed=new Set(),drag=null,dragEl=null;
 
 function fit(){const r=board.getBoundingClientRect();const s=Math.min(r.width/VB.w,r.height/VB.h);return{r,s,ox:(r.width-VB.w*s)/2,oy:(r.height-VB.h*s)/2}}
+
 function buildTray(){
   tray.innerHTML='';
+
   TRAY.forEach(id=>{
     const p=PARTS.find(q=>q.id===id);
-    const d=document.createElement('div');d.className='slot'+(placed.has(id)?' gone':'');d.dataset.id=id;
-    d.innerHTML=`<svg viewBox="${p.b.join(' ')}">${p.a}</svg><span>${p.n}</span>`;
-    d.querySelector('svg').addEventListener('pointerdown',e=>startDrag(e,id));
+
+    const d=document.createElement('div');
+    d.className='slot'+(placed.has(id)?' gone':'');
+    d.dataset.id=id;
+
+    // Translate each part name using the central language system
+    const partName = window.BuilderLanguage
+      ? window.BuilderLanguage.translate(p.n)
+      : p.n;
+
+    d.innerHTML=`
+      <svg viewBox="${p.b.join(' ')}">${p.a}</svg>
+      <span>${partName}</span>
+    `;
+
+    d.querySelector('svg').addEventListener(
+      'pointerdown',
+      e=>startDrag(e,id)
+    );
+
     tray.appendChild(d);
   });
 }
+
+// Rebuild part names immediately when language changes
+window.addEventListener('futurelab-language-changed',()=>{
+  buildTray();
+});
 
 function renderCar(){
   let h='';PARTS.forEach(p=>{if(placed.has(p.id))h+=p.a;});
