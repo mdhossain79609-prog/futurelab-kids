@@ -120,7 +120,63 @@
             "Carrocería trasera de dos tonos","هيكل خلفي بلونين","Carrosserie arrière bicolore","Carroceria traseira de duas cores",
             "Двухцветная задняя часть кузова","دو رنگوں والی پچھلی باڈی","Bodi belakang dua warna","ツートンリアボディ"
         ],
+       
+"Build & Drive Bugatti Hypercar": [
+    "Build & Drive Bugatti Hypercar",
+    "বুগাটি হাইপারকার তৈরি ও চালান",
+    "组装并驾驶布加迪超级跑车",
+    "बुगाटी हाइपरकार बनाएं और चलाएं",
+    "Construye y conduce el Bugatti Hypercar",
+    "اصنع وقُد سيارة بوغاتي الخارقة",
+    "Construisez et conduisez la Bugatti Hypercar",
+    "Monte e dirija o Bugatti Hypercar",
+    "Соберите и управляйте гиперкаром Bugatti",
+    "بگاٹی ہائپر کار بنائیں اور چلائیں",
+    "Rakit dan kendarai Bugatti Hypercar",
+    "ブガッティ・ハイパーカーを組み立てて運転しよう"
+],
 
+"🏎️ Build & Drive Bugatti Hypercar": [
+    "🏎️ Build & Drive Bugatti Hypercar",
+    "🏎️ বুগাটি হাইপারকার তৈরি ও চালান",
+    "🏎️ 组装并驾驶布加迪超级跑车",
+    "🏎️ बुगाटी हाइपरकार बनाएं और चलाएं",
+    "🏎️ Construye y conduce el Bugatti Hypercar",
+    "🏎️ اصنع وقُد سيارة بوغاتي الخارقة",
+    "🏎️ Construisez et conduisez la Bugatti Hypercar",
+    "🏎️ Monte e dirija o Bugatti Hypercar",
+    "🏎️ Соберите и управляйте гиперкаром Bugatti",
+    "🏎️ بگاٹی ہائپر کار بنائیں اور چلائیں",
+    "🏎️ Rakit dan kendarai Bugatti Hypercar",
+    "🏎️ ブガッティ・ハイパーカーを組み立てて運転しよう"
+],
+
+"Drag and drop all 20 parts below to build the Bugatti Hypercar": [
+    "Drag and drop all 20 parts below to build the Bugatti Hypercar",
+    "নিচের ২০টি পার্টস টেনে এনে বুগাটি হাইপারকার তৈরি করুন",
+    "拖放下方全部20个零件，组装布加迪超级跑车",
+    "बुगाटी हाइपरकार बनाने के लिए नीचे दिए गए सभी 20 भागों को खींचकर लगाएं",
+    "Arrastra y suelta las 20 piezas para construir el Bugatti Hypercar",
+    "اسحب جميع القطع العشرين أدناه وأفلتها لصنع سيارة بوغاتي الخارقة",
+    "Faites glisser les 20 pièces ci-dessous pour construire la Bugatti Hypercar",
+    "Arraste e solte as 20 peças abaixo para montar o Bugatti Hypercar",
+    "Перетащите все 20 деталей ниже, чтобы собрать гиперкар Bugatti",
+    "بگاٹی ہائپر کار بنانے کے لیے نیچے دیے گئے تمام 20 حصوں کو کھینچ کر لگائیں",
+    "Seret dan lepas semua 20 bagian di bawah untuk merakit Bugatti Hypercar",
+    "下の20個のパーツをドラッグ＆ドロップしてブガッティを組み立てよう"
+],
+
+"Parts": [
+    "Parts","পার্টস","零件","पुर्जे","Piezas","القطع",
+    "Pièces","Peças","Детали","حصے","Bagian","パーツ"
+],
+
+"Available Parts": [
+    "Available Parts","ব্যবহারের জন্য পার্টস","可用零件","उपलब्ध पुर्जे",
+    "Piezas disponibles","القطع المتاحة","Pièces disponibles",
+    "Peças disponíveis","Доступные детали","دستیاب حصے",
+    "Bagian tersedia","使用可能なパーツ"
+],
         "Reset": ["Reset","রিসেট","重置","रीसेट","Reiniciar","إعادة ضبط","Réinitialiser","Reiniciar","Сброс","ری سیٹ","Atur ulang","リセット"],
         "Start": ["Start","শুরু","开始","शुरू करें","Iniciar","ابدأ","Démarrer","Iniciar","Старт","شروع","Mulai","スタート"],
         "Stop": ["Stop","বন্ধ","停止","रोकें","Detener","إيقاف","Arrêter","Parar","Стоп","روکیں","Berhenti","停止"],
@@ -239,6 +295,9 @@
                 if (value) el.setAttribute(attr, translateText(value, lang));
             });
         });
+       if (document.title) {
+    document.title = translateText(document.title, lang);
+}
 
         document.documentElement.lang = lang;
         document.documentElement.dir =
