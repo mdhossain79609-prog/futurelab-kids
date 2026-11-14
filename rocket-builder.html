@@ -88,6 +88,7 @@ h1{flex:1;font-size:clamp(1rem,4.4vw,1.5rem);font-weight:900;background:linear-g
 </div>
 </main>
 <div id="msg"></div>
+  <script src="./builder-progress.js"></script>
 <script>
 (()=>{
 document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
@@ -357,7 +358,6 @@ applyZoom();
 $('reset').onclick=()=>{if(flying)$('bStart').click();placed.clear();buildTray();render();toast('Reset')};
 buildTray();render();
 })();
- <script src="./builder-progress.js"></script>
 </script>
 </body>
 </html>
