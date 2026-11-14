@@ -293,7 +293,24 @@ const k=b.dataset.k,on=e=>{
   b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off);
 });
 const KM={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',' ':'boost'};
-addEventListener('keydown',e=>{if(KM[e.key]&&flying){keys[KM[e.key]]=1;e.preventDefault()}});
+
+addEventListener('keydown',e=>{
+
+    if(KM[e.key] && flying){
+
+        keys[KM[e.key]]=1;
+        e.preventDefault();
+
+        if(["up","down","left","right","boost"].includes(KM[e.key])){
+
+            flightControlUsed=true;
+            checkRocketCompletion();
+
+        }
+    }
+
+});
+
 addEventListener('keyup',e=>{if(KM[e.key])keys[KM[e.key]]=0});
 
 function apply(){
