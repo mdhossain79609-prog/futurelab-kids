@@ -228,6 +228,37 @@ drawStars();
 
 /* ---------- flight ---------- */
 let flying=false,pos={x:0,y:0},vel={x:0,y:0},rot=0,spin=0,keys={},boost=0,last=0;
+  
+/* ROCKET BUILDER COMPLETION SYSTEM */
+
+let flightControlUsed = false;
+let rocketCompleted = false;
+
+function checkRocketCompletion(){
+
+    if(
+        placed.size === TOTAL &&
+        flying &&
+        flightControlUsed &&
+        !rocketCompleted
+    ){
+
+        if(
+            window.FutureLabProgress &&
+            window.FutureLabProgress.complete("rocket-builder.html")
+        ){
+
+            rocketCompleted = true;
+            toast("🏆 Rocket Builder Completed! Satellite Unlocked!");
+
+        }else{
+
+            toast("Progress system not connected!",true);
+
+        }
+    }
+}
+
 function setRemote(){document.querySelectorAll('.r').forEach(b=>b.disabled=!flying)}
 setRemote();
 $('bStart').onclick=()=>{
@@ -238,7 +269,27 @@ $('bStart').onclick=()=>{
   if(flying){startRumble();toast('3… 2… 1… Liftoff!')}else{stopRumble();pos={x:0,y:0};vel={x:0,y:0};rot=0;spin=0;$('flame').innerHTML='';$('pad').style.opacity=1;apply()}
 };
 document.querySelectorAll('.r').forEach(b=>{
-  const k=b.dataset.k,on=e=>{e.preventDefault();if(!flying)return;keys[k]=1;b.classList.add('act');if(k==='spin')spin=360},off=()=>{keys[k]=0;b.classList.remove('act')};
+  
+const k=b.dataset.k,on=e=>{
+    e.preventDefault();
+
+    if(!flying)return;
+
+    keys[k]=1;
+    b.classList.add('act');
+
+    if(k==='spin')spin=360;
+
+    if(["up","down","left","right","boost"].includes(k)){
+        flightControlUsed=true;
+        checkRocketCompletion();
+    }
+
+},off=()=>{
+    keys[k]=0;
+    b.classList.remove('act');
+};
+
   b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off);
 });
 const KM={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',' ':'boost'};
@@ -289,6 +340,7 @@ applyZoom();
 $('reset').onclick=()=>{if(flying)$('bStart').click();placed.clear();buildTray();render();toast('Reset')};
 buildTray();render();
 })();
+ <script src="./builder-progress.js"></script>
 </script>
 </body>
 </html>
