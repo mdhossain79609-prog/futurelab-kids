@@ -1392,16 +1392,10 @@ function openSettings(){
    PROGRESS DISPLAY
 =================================== */
 
+
 function updateProgress(){
-    window.addEventListener("pageshow", function(){
 
     progress = getProgress();
-
-    renderBuilders();
-
-    updateProgress();
-
-});
 
     const total = Object.values(builderGroups)
         .reduce((sum,group)=>sum+group.items.length,0);
@@ -1423,7 +1417,6 @@ function updateProgress(){
         : "🌟 You have completed "+safeCompleted+" project(s)!";
 
 }
-
 
 /* ===================================
    COLORFUL LANGUAGE SELECTOR
@@ -1531,6 +1524,9 @@ if(window.FutureLabLanguage){
 updateProgress();
 
 </script>
-<script src="language.js"></script>
+
+<script src="./builder-progress.js"></script>
+<script src="./language.js"></script>
+
 </body>
 </html>
