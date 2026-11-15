@@ -604,6 +604,70 @@ function updSound(){
  J.filter.frequency.setTargetAtTime(320+speed*2.2+(isGas?200:0),t,.12);
 }
 $('bSound').onclick=()=>{ensureAudio();snd=!snd;$('bSound').innerHTML=snd?'<b>🔊</b>Sound':'<b>🔇</b>Mute';updSound()};
+  
+/* =========================================
+   FUTURELAB KIDS - BUILDER COMPLETION
+   20 Parts + Engine Start + Actual Driving
+========================================= */
+
+let futureLabCarCompleted = false;
+let futureLabEngineStarted = false;
+let futureLabCarDriven = false;
+
+// Engine started after all 20 parts
+const originalCarStart = $('bStart').onclick;
+
+$('bStart').onclick = function(){
+
+    originalCarStart();
+
+    if(placed.size === 20 && started){
+        futureLabEngineStarted = true;
+    }
+
+};
+
+// Detect actual driving using Gas pedal
+const originalSetGas = setGas;
+
+setGas = function(s){
+
+    originalSetGas(s);
+
+    if(s && started && placed.size === 20){
+        futureLabCarDriven = true;
+    }
+
+};
+
+// Check all required activities
+function checkFutureLabCarCompletion(){
+
+    if(
+        futureLabCarCompleted ||
+        placed.size !== 20 ||
+        !futureLabEngineStarted ||
+        !futureLabCarDriven
+    ){
+        return;
+    }
+
+    if(
+        window.FutureLabProgress &&
+        window.FutureLabProgress.complete("sports-car-builder.html")
+    ){
+
+        futureLabCarCompleted = true;
+
+        msg("🏆 Sports Car Completed! Jeep Builder Unlocked!");
+
+    }
+
+}
+
+// Check completion periodically
+setInterval(checkFutureLabCarCompletion, 300);
+
 setInterval(updSound,40);
 </script>
   <script src="./language.js"></script>
