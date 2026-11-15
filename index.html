@@ -1510,6 +1510,20 @@ window.addEventListener("futurelab-language-changed",function(){
 
 });
 
+/* ===================================
+   PROGRESS REFRESH EVENT
+=================================== */
+
+window.addEventListener("pageshow",function(){
+
+    progress = getProgress();
+
+    renderBuilders();
+
+    updateProgress();
+
+});
+
 
 /* ===================================
    INITIALIZATION
