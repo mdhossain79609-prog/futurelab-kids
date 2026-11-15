@@ -155,27 +155,18 @@
 
     /* CHECK UNLOCK STATUS */
 
-    function isUnlocked(projectId) {
+function isUnlocked(projectId) {
 
-        const builder = findBuilder(projectId);
-
-        if (!builder) return false;
-
-        if (builder.index === 0) return true;
-
-        const progress = readProgress();
-
-        for (let i = 0; i < builder.index; i++) {
-
-            const previousId = builder.items[i];
-
-            if (progress.projects[previousId] !== true) {
-                return false;
-            }
-        }
-
-        return true;
+    if (window.FutureLabUnlock) {
+        return window.FutureLabUnlock.isUnlocked(projectId);
     }
+
+    const builder = findBuilder(projectId);
+
+    if (!builder) return false;
+
+    return builder.index === 0;
+}
 
 
     /* COMPLETE BUILDER */
