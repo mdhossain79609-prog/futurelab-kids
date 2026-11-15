@@ -1177,18 +1177,14 @@ function isUnlocked(category,index){
 
     const items = builderGroups[category].items;
 
-    if(index === 0) return true;
-
-    for(let i=0;i<index;i++){
-
-        if(!isCompleted(items[i][2])){
-            return false;
-        }
+    if(window.FutureLabUnlock){
+        return window.FutureLabUnlock.isUnlocked(
+            items[index][2]
+        );
     }
 
-    return true;
+    return index === 0;
 }
-
 
 /* ===================================
    RENDER BUILDER BUTTONS
@@ -1541,6 +1537,7 @@ updateProgress();
 
 <script src="./builder-progress.js"></script>
 <script src="./language.js"></script>
+<script src="./builder-unlock-system.js"></script>
 
 </body>
 </html>
