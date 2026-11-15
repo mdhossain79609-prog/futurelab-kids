@@ -1456,7 +1456,17 @@ window.addEventListener("pageshow",function(){
     updateProgress();
 
 });
+/* BUILDER COMPLETION REFRESH */
 
+window.addEventListener("futurelab-progress-changed",function(){
+
+    progress = getProgress();
+
+    renderBuilders();
+
+    updateProgress();
+
+});
 
 /* ===================================
    INITIALIZATION
@@ -1473,8 +1483,6 @@ updateProgress();
 </script>
 
 <script src="./builder-progress.js"></script>
-<script src="./language.js"></script>
 <script src="./builder-unlock-system.js"></script>
-
 </body>
 </html>
