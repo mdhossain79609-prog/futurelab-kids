@@ -1168,8 +1168,10 @@ const builderGroups = {
 /* ===================================
    SEQUENTIAL UNLOCK SYSTEM
 =================================== */
-
 function isCompleted(projectId){
+
+    progress = getProgress();
+
     return progress.projects[projectId] === true;
 }
 
@@ -1270,71 +1272,6 @@ function renderBuilders(){
     }
 
 }
-
-
-/* ===================================
-   BUILDER COMPLETION API
-=================================== */
-
-/*
-Builder pages can call:
-
-FutureLabProgress.complete("sports-car-builder.html");
-
-*/
-
-window.FutureLabProgress = {
-
-    complete:function(projectId){
-
-        const exists = Object.values(builderGroups)
-            .some(group=>
-                group.items.some(item=>item[2]===projectId)
-            );
-
-        if(!exists) return false;
-
-        progress.projects[projectId] = true;
-
-        saveProgress();
-        renderBuilders();
-        updateProgress();
-
-        window.dispatchEvent(
-            new CustomEvent("futurelab-progress-changed",{
-                detail:{projectId:projectId}
-            })
-        );
-
-        return true;
-    },
-
-    getProgress:function(){
-        return JSON.parse(JSON.stringify(progress));
-    },
-
-    isUnlocked:function(projectId){
-
-        for(const category in builderGroups){
-
-            const items = builderGroups[category].items;
-
-            const index = items.findIndex(item=>item[2]===projectId);
-
-            if(index !== -1){
-                return isUnlocked(category,index);
-            }
-        }
-
-        return false;
-    },
-
-    isCompleted:function(projectId){
-        return isCompleted(projectId);
-    }
-
-};
-
 
 /* ===================================
    SCREEN NAVIGATION
