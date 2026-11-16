@@ -1095,102 +1095,90 @@ function saveProgress(){
 
 
 /* ===================================
-   BUILDER DATA
+   BUILDER DATA FROM CENTRAL REGISTRY
 =================================== */
 
-const builderGroups = {
+const builderContainers = {
 
-    engineering:{
-        container:"engineeringList",
-        items:[
-            ["Sports Car Builder","🏎️","sports-car-builder.html","sportsCar"],
-            ["Jeep Builder","🚙","jeep.html","jeep"],
-            ["Volvo AC Bus","🚌","mega-bus.html","bus"],
-            ["Train Builder","🚆","train-builder.html","train"]
-        ]
-    },
-
-    aviation:{
-        container:"aviationList",
-        items:[
-            ["Helicopter Builder","🚁","helicopter-builder.html","helicopter"],
-            ["Airplane Builder","✈️","airplane-builder.html","airplane"],
-            ["Bomber Aircraft","💣","bomber-builder.html"],
-            ["Fighter Jet","🛩️","fighter-jet.html"]
-        ]
-    },
-
-    computer:{
-        container:"computerList",
-        items:[
-            ["Laptop Builder","💻","laptop-builder.html","laptopBuilder"],
-            ["Desktop PC Builder","🖥️","desktop-pc-builder.html","desktopBuilder"]
-        ]
-    },
-
-    medical:{
-        container:"medicalList",
-        items:[
-            ["X-Ray Machine","🩻","xray-machine.html"],
-            ["Ultrasound Machine","🏥","ultrasound-machine.html"],
-            ["CT Scan Machine","🧠","ct-scan-machine.html"],
-            ["EEG Machine","📈","eeg-machine.html"],
-            ["Dental Equipment","🦷","dental-equipment.html"],
-            ["Eye Examination Equipment","👁️","eye-examination-equipment.html"]
-        ]
-    },
-
-    space:{
-    container:"spaceList",
-    items:[
-        ["Rocket Builder","🚀","rocket-builder.html","rocketBuilder"],
-
-        ["Satellite Unit Builder","🛰️",
-        "Satellite_Unit_Builder_3D.html","satelliteBuilder"]
-    ]
-},
-
-    agriculture:{
-        container:"agricultureList",
-        items:[
-            ["Mini Tractor Builder","🚜","mini-tractor.html"],
-            ["Power Tiller Builder","🌾","power-tiller.html"]
-        ]
-    },
-
-    sports:{
-        container:"sportsList",
-        items:[
-            ["Treadmill Builder","🏃","treadmill.html"],
-            ["Five Station Gym","🏋️","five-station-gym.html"]
-        ]
-    }
+    engineering: "engineeringList",
+    aviation: "aviationList",
+    computer: "computerList",
+    medical: "medicalList",
+    space: "spaceList",
+    agriculture: "agricultureList",
+    sports: "sportsList"
 
 };
 
 
+/* BUILDER TRANSLATION KEYS */
+
+const builderTranslations = {
+
+    sportsCar: "sportsCar",
+    jeep: "jeep",
+    bus: "bus",
+    train: "train",
+
+    helicopter: "helicopter",
+    airplane: "airplane",
+
+    laptop: "laptopBuilder",
+    desktop: "desktopBuilder",
+
+    rocket: "rocketBuilder",
+    satellite: "satelliteBuilder"
+
+};
+
+
+/* LOAD BUILDERS FROM REGISTRY */
+
+const builderGroups = {};
+
+Object.keys(window.FutureLabRegistry).forEach(category => {
+
+    const registryGroup = window.FutureLabRegistry[category];
+
+    builderGroups[category] = {
+
+        container: builderContainers[category],
+
+        items: registryGroup.builders.map(builder => [
+
+            builder.name,
+            builder.emoji,
+            builder.file,
+            builderTranslations[builder.id] || null
+
+        ])
+
+    };
+
+});
+
+
 /* ===================================
-   SEQUENTIAL UNLOCK SYSTEM
+   BUILDER PROGRESS CHECK
 =================================== */
+
 function isCompleted(projectId){
 
-    progress = getProgress();
+    return window.FutureLabProgress.isCompleted(projectId);
 
-    return progress.projects[projectId] === true;
 }
+
 
 function isUnlocked(category,index){
 
     const items = builderGroups[category].items;
 
-    if(window.FutureLabUnlock){
-        return window.FutureLabUnlock.isUnlocked(
-            items[index][2]
-        );
-    }
+    return window.FutureLabProgress.isUnlocked(
+        items[index][2]
+    );
 
-    return index === 0;
 }
+
 
 /* ===================================
    RENDER BUILDER BUTTONS
