@@ -1159,30 +1159,24 @@ Object.keys(window.FutureLabRegistry).forEach(category => {
 
 
 /* ===================================
-   BUILDER PROGRESS CHECK
+   BUILDER PROGRESS - NO LOCK SYSTEM
 =================================== */
 
 function isCompleted(projectId){
 
-    return window.FutureLabProgress.isCompleted(projectId);
-
-}
-
-function isUnlocked(category,index){
-    return true;
-}
-
-    const items = builderGroups[category].items;
-
-    return window.FutureLabProgress.isUnlocked(
-        items[index][2]
-    );
+    try{
+        return window.FutureLabProgress
+            ? window.FutureLabProgress.isCompleted(projectId)
+            : false;
+    }catch(error){
+        return false;
+    }
 
 }
 
 
 /* ===================================
-   RENDER BUILDER BUTTONS
+   RENDER ALL BUILDER BUTTONS
 =================================== */
 
 function renderBuilders(){
@@ -1190,27 +1184,28 @@ function renderBuilders(){
     Object.keys(builderGroups).forEach(category=>{
 
         const group = builderGroups[category];
+
         const container = document.getElementById(group.container);
 
         if(!container) return;
 
         container.innerHTML = "";
 
-        group.items.forEach((item,index)=>{
+        group.items.forEach(item=>{
 
             const [name,emoji,link,translationKey] = item;
 
-            const unlocked = isUnlocked(category,index);
             const completed = isCompleted(link);
 
             const card = document.createElement("a");
 
             card.className = "builder-card";
 
-            if(!unlocked) card.classList.add("locked");
-            if(completed) card.classList.add("completed");
+            if(completed){
+                card.classList.add("completed");
+            }
 
-            card.href = unlocked ? link : "#";
+            card.href = link;
 
             const title = translationKey
                 ? `<strong data-i18n="${translationKey}">${name}</strong>`
@@ -1221,6 +1216,7 @@ function renderBuilders(){
 
                 <div class="project-text">
                     ${title}
+
                     ${
                         completed
                         ? '<span class="status" data-i18n="completed">✓ COMPLETED</span>'
@@ -1228,31 +1224,8 @@ function renderBuilders(){
                     }
                 </div>
 
-                ${
-                    unlocked
-                    ? '<span class="arrow">›</span>'
-                    : '<span class="lock-icon">🔒</span>'
-                }
+                <span class="builder-arrow">›</span>
             `;
-
-            card.addEventListener("click",function(event){
-
-                if(!unlocked){
-                    event.preventDefault();
-
-                    alert(
-                        window.FutureLabLanguage
-                        ? window.FutureLabLanguage.t("completePrevious")
-                        : "Complete the previous Builder first!"
-                    );
-
-                    return;
-                }
-
-                progress.adventures[link] = true;
-                saveProgress();
-
-            });
 
             container.appendChild(card);
 
@@ -1265,6 +1238,7 @@ function renderBuilders(){
     }
 
 }
+
 
 /* ===================================
    SCREEN NAVIGATION
