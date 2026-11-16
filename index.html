@@ -1090,85 +1090,79 @@ function saveProgress(){
 }
 
 
-/* ===================================
-   BUILDER DATA FROM CENTRAL REGISTRY
-=================================== */
-
-const builderContainers = {
-
-    engineering: "engineeringList",
-    aviation: "aviationList",
-    computer: "computerList",
-    medical: "medicalList",
-    space: "spaceList",
-    agriculture: "agricultureList",
-    sports: "sportsList"
-
-};
-
-
-/* BUILDER TRANSLATION KEYS */
-
-const builderTranslations = {
-
-    sportsCar: "sportsCar",
-    jeep: "jeep",
-    bus: "bus",
-    train: "train",
-
-    helicopter: "helicopter",
-    airplane: "airplane",
-
-    laptop: "laptopBuilder",
-    desktop: "desktopBuilder",
-
-    rocket: "rocketBuilder",
-    satellite: "satelliteBuilder"
-
-};
-
-
-/* LOAD BUILDERS FROM REGISTRY */
-
-const builderGroups = {};
-
-Object.keys(window.FutureLabRegistry).forEach(category => {
-
-    const registryGroup = window.FutureLabRegistry[category];
-
-    builderGroups[category] = {
-
-        container: builderContainers[category],
-
-        items: registryGroup.builders.map(builder => [
-
-            builder.name,
-            builder.emoji,
-            builder.file,
-            builderTranslations[builder.id] || null
-
-        ])
-
-    };
-
-});
-
 
 /* ===================================
-   BUILDER PROGRESS - NO LOCK SYSTEM
+   DIRECT BUILDER DATA
+   NO REGISTRY / NO ENGINE / NO LOCK
 =================================== */
 
-function isCompleted(projectId){
+const builderGroups = {
 
-    try{
-        return window.FutureLabProgress
-            ? window.FutureLabProgress.isCompleted(projectId)
-            : false;
-    }catch(error){
-        return false;
+    engineering: {
+        container: "engineeringList",
+        items: [
+            ["Sports Car Builder","🏎️","sports-car-builder.html","sportsCar"],
+            ["Jeep Builder","🚙","jeep.html","jeep"],
+            ["Volvo AC Bus","🚌","mega-bus.html","bus"],
+            ["Train Builder","🚆","train-builder.html","train"]
+        ]
+    },
+
+    aviation: {
+        container: "aviationList",
+        items: [
+            ["Helicopter Builder","🚁","helicopter-builder.html","helicopter"],
+            ["Airplane Builder","✈️","airplane-builder.html","airplane"],
+            ["Bomber Builder","🛩️","bomber-builder.html",null],
+            ["Fighter Jet Builder","🛫","fighter-jet.html",null]
+        ]
+    },
+
+    computer: {
+        container: "computerList",
+        items: [
+            ["Laptop Builder","💻","laptop-builder.html","laptopBuilder"],
+            ["Desktop PC Builder","🖥️","desktop-pc-builder.html","desktopBuilder"]
+        ]
+    },
+
+    medical: {
+        container: "medicalList",
+        items: [
+            ["X-Ray Machine","🩻","xray-machine.html",null],
+            ["Ultrasound Machine","🩺","ultrasound-machine.html",null],
+            ["CT Scan Machine","🏥","ct-scan-machine.html",null],
+            ["EEG Machine","🧠","eeg-machine.html",null],
+            ["Dental Equipment","🦷","dental-equipment.html",null],
+            ["Eye Examination Equipment","👁️","eye-examination-equipment.html",null]
+        ]
+    },
+
+    space: {
+        container: "spaceList",
+        items: [
+            ["Rocket Builder","🚀","rocket-builder.html","rocketBuilder"],
+            ["Satellite Builder","🛰️","Satellite_Unit_Builder_3D.html","satelliteBuilder"]
+        ]
+    },
+
+    agriculture: {
+        container: "agricultureList",
+        items: [
+            ["Mini Tractor Builder","🚜","mini-tractor.html",null],
+            ["Power Tiller Builder","🌾","power-tiller.html",null]
+        ]
+    },
+
+    sports: {
+        container: "sportsList",
+        items: [
+            ["Treadmill Builder","🏃","treadmill.html",null],
+            ["Five Station Gym","🏋️","five-station-gym.html",null]
+        ]
     }
 
-}
+};
 
 
 /* ===================================
@@ -1177,7 +1171,7 @@ function isCompleted(projectId){
 
 function renderBuilders(){
 
-    Object.keys(builderGroups).forEach(category=>{
+    Object.keys(builderGroups).forEach(category => {
 
         const group = builderGroups[category];
 
@@ -1187,20 +1181,13 @@ function renderBuilders(){
 
         container.innerHTML = "";
 
-        group.items.forEach(item=>{
+        group.items.forEach(item => {
 
             const [name,emoji,link,translationKey] = item;
-
-            const completed = isCompleted(link);
 
             const card = document.createElement("a");
 
             card.className = "builder-card";
-
-            if(completed){
-                card.classList.add("completed");
-            }
-
             card.href = link;
 
             const title = translationKey
@@ -1212,12 +1199,6 @@ function renderBuilders(){
 
                 <div class="project-text">
                     ${title}
-
-                    ${
-                        completed
-                        ? '<span class="status" data-i18n="completed">✓ COMPLETED</span>'
-                        : ''
-                    }
                 </div>
 
                 <span class="builder-arrow">›</span>
@@ -1234,6 +1215,9 @@ function renderBuilders(){
     }
 
 }
+
+
+
 
 
 /* ===================================
