@@ -1091,8 +1091,10 @@ function saveProgress(){
 
 
 
+
 /* ===================================
    DIRECT BUILDER DATA
+   12 LANGUAGE SUPPORT
    NO REGISTRY / NO ENGINE / NO LOCK
 =================================== */
 
@@ -1113,8 +1115,8 @@ const builderGroups = {
         items: [
             ["Helicopter Builder","🚁","helicopter-builder.html","helicopter"],
             ["Airplane Builder","✈️","airplane-builder.html","airplane"],
-            ["Bomber Builder","🛩️","bomber-builder.html",null],
-            ["Fighter Jet Builder","🛫","fighter-jet.html",null]
+            ["Bomber Builder","🛩️","bomber-builder.html","bomber"],
+            ["Fighter Jet Builder","🛫","fighter-jet.html","fighterJet"]
         ]
     },
 
@@ -1129,12 +1131,12 @@ const builderGroups = {
     medical: {
         container: "medicalList",
         items: [
-            ["X-Ray Machine","🩻","xray-machine.html",null],
-            ["Ultrasound Machine","🩺","ultrasound-machine.html",null],
-            ["CT Scan Machine","🏥","ct-scan-machine.html",null],
-            ["EEG Machine","🧠","eeg-machine.html",null],
-            ["Dental Equipment","🦷","dental-equipment.html",null],
-            ["Eye Examination Equipment","👁️","eye-examination-equipment.html",null]
+            ["X-Ray Machine","🩻","xray-machine.html","xrayMachine"],
+            ["Ultrasound Machine","🩺","ultrasoundMachine.html","ultrasoundMachine"],
+            ["CT Scan Machine","🏥","ct-scan-machine.html","ctScanMachine"],
+            ["EEG Machine","🧠","eeg-machine.html","eegMachine"],
+            ["Dental Equipment","🦷","dental-equipment.html","dentalEquipment"],
+            ["Eye Examination Equipment","👁️","eye-examination-equipment.html","eyeExamination"]
         ]
     },
 
@@ -1149,20 +1151,21 @@ const builderGroups = {
     agriculture: {
         container: "agricultureList",
         items: [
-            ["Mini Tractor Builder","🚜","mini-tractor.html",null],
-            ["Power Tiller Builder","🌾","power-tiller.html",null]
+            ["Mini Tractor Builder","🚜","mini-tractor.html","miniTractor"],
+            ["Power Tiller Builder","🌾","power-tiller.html","powerTiller"]
         ]
     },
 
     sports: {
         container: "sportsList",
         items: [
-            ["Treadmill Builder","🏃","treadmill.html",null],
-            ["Five Station Gym","🏋️","five-station-gym.html",null]
+            ["Treadmill Builder","🏃","treadmill.html","treadmill"],
+            ["Five Station Gym","🏋️","five-station-gym.html","fiveStationGym"]
         ]
     }
 
 };
+
 
 
 /* ===================================
