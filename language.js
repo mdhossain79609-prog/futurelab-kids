@@ -1276,9 +1276,13 @@ function applyProgressTranslations() {
 
     }
 
-    if (details) {
-        details.textContent = t("keepBuilding");
+if (details) {
+    const match = details.textContent.match(/\d+/);
+
+    if (match) {
+        details.textContent = match[0] + "%";
     }
+}
 
     if (achievements) {
 
