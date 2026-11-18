@@ -1269,33 +1269,47 @@ function openSettings(){
 
 /* ===================================
    PROGRESS DISPLAY
+   MULTI-LANGUAGE SUPPORT
 =================================== */
-
 
 function updateProgress(){
 
     progress = getProgress();
 
     const total = Object.values(builderGroups)
-        .reduce((sum,group)=>sum+group.items.length,0);
+        .reduce((sum, group) => sum + group.items.length, 0);
 
     const completed = Object.values(progress.projects)
-        .filter(value=>value===true).length;
+        .filter(value => value === true).length;
 
-    const safeCompleted = Math.min(completed,total);
+    const safeCompleted = Math.min(completed, total);
+
+    const percent = total > 0
+        ? Math.round((safeCompleted / total) * 100)
+        : 0;
+
+    const lang = window.FutureLabLanguage;
+
+    const t = lang
+        ? lang.t
+        : (key) => key;
 
     document.getElementById("progressSummary").textContent =
-        "Completed Projects: "+safeCompleted+" / "+total;
+        t("completedProjects") + ": " +
+        safeCompleted + " / " + total;
 
     document.getElementById("progressDetails").textContent =
-        Math.round(safeCompleted/total*100)+"% of projects completed.";
+        percent + "%";
 
     document.getElementById("achievementDetails").textContent =
-        safeCompleted===0
-        ? "Start building to earn achievements!"
-        : "🌟 You have completed "+safeCompleted+" project(s)!";
+        safeCompleted === 0
+        ? t("achievementStart")
+        : "🌟 " + t("achievementDone", {
+            count: safeCompleted
+        });
 
 }
+
 
 /* ===================================
    COLORFUL LANGUAGE SELECTOR
