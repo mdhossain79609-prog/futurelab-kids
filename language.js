@@ -543,3 +543,838 @@ powerTiller:"بناء محراث آلي",
 treadmill:"جهاز المشي",
 fiveStationGym:"جهاز رياضي بخمس محطات"
 },
+
+/* ================= FRENCH ================= */
+
+fr: {
+welcome:"Votre avenir commence ici !",
+welcomeText:"Explorez, construisez et découvrez des choses incroyables.",
+start:"COMMENCER L'AVENTURE",
+language:"Langue",
+achievements:"Réalisations",
+progress:"Ma progression",
+help:"Centre d'aide",
+tagline:"CONSTRUIRE • DÉCOUVRIR • INVENTER",
+learnBuildTestCreate:"Apprendre • Construire • Tester • Créer",
+explore:"Explorez le monde de l'innovation",
+chooseCategory:"Choisissez un monde et commencez votre aventure !",
+engineering:"Monde de l'ingénierie",
+engineeringDesc:"Construisez des véhicules et des machines",
+aviation:"Aviation et pilotes",
+aviationDesc:"Explorez les aéronefs",
+computer:"Informatique et technologie",
+computerDesc:"Construisez des ordinateurs",
+medical:"Sciences et technologies médicales",
+medicalDesc:"Découvrez les machines médicales",
+space:"Espace et sciences",
+spaceDesc:"Explorez l'univers",
+agriculture:"Monde agricole",
+agricultureDesc:"Découvrez les machines agricoles",
+sports:"Monde du sport",
+sportsDesc:"Découvrez les équipements de fitness",
+juniorBuilder:"Constructeur junior",
+juniorIntro:"Construisez vos propres véhicules incroyables !",
+aviationWorld:"Monde de l'aviation",
+aviationIntro:"Construisez des avions et découvrez l'aviation !",
+computerTitle:"Technologie informatique",
+computerIntro:"Découvrez le matériel et la technologie informatique !",
+medicalTitle:"Sciences médicales",
+medicalIntro:"Découvrez les machines et équipements médicaux !",
+spaceTitle:"Espace et sciences",
+spaceIntro:"Explorez les fusées et la technologie spatiale !",
+agricultureTitle:"Monde agricole",
+agricultureIntro:"Construisez des machines pour l'agriculture moderne !",
+sportsTitle:"Monde du sport",
+sportsIntro:"Découvrez les équipements sportifs et de fitness !",
+progressTitle:"Ma progression",
+learningJourney:"Votre parcours d'apprentissage",
+completedProjects:"Projets terminés",
+keepBuilding:"Continuez à construire et à explorer !",
+achievementsTitle:"Vos réalisations",
+achievementStart:"Commencez à construire pour gagner des récompenses !",
+achievementDone:"Vous avez terminé {count} projet(s) !",
+helpTitle:"Bienvenue dans FutureLab Kids !",
+helpChoose:"Choisissez une catégorie et ouvrez un constructeur.",
+helpFollow:"Suivez les instructions de chaque projet.",
+helpComplete:"Terminez les activités requises pour débloquer le constructeur suivant.",
+helpSaved:"Votre progression est enregistrée sur votre appareil.",
+settingsTitle:"Paramètres",
+languageSettings:"Paramètres de langue",
+changeLanguage:"Changer de langue",
+selectLanguage:"Choisir la langue",
+choosePreferred:"Choisissez votre langue préférée",
+close:"Fermer",
+completed:"Terminé",
+completePrevious:"Terminez d'abord le constructeur précédent !",
+sportsCar:"Constructeur de voiture de sport",
+jeep:"Constructeur de Jeep",
+bus:"Bus Volvo climatisé",
+train:"Constructeur de train",
+helicopter:"Constructeur d'hélicoptère",
+airplane:"Constructeur d'avion",
+bomber:"Constructeur de bombardier",
+fighterJet:"Constructeur d'avion de chasse",
+laptopBuilder:"Constructeur d'ordinateur portable",
+desktopBuilder:"Constructeur de PC de bureau",
+xray:"Appareil à rayons X",
+ultrasound:"Appareil à ultrasons",
+ctScan:"Scanner CT",
+eeg:"Appareil EEG",
+dental:"Équipement dentaire",
+eye:"Équipement d'examen des yeux",
+rocketBuilder:"Constructeur de fusée",
+satelliteBuilder:"Constructeur de satellite",
+miniTractor:"Constructeur de mini-tracteur",
+powerTiller:"Constructeur de motoculteur",
+treadmill:"Constructeur de tapis roulant",
+fiveStationGym:"Appareil de musculation cinq postes"
+},
+
+/* ================= PORTUGUESE ================= */
+
+pt: {
+welcome:"Seu futuro começa aqui!",
+welcomeText:"Explore, construa e descubra coisas incríveis.",
+start:"COMEÇAR A AVENTURA",
+language:"Idioma",
+achievements:"Conquistas",
+progress:"Meu progresso",
+help:"Central de ajuda",
+tagline:"CONSTRUIR • DESCOBRIR • INVENTAR",
+learnBuildTestCreate:"Aprender • Construir • Testar • Criar",
+explore:"Explore o mundo da inovação",
+chooseCategory:"Escolha um mundo e comece sua aventura!",
+engineering:"Mundo da engenharia",
+engineeringDesc:"Construa veículos e máquinas",
+aviation:"Aviação e pilotos",
+aviationDesc:"Explore aeronaves",
+computer:"Ciência da computação e tecnologia",
+computerDesc:"Construa computadores",
+medical:"Ciência e tecnologia médica",
+medicalDesc:"Descubra máquinas médicas",
+space:"Espaço e ciência",
+spaceDesc:"Explore o universo",
+agriculture:"Mundo agrícola",
+agricultureDesc:"Explore máquinas agrícolas",
+sports:"Mundo dos esportes",
+sportsDesc:"Explore equipamentos de fitness",
+juniorBuilder:"Construtor júnior",
+juniorIntro:"Construa seus próprios veículos incríveis!",
+aviationWorld:"Mundo da aviação",
+aviationIntro:"Construa aeronaves e descubra a aviação!",
+computerTitle:"Tecnologia de computadores",
+computerIntro:"Descubra o hardware e a tecnologia dos computadores!",
+medicalTitle:"Ciência médica",
+medicalIntro:"Descubra máquinas e equipamentos médicos!",
+spaceTitle:"Espaço e ciência",
+spaceIntro:"Explore foguetes e tecnologia espacial!",
+agricultureTitle:"Mundo agrícola",
+agricultureIntro:"Construa máquinas para a agricultura moderna!",
+sportsTitle:"Mundo dos esportes",
+sportsIntro:"Explore equipamentos esportivos e de fitness!",
+progressTitle:"Meu progresso",
+learningJourney:"Sua jornada de aprendizagem",
+completedProjects:"Projetos concluídos",
+keepBuilding:"Continue construindo e explorando!",
+achievementsTitle:"Suas conquistas",
+achievementStart:"Comece a construir para ganhar conquistas!",
+achievementDone:"Você concluiu {count} projeto(s)!",
+helpTitle:"Bem-vindo ao FutureLab Kids!",
+helpChoose:"Escolha uma categoria e abra um construtor.",
+helpFollow:"Siga as instruções de cada projeto.",
+helpComplete:"Conclua as atividades necessárias para desbloquear o próximo construtor.",
+helpSaved:"Seu progresso é salvo no seu dispositivo.",
+settingsTitle:"Configurações",
+languageSettings:"Configurações de idioma",
+changeLanguage:"Alterar idioma",
+selectLanguage:"Selecionar idioma",
+choosePreferred:"Escolha seu idioma preferido",
+close:"Fechar",
+completed:"Concluído",
+completePrevious:"Conclua o construtor anterior primeiro!",
+sportsCar:"Construtor de carros esportivos",
+jeep:"Construtor de Jeep",
+bus:"Ônibus Volvo com ar-condicionado",
+train:"Construtor de trens",
+helicopter:"Construtor de helicóptero",
+airplane:"Construtor de avião",
+bomber:"Construtor de bombardeiro",
+fighterJet:"Construtor de caça",
+laptopBuilder:"Construtor de laptop",
+desktopBuilder:"Construtor de PC desktop",
+xray:"Máquina de raio-X",
+ultrasound:"Máquina de ultrassom",
+ctScan:"Máquina de tomografia",
+eeg:"Máquina de EEG",
+dental:"Equipamentos odontológicos",
+eye:"Equipamentos para exame ocular",
+rocketBuilder:"Construtor de foguetes",
+satelliteBuilder:"Construtor de satélites",
+miniTractor:"Construtor de mini trator",
+powerTiller:"Construtor de motocultivador",
+treadmill:"Construtor de esteira",
+fiveStationGym:"Academia de cinco estações"
+},
+
+/* ================= RUSSIAN ================= */
+
+ru: {
+welcome:"Твоё будущее начинается здесь!",
+welcomeText:"Исследуй, создавай и открывай удивительные вещи.",
+start:"НАЧАТЬ ПРИКЛЮЧЕНИЕ",
+language:"Язык",
+achievements:"Достижения",
+progress:"Мой прогресс",
+help:"Центр помощи",
+tagline:"СОЗДАВАЙ • ИССЛЕДУЙ • ИЗОБРЕТАЙ",
+learnBuildTestCreate:"Учись • Строй • Проверяй • Создавай",
+explore:"Исследуй мир инноваций",
+chooseCategory:"Выбери мир и начни своё приключение!",
+engineering:"Мир инженерии",
+engineeringDesc:"Создавай транспорт и машины",
+aviation:"Авиация и пилоты",
+aviationDesc:"Изучай летательные аппараты",
+computer:"Информатика и технологии",
+computerDesc:"Собирай компьютеры",
+medical:"Медицинская наука и технологии",
+medicalDesc:"Изучай медицинские аппараты",
+space:"Космос и наука",
+spaceDesc:"Исследуй Вселенную",
+agriculture:"Мир сельского хозяйства",
+agricultureDesc:"Изучай сельскохозяйственные машины",
+sports:"Мир спорта",
+sportsDesc:"Изучай фитнес-оборудование",
+juniorBuilder:"Юный конструктор",
+juniorIntro:"Создавай собственные удивительные автомобили!",
+aviationWorld:"Мир авиации",
+aviationIntro:"Создавай самолёты и изучай авиацию!",
+computerTitle:"Компьютерные технологии",
+computerIntro:"Изучай компьютерные детали и технологии!",
+medicalTitle:"Медицинская наука",
+medicalIntro:"Изучай медицинские машины и оборудование!",
+spaceTitle:"Космос и наука",
+spaceIntro:"Исследуй ракеты и космические технологии!",
+agricultureTitle:"Мир сельского хозяйства",
+agricultureIntro:"Создавай машины для современного сельского хозяйства!",
+sportsTitle:"Мир спорта",
+sportsIntro:"Изучай спортивное и фитнес-оборудование!",
+progressTitle:"Мой прогресс",
+learningJourney:"Твой путь к знаниям",
+completedProjects:"Завершённые проекты",
+keepBuilding:"Продолжай создавать и исследовать!",
+achievementsTitle:"Твои достижения",
+achievementStart:"Начни создавать проекты, чтобы получить достижения!",
+achievementDone:"Ты завершил(а) {count} проект(ов)!",
+helpTitle:"Добро пожаловать в FutureLab Kids!",
+helpChoose:"Выбери категорию и открой конструктор.",
+helpFollow:"Следуй инструкциям в каждом проекте.",
+helpComplete:"Выполни необходимые задания, чтобы открыть следующий конструктор.",
+helpSaved:"Твой прогресс сохраняется на устройстве.",
+settingsTitle:"Настройки",
+languageSettings:"Настройки языка",
+changeLanguage:"Изменить язык",
+selectLanguage:"Выбрать язык",
+choosePreferred:"Выбери предпочитаемый язык",
+close:"Закрыть",
+completed:"Завершено",
+completePrevious:"Сначала заверши предыдущий проект!",
+sportsCar:"Конструктор спортивного автомобиля",
+jeep:"Конструктор джипа",
+bus:"Автобус Volvo с кондиционером",
+train:"Конструктор поезда",
+helicopter:"Конструктор вертолёта",
+airplane:"Конструктор самолёта",
+bomber:"Конструктор бомбардировщика",
+fighterJet:"Конструктор истребителя",
+laptopBuilder:"Конструктор ноутбука",
+desktopBuilder:"Конструктор настольного ПК",
+xray:"Рентгеновский аппарат",
+ultrasound:"Аппарат УЗИ",
+ctScan:"Компьютерный томограф",
+eeg:"Аппарат ЭЭГ",
+dental:"Стоматологическое оборудование",
+eye:"Оборудование для проверки зрения",
+rocketBuilder:"Конструктор ракеты",
+satelliteBuilder:"Конструктор спутника",
+miniTractor:"Конструктор мини-трактора",
+powerTiller:"Конструктор мотокультиватора",
+treadmill:"Беговая дорожка",
+fiveStationGym:"Пятистанционный тренажёр"
+},
+
+/* ================= URDU ================= */
+
+ur: {
+welcome:"آپ کا مستقبل یہاں سے شروع ہوتا ہے!",
+welcomeText:"دریافت کریں، بنائیں اور حیرت انگیز چیزیں سیکھیں۔",
+start:"مہم شروع کریں",
+language:"زبان",
+achievements:"کامیابیاں",
+progress:"میری پیش رفت",
+help:"مدد مرکز",
+tagline:"بنائیں • دریافت کریں • ایجاد کریں",
+learnBuildTestCreate:"سیکھیں • بنائیں • آزمائیں • تخلیق کریں",
+explore:"جدت کی دنیا دریافت کریں",
+chooseCategory:"ایک دنیا منتخب کریں اور اپنی مہم شروع کریں!",
+engineering:"انجینئرنگ کی دنیا",
+engineeringDesc:"گاڑیاں اور مشینیں بنائیں",
+aviation:"ہوا بازی اور پائلٹ",
+aviationDesc:"ہوائی جہاز دریافت کریں",
+computer:"کمپیوٹر سائنس اور ٹیکنالوجی",
+computerDesc:"کمپیوٹر بنائیں",
+medical:"طبی سائنس اور ٹیکنالوجی",
+medicalDesc:"طبی مشینیں دریافت کریں",
+space:"خلاء اور سائنس",
+spaceDesc:"کائنات دریافت کریں",
+agriculture:"زراعت کی دنیا",
+agricultureDesc:"زرعی مشینیں دریافت کریں",
+sports:"کھیلوں کی دنیا",
+sportsDesc:"فٹنس کے آلات دریافت کریں",
+juniorBuilder:"جونیئر بلڈر",
+juniorIntro:"اپنی حیرت انگیز گاڑیاں خود بنائیں!",
+aviationWorld:"ہوا بازی کی دنیا",
+aviationIntro:"ہوائی جہاز بنائیں اور ہوا بازی سیکھیں!",
+computerTitle:"کمپیوٹر ٹیکنالوجی",
+computerIntro:"کمپیوٹر کے حصے اور ٹیکنالوجی دریافت کریں!",
+medicalTitle:"طبی سائنس",
+medicalIntro:"طبی مشینیں اور آلات دریافت کریں!",
+spaceTitle:"خلاء اور سائنس",
+spaceIntro:"راکٹ اور خلائی ٹیکنالوجی دریافت کریں!",
+agricultureTitle:"زراعت کی دنیا",
+agricultureIntro:"جدید زراعت کے لیے مشینیں بنائیں!",
+sportsTitle:"کھیلوں کی دنیا",
+sportsIntro:"کھیل اور فٹنس کے آلات دریافت کریں!",
+progressTitle:"میری پیش رفت",
+learningJourney:"آپ کا تعلیمی سفر",
+completedProjects:"مکمل کیے گئے منصوبے",
+keepBuilding:"بناتے رہیں اور دریافت کرتے رہیں!",
+achievementsTitle:"آپ کی کامیابیاں",
+achievementStart:"کامیابیاں حاصل کرنے کے لیے بنانا شروع کریں!",
+achievementDone:"آپ نے {count} منصوبے مکمل کیے ہیں!",
+helpTitle:"FutureLab Kids میں خوش آمدید!",
+helpChoose:"ایک زمرہ منتخب کریں اور بلڈر کھولیں۔",
+helpFollow:"ہر منصوبے کی ہدایات پر عمل کریں۔",
+helpComplete:"اگلا بلڈر کھولنے کے لیے ضروری سرگرمیاں مکمل کریں۔",
+helpSaved:"آپ کی پیش رفت آپ کے آلے میں محفوظ ہوتی ہے۔",
+settingsTitle:"ترتیبات",
+languageSettings:"زبان کی ترتیبات",
+changeLanguage:"زبان تبدیل کریں",
+selectLanguage:"زبان منتخب کریں",
+choosePreferred:"اپنی پسندیدہ زبان منتخب کریں",
+close:"بند کریں",
+completed:"مکمل",
+completePrevious:"پہلے پچھلا بلڈر مکمل کریں!",
+sportsCar:"اسپورٹس کار بلڈر",
+jeep:"جیپ بلڈر",
+bus:"وولوو اے سی بس",
+train:"ٹرین بلڈر",
+helicopter:"ہیلی کاپٹر بلڈر",
+airplane:"ہوائی جہاز بلڈر",
+bomber:"بمبار طیارہ بلڈر",
+fighterJet:"لڑاکا طیارہ بلڈر",
+laptopBuilder:"لیپ ٹاپ بلڈر",
+desktopBuilder:"ڈیسک ٹاپ پی سی بلڈر",
+xray:"ایکس رے مشین",
+ultrasound:"الٹراساؤنڈ مشین",
+ctScan:"سی ٹی اسکین مشین",
+eeg:"ای ای جی مشین",
+dental:"دانتوں کے علاج کے آلات",
+eye:"آنکھوں کے معائنے کے آلات",
+rocketBuilder:"راکٹ بلڈر",
+satelliteBuilder:"سیٹلائٹ بلڈر",
+miniTractor:"منی ٹریکٹر بلڈر",
+powerTiller:"پاور ٹلر بلڈر",
+treadmill:"ٹریڈمل بلڈر",
+fiveStationGym:"فائیو اسٹیشن جم"
+},
+
+/* ================= INDONESIAN ================= */
+
+id: {
+welcome:"Masa depanmu dimulai di sini!",
+welcomeText:"Jelajahi, bangun, dan temukan hal-hal menakjubkan.",
+start:"MULAI PETUALANGAN",
+language:"Bahasa",
+achievements:"Pencapaian",
+progress:"Progres Saya",
+help:"Pusat Bantuan",
+tagline:"MEMBANGUN • MENJELAJAHI • BERINOVASI",
+learnBuildTestCreate:"Belajar • Membangun • Menguji • Mencipta",
+explore:"Jelajahi dunia inovasi",
+chooseCategory:"Pilih dunia dan mulai petualanganmu!",
+engineering:"Dunia Teknik",
+engineeringDesc:"Bangun kendaraan dan mesin",
+aviation:"Penerbangan dan Pilot",
+aviationDesc:"Jelajahi pesawat",
+computer:"Ilmu Komputer dan Teknologi",
+computerDesc:"Bangun komputer",
+medical:"Ilmu dan Teknologi Medis",
+medicalDesc:"Temukan mesin medis",
+space:"Antariksa dan Sains",
+spaceDesc:"Jelajahi alam semesta",
+agriculture:"Dunia Pertanian",
+agricultureDesc:"Jelajahi mesin pertanian",
+sports:"Dunia Olahraga",
+sportsDesc:"Jelajahi peralatan kebugaran",
+juniorBuilder:"Perakit Junior",
+juniorIntro:"Bangun kendaraan menakjubkan milikmu sendiri!",
+aviationWorld:"Dunia Penerbangan",
+aviationIntro:"Bangun pesawat dan pelajari dunia penerbangan!",
+computerTitle:"Teknologi Komputer",
+computerIntro:"Pelajari perangkat keras dan teknologi komputer!",
+medicalTitle:"Ilmu Kedokteran",
+medicalIntro:"Temukan mesin dan peralatan medis!",
+spaceTitle:"Antariksa dan Sains",
+spaceIntro:"Jelajahi roket dan teknologi luar angkasa!",
+agricultureTitle:"Dunia Pertanian",
+agricultureIntro:"Bangun mesin untuk pertanian modern!",
+sportsTitle:"Dunia Olahraga",
+sportsIntro:"Jelajahi peralatan olahraga dan kebugaran!",
+progressTitle:"Progres Saya",
+learningJourney:"Perjalanan Belajarmu",
+completedProjects:"Proyek yang Selesai",
+keepBuilding:"Terus membangun dan menjelajah!",
+achievementsTitle:"Pencapaianmu",
+achievementStart:"Mulai membangun untuk mendapatkan pencapaian!",
+achievementDone:"Kamu telah menyelesaikan {count} proyek!",
+helpTitle:"Selamat datang di FutureLab Kids!",
+helpChoose:"Pilih kategori dan buka sebuah Builder.",
+helpFollow:"Ikuti petunjuk di setiap proyek.",
+helpComplete:"Selesaikan aktivitas yang diperlukan untuk membuka Builder berikutnya.",
+helpSaved:"Progresmu disimpan di perangkat.",
+settingsTitle:"Pengaturan",
+languageSettings:"Pengaturan Bahasa",
+changeLanguage:"Ubah Bahasa",
+selectLanguage:"Pilih Bahasa",
+choosePreferred:"Pilih bahasa yang kamu sukai",
+close:"Tutup",
+completed:"Selesai",
+completePrevious:"Selesaikan Builder sebelumnya terlebih dahulu!",
+sportsCar:"Perakit Mobil Sport",
+jeep:"Perakit Jeep",
+bus:"Bus Volvo AC",
+train:"Perakit Kereta",
+helicopter:"Perakit Helikopter",
+airplane:"Perakit Pesawat",
+bomber:"Perakit Pesawat Pengebom",
+fighterJet:"Perakit Jet Tempur",
+laptopBuilder:"Perakit Laptop",
+desktopBuilder:"Perakit PC Desktop",
+xray:"Mesin Sinar-X",
+ultrasound:"Mesin Ultrasonografi",
+ctScan:"Mesin CT Scan",
+eeg:"Mesin EEG",
+dental:"Peralatan Kedokteran Gigi",
+eye:"Peralatan Pemeriksaan Mata",
+rocketBuilder:"Perakit Roket",
+satelliteBuilder:"Perakit Satelit",
+miniTractor:"Perakit Traktor Mini",
+powerTiller:"Perakit Power Tiller",
+treadmill:"Perakit Treadmill",
+fiveStationGym:"Alat Gym Lima Stasiun"
+},
+
+/* ================= JAPANESE ================= */
+
+ja: {
+welcome:"あなたの未来はここから始まります！",
+welcomeText:"探検し、作り、素晴らしい発見をしましょう。",
+start:"冒険を始める",
+language:"言語",
+achievements:"実績",
+progress:"進捗状況",
+help:"ヘルプセンター",
+tagline:"作る • 発見する • 発明する",
+learnBuildTestCreate:"学ぶ • 作る • 試す • 創造する",
+explore:"イノベーションの世界を探検しよう",
+chooseCategory:"世界を選んで冒険を始めましょう！",
+engineering:"エンジニアリングの世界",
+engineeringDesc:"乗り物や機械を作ろう",
+aviation:"航空とパイロット",
+aviationDesc:"航空機を探検しよう",
+computer:"コンピューター科学と技術",
+computerDesc:"コンピューターを作ろう",
+medical:"医療科学と技術",
+medicalDesc:"医療機器を発見しよう",
+space:"宇宙と科学",
+spaceDesc:"宇宙を探検しよう",
+agriculture:"農業の世界",
+agricultureDesc:"農業機械を探検しよう",
+sports:"スポーツの世界",
+sportsDesc:"フィットネス機器を探検しよう",
+juniorBuilder:"ジュニアビルダー",
+juniorIntro:"自分だけの素晴らしい乗り物を作ろう！",
+aviationWorld:"航空の世界",
+aviationIntro:"航空機を作って航空について学ぼう！",
+computerTitle:"コンピューター技術",
+computerIntro:"コンピューターの部品と技術を学ぼう！",
+medicalTitle:"医療科学",
+medicalIntro:"医療機器や装置を発見しよう！",
+spaceTitle:"宇宙と科学",
+spaceIntro:"ロケットと宇宙技術を探検しよう！",
+agricultureTitle:"農業の世界",
+agricultureIntro:"現代農業の機械を作ろう！",
+sportsTitle:"スポーツの世界",
+sportsIntro:"スポーツとフィットネス機器を探検しよう！",
+progressTitle:"進捗状況",
+learningJourney:"あなたの学習の旅",
+completedProjects:"完了したプロジェクト",
+keepBuilding:"作り続けて、新しい発見をしよう！",
+achievementsTitle:"あなたの実績",
+achievementStart:"実績を獲得するためにビルダーを始めよう！",
+achievementDone:"{count} 個のプロジェクトを完了しました！",
+helpTitle:"FutureLab Kidsへようこそ！",
+helpChoose:"カテゴリーを選択してビルダーを開いてください。",
+helpFollow:"各プロジェクトの説明に従ってください。",
+helpComplete:"次のビルダーを解除するには必要な作業を完了してください。",
+helpSaved:"進捗状況は端末に保存されます。",
+settingsTitle:"設定",
+languageSettings:"言語設定",
+changeLanguage:"言語を変更",
+selectLanguage:"言語を選択",
+choosePreferred:"お好みの言語を選択してください",
+close:"閉じる",
+completed:"完了",
+completePrevious:"先に前のビルダーを完了してください！",
+sportsCar:"スポーツカーを組み立てる",
+jeep:"ジープを組み立てる",
+bus:"ボルボACバス",
+train:"列車を組み立てる",
+helicopter:"ヘリコプターを組み立てる",
+airplane:"飛行機を組み立てる",
+bomber:"爆撃機を組み立てる",
+fighterJet:"戦闘機を組み立てる",
+laptopBuilder:"ノートパソコンを組み立てる",
+desktopBuilder:"デスクトップPCを組み立てる",
+xray:"X線装置",
+ultrasound:"超音波診断装置",
+ctScan:"CTスキャン装置",
+eeg:"脳波測定装置",
+dental:"歯科医療機器",
+eye:"眼科検査機器",
+rocketBuilder:"ロケットを組み立てる",
+satelliteBuilder:"人工衛星を組み立てる",
+miniTractor:"ミニトラクターを組み立てる",
+powerTiller:"耕うん機を組み立てる",
+treadmill:"トレッドミルを組み立てる",
+fiveStationGym:"5ステーションジム"
+}
+
+};
+
+/* =====================================================
+   LANGUAGE ENGINE
+===================================================== */
+
+let currentLanguage = "en";
+
+try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+
+    if (saved && translations[saved]) {
+        currentLanguage = saved;
+    }
+} catch (error) {
+    console.warn("Language storage unavailable.");
+}
+
+/* GET CURRENT LANGUAGE */
+
+function getLanguage() {
+    return currentLanguage;
+}
+
+/* TRANSLATION */
+
+function t(key, values) {
+
+    let translated =
+        translations[currentLanguage]?.[key] ??
+        translations.en[key] ??
+        key;
+
+    if (values && typeof translated === "string") {
+        Object.keys(values).forEach(function (name) {
+            translated = translated.replaceAll(
+                "{" + name + "}",
+                String(values[name])
+            );
+        });
+    }
+
+    return translated;
+}
+
+/* RTL SUPPORT */
+
+function applyDirection() {
+
+    const isRTL =
+        currentLanguage === "ar" ||
+        currentLanguage === "ur";
+
+    document.documentElement.lang = currentLanguage;
+    document.documentElement.dir = isRTL ? "rtl" : "ltr";
+
+    if (document.body) {
+        document.body.dir = isRTL ? "rtl" : "ltr";
+        document.body.classList.toggle("rtl", isRTL);
+    }
+}
+
+/* TRANSLATE HTML DATA ATTRIBUTES */
+
+function applyAttributes() {
+
+    document.querySelectorAll("[data-i18n]").forEach(function(element) {
+
+        const key = element.getAttribute("data-i18n");
+
+        if (translations.en[key] !== undefined) {
+            element.textContent = t(key);
+        }
+
+    });
+
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function(element) {
+
+        const key = element.getAttribute("data-i18n-placeholder");
+
+        element.placeholder = t(key);
+
+    });
+
+    document.querySelectorAll("[data-i18n-title]").forEach(function(element) {
+
+        const key = element.getAttribute("data-i18n-title");
+
+        element.title = t(key);
+
+    });
+}
+
+/* TRANSLATE CURRENT INDEX.HTML ELEMENTS */
+
+function applyPageTranslations() {
+
+    const map = {
+
+        ".tagline": "tagline",
+
+        ".category-card:nth-child(1) .project-text small": "engineeringDesc",
+        ".category-card:nth-child(2) .project-text small": "aviationDesc",
+        ".category-card:nth-child(3) .project-text small": "computerDesc",
+        ".category-card:nth-child(4) .project-text small": "medicalDesc",
+        ".category-card:nth-child(5) .project-text small": "spaceDesc",
+        ".category-card:nth-child(6) .project-text small": "agricultureDesc",
+        ".category-card:nth-child(7) .project-text small": "sportsDesc",
+
+        "#builderScreen .intro": "juniorIntro",
+        "#aviationScreen .intro": "aviationIntro",
+        "#computerScienceScreen .intro": "computerIntro",
+        "#medicalScreen .intro": "medicalIntro",
+        "#spaceScienceScreen .intro": "spaceIntro",
+        "#agricultureScreen .intro": "agricultureIntro",
+        "#sportsScreen .intro": "sportsIntro",
+
+        "#progressScreen .header h2": "progressTitle",
+        "#progressScreen .info-panel h2": "learningJourney",
+
+        "#achievementsScreen .header h2": "achievements",
+        "#achievementsScreen .info-panel h2": "achievementsTitle",
+
+        "#helpScreen .header h2": "help",
+        "#helpScreen .info-panel h3": "helpTitle",
+
+        "#settingsScreen .header h2": "settingsTitle",
+        "#settingsScreen .info-panel h3": "languageSettings",
+
+        ".language-heading p": "choosePreferred"
+
+    };
+
+    Object.keys(map).forEach(function(selector) {
+
+        const element = document.querySelector(selector);
+
+        if (element) {
+            element.textContent = t(map[selector]);
+        }
+
+    });
+
+    /* SCREEN TITLES WITH EMOJIS */
+
+    const headings = [
+        ["#computerScienceScreen .header h2", "💻 ", "computerTitle"],
+        ["#medicalScreen .header h2", "🏥 ", "medicalTitle"],
+        ["#spaceScienceScreen .header h2", "🚀 ", "spaceTitle"],
+        ["#agricultureScreen .header h2", "🚜 ", "agricultureTitle"],
+        ["#sportsScreen .header h2", "🏋️ ", "sportsTitle"]
+    ];
+
+    headings.forEach(function(item) {
+
+        const element = document.querySelector(item[0]);
+
+        if (element) {
+            element.textContent = item[1] + t(item[2]);
+        }
+
+    });
+
+    /* HELP CONTENT */
+
+    const helpParagraphs = document.querySelectorAll(
+        "#helpScreen .info-panel p"
+    );
+
+    const helpKeys = [
+        "helpChoose",
+        "helpFollow",
+        "helpComplete",
+        "helpSaved"
+    ];
+
+    helpParagraphs.forEach(function(element, index) {
+
+        if (helpKeys[index]) {
+            element.textContent = t(helpKeys[index]);
+        }
+
+    });
+
+    /* SETTINGS BUTTON */
+
+    const settingsButton = document.querySelector(
+        "#settingsScreen .info-panel button"
+    );
+
+    if (settingsButton) {
+        settingsButton.textContent = "🌐 " + t("changeLanguage");
+    }
+
+}
+
+/* PROGRESS TRANSLATION */
+
+function applyProgressTranslations() {
+
+    const summary = document.getElementById("progressSummary");
+    const details = document.getElementById("progressDetails");
+    const achievements = document.getElementById("achievementDetails");
+
+    if (summary) {
+
+        const match = summary.textContent.match(/(\d+)\s*\/\s*(\d+)/);
+
+        if (match) {
+            summary.textContent =
+                t("completedProjects") + ": " +
+                match[1] + " / " + match[2];
+        }
+
+    }
+
+    if (details) {
+        details.textContent = t("keepBuilding");
+    }
+
+    if (achievements) {
+
+        const match = achievements.textContent.match(/\d+/);
+
+        if (match) {
+
+            achievements.textContent =
+                "🌟 " + t("achievementDone", {
+                    count: match[0]
+                });
+
+        } else {
+
+            achievements.textContent = t("achievementStart");
+
+        }
+
+    }
+
+}
+
+/* APPLY ALL TRANSLATIONS */
+
+function apply() {
+
+    if (!document.body) return;
+
+    applyDirection();
+
+    applyAttributes();
+
+    applyPageTranslations();
+
+    applyProgressTranslations();
+
+}
+
+/* CHANGE LANGUAGE */
+
+function setLanguage(code) {
+
+    if (!translations[code]) {
+        return false;
+    }
+
+    currentLanguage = code;
+
+    try {
+
+        localStorage.setItem(STORAGE_KEY, code);
+
+    } catch (error) {
+
+        console.warn("Could not save language preference.");
+
+    }
+
+    apply();
+
+    window.dispatchEvent(
+        new Event("futurelab-language-changed")
+    );
+
+    return true;
+
+}
+
+/* PUBLIC API */
+
+window.FutureLabLanguage = {
+
+    languages: languages,
+
+    translations: translations,
+
+    getLanguage: getLanguage,
+
+    setLanguage: setLanguage,
+
+    t: t,
+
+    apply: apply
+
+};
+
+/* INITIALIZATION */
+
+if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", apply);
+
+} else {
+
+    apply();
+
+}
+
+})();
